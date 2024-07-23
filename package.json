@@ -8,6 +8,7 @@
 		"build": "tsc -b && vite build",
 		"preview": "vite preview",
 		"lint": "npm run lint:eslint && npm run lint:prettier",
+		"lint:typescript": "tsc",
 		"lint:eslint": "eslint . --report-unused-disable-directives --max-warnings 0",
 		"lint:prettier": "prettier --check .",
 		"fix": "npm run fix:eslint && npm run fix:prettier",
