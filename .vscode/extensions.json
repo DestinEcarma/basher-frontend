@@ -1,0 +1,12 @@
+{
+	"recommendations": [
+		"dsznajder.es7-react-js-snippets",
+		"dbaeumer.vscode-eslint",
+		"formulahendry.auto-rename-tag",
+		"formulahendry.auto-close-tag",
+		"aaron-bond.better-comments",
+		"wix.vscode-import-cost",
+		"csstools.postcss",
+		"esbenp.prettier-vscode"
+	]
+}
