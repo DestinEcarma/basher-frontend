@@ -5,7 +5,7 @@ module.exports = {
 			backgroundColor: {
 				accent: {
 					DEFAULT: "#303030",
-					light: "#808080"
+					light: "#808080",
 				},
 			},
 		},

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface UserProps {
 	id: number;
@@ -10,6 +10,6 @@ const User: React.FC<UserProps> = ({ id }) => {
 			<h1>Anonymous #{id}</h1>
 		</div>
 	);
-}
+};
 
 export default User;
