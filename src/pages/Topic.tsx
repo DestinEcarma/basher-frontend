@@ -1,18 +1,16 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import User from "../features/User.tsx";
 import Logo from "../components/Logo";
+import Post from "../features/Post";
 
 const Topic = () => {
-	const { id } = useParams<{ id: string }>();
-
 	useEffect(() => {}, []);
 
 	return (
-		<div className="bg-[#F6F6F9] w-full min-h-screen">
-			<Logo />
-			<h1>Task # {id}</h1>
-			<User id={0} />
+		<div className="flex justify-center bg-[#F6F6F9] w-full min-h-screen">
+			<div className="flex flex-col lg:max-w-7xl max-w-3xl w-full">
+				<Logo />
+				<Post id={0} />
+			</div>
 		</div>
 	);
 };
