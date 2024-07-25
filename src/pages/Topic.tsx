@@ -1,16 +1,14 @@
 import { useEffect } from "react";
-import User from "../features/User.tsx"
+import User from "../features/User.tsx";
 
 const Topic = () => {
-	useEffect(() => {
-
-	}, []);
+	useEffect(() => {}, []);
 
 	return (
 		<div>
-			<User id={0}/>
+			<User id={0} />
 		</div>
-	)
+	);
 };
 
 export default Topic;
