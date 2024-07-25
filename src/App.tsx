@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Topic from "./pages/Topic";
 
 const App: React.FC = () => {
 	return (
@@ -10,7 +11,7 @@ const App: React.FC = () => {
 					<Route path="/login" element={<div>Login</div>} />
 					<Route path="/signup" element={<div>Signup</div>} />
 					<Route path="/forum" element={<div>Forum</div>} />
-					<Route path="/topic/:id" element={<div>Topics</div>} />
+					<Route path="/topic/:id" element={<Topic />} />
 				</Routes>
 			</Suspense>
 		</BrowserRouter>
