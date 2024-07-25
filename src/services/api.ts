@@ -1,5 +1,5 @@
 // import axios from 'axios'
-import sampleData from "../utils/sampleData";
+import { SampleData } from "../utils/sample-data";
 
 // const USER_PATH = '/user';
 
@@ -23,9 +23,9 @@ import sampleData from "../utils/sampleData";
 /* TEMPORARY FUNCTIONS */
 
 export function Login(email: string, password: string) {
-	const emailIndex = sampleData.findIndex((data) => data.email === email);
+	const emailIndex = SampleData.findIndex((data) => data.email === email);
 
-	if (emailIndex === -1 || sampleData[emailIndex].password !== password) {
+	if (emailIndex === -1 || SampleData[emailIndex].password !== password) {
 		return false;
 	}
 
@@ -33,7 +33,7 @@ export function Login(email: string, password: string) {
 }
 
 export function Signup(email: string, password: string) {
-	const emailIndex = sampleData.findIndex((data) => data.email === email);
+	const emailIndex = SampleData.findIndex((data) => data.email === email);
 	console.log(password);
 
 	return emailIndex === -1;
