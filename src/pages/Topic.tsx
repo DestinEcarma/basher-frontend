@@ -5,7 +5,7 @@ import TopicContainer from "../features/topic/components/TopicContainer";
 // import Post from "../features/Post";
 
 const Topic = () => {
-	const { id } = useParams<{id: string}>();
+	const { id } = useParams<{ id: string }>();
 	useEffect(() => {}, []);
 
 	return (
