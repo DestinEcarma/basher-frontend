@@ -1,14 +1,14 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useEffect } from "react";
+import User from "../features/User.tsx";
 
-const Topic: React.FC = () => {
-	const { id }= useParams<{ id: string }>();
+const Topic = () => {
+	useEffect(() => {}, []);
 
 	return (
-		<div className='w-full min-h-screen bg-white'>
-			<h1>Topic #{id}</h1>
+		<div>
+			<User id={0} />
 		</div>
-	)
+	);
 };
 
 export default Topic;

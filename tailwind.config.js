@@ -8,6 +8,9 @@ module.exports = {
 					light: "#808080",
 				},
 			},
+			fontFamily: {
+				roboto: ["Roboto", "sans-serif"],
+			},
 		},
 	},
 	plugins: [],
