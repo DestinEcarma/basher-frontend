@@ -12,6 +12,17 @@
 			"problemMatcher": [],
 			"label": "npm: dev",
 			"detail": "vite"
+		},
+		{
+			"icon": {
+				"id": "code",
+				"color": "terminal.ansiGreen"
+			},
+			"type": "npm",
+			"script": "lint",
+			"problemMatcher": [],
+			"label": "npm: lint",
+			"detail": "typecheck eslint prettier"
 		}
 	]
 }
