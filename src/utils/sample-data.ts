@@ -78,16 +78,3 @@ export const Tables: TablesType = {
 
 	Replies: [],
 };
-
-export const SampleData: User[] = [
-	{
-		id: '1',
-		email: "sample@gmail.com",
-		password: "123",
-	},
-	{
-		id: '2',
-		email: "admin@gmail.com",
-		password: "123",
-	},
-];
