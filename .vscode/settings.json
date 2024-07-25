@@ -1,0 +1,12 @@
+{
+	// Editor configuration
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+
+	// Language configuration
+	"[markdown]": {
+		"editor.wordWrap": "on",
+		"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+	}
+}
