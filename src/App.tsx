@@ -11,14 +11,7 @@ const App: React.FC = () => {
 				<Routes>
 					<Route path="/" element={<div>hello</div>} />
 					<Route path="/login" element={<LoginPage />} />
-					<Route
-						path="/signup"
-						element={
-							<div>
-								<SignupPage />
-							</div>
-						}
-					/>
+					<Route path="/signup" element={<SignupPage />} />
 					<Route path="/forum" element={<div>Forum</div>} />
 					<Route path="/topic/:id" element={<Topic />} />
 				</Routes>
