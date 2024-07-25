@@ -1,30 +1,40 @@
-# React + TypeScript + Vite
+# Basher
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Basher is a forum-based web application where all users are anonymous. This project is built using React and TypeScript, following specific naming conventions for different types of files. It uses **Tailwind** CSS for styling and **Axios** for HTTP client requests.
 
-Currently, two official plugins are available:
+## Project Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The project is organized into several directories, each serving a specific purpose:
 
-## Expanding the ESLint configuration
+- [**components/**](./src/components/README.md): Contains reusable UI components.
+- [**pages/**](./src/pages/README.md): Contains the main pages of the application.
+- [**features/**](./src/features/README.md): Contains specific features that only applies to that page, each with its own components, utils, services, and pages.
+- [**utils/**](./src/utils/README.md): Contains utility functions used across the application.
+- [**services/**](./src/services/README.md): Contains service functions for API calls and other business logic.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Naming Conventions
 
-- Configure the top-level `parserOptions` property like this:
+- **Components, Pages, Services**: Use PascalCase (e.g., `UserProfile`, `HomePage`, `AuthService`).
+- **Utilities**: Use camelCase (e.g., `formatDate`, `calculateAge`).
 
-```js
-export default {
-    // other rules...
-    parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
-        project: ["./tsconfig.json", "./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: __dirname,
-    },
-};
+## Setting Up and Running the Project
+
+1. Clone the repository:
+
+```sh
+git clone https://github.com/DestinEcarma/basher-frontend.git basher
+
+cd basher
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. Install dependencies:
+
+```sh
+npm install
+```
+
+3. Run the development server:
+
+```sh
+npm run dev
+```
