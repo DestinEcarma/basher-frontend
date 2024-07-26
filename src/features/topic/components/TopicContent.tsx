@@ -1,15 +1,14 @@
 import React from "react";
+import MarkdownRenderer from "../../../components/MarkdownRenderer";
 
 interface ContentProps {
-	title: string;
-	children?: React.ReactNode;
+	content: string;
 }
 
-const TopicContent: React.FC<ContentProps> = ({ title, children }) => {
+const TopicContent: React.FC<ContentProps> = ({ content }) => {
 	return (
 		<div className="mt-4 mb-8 flex flex-col gap-5">
-			<h1 className="font-bold text-xl leading-none">{title}</h1>
-			{children}
+			<MarkdownRenderer content={content} />
 		</div>
 	);
 };

@@ -21,10 +21,7 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 				<Tags tags={tags} />
 				<User id={0} isOP={true} />
 
-				<TopicContent title={topic.title}>
-					<p>{topic.content}</p>
-				</TopicContent>
-
+				<TopicContent content={topic.content} />
 				<TopicIcons />
 			</div>
 		</div>

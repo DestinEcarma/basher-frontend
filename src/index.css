@@ -8,4 +8,74 @@
 	body {
 		@apply font-roboto;
 	}
+	.markdown {
+		h1 {
+			@apply text-3xl font-bold mt-6 mb-4;
+		}
+		h2 {
+			@apply text-2xl font-semibold mt-5 mb-3;
+		}
+		h3 {
+			@apply text-xl font-medium mt-4 mb-2;
+		}
+		h4 {
+			@apply text-lg font-medium mt-3 mb-1.5;
+		}
+		h5 {
+			@apply text-base font-medium mt-2 mb-1;
+		}
+		p {
+			@apply mb-4;
+		}
+		br {
+			@apply my-2;
+		}
+		a {
+			@apply text-blue-500 underline;
+		}
+
+		a:hover {
+			@apply text-blue-700;
+		}
+
+		a:visited {
+			@apply text-violet-800 underline;
+		}
+
+		ul {
+			@apply list-disc pl-6;
+		}
+
+		ol {
+			@apply list-decimal pl-6;
+		}
+
+		li {
+			@apply mb-2 text-gray-700;
+		}
+
+		table {
+			@apply min-w-full border-collapse bg-white;
+		}
+
+		thead {
+			@apply bg-gray-200;
+		}
+
+		th {
+			@apply px-4 py-2 border-b border-gray-300 text-left text-gray-700;
+		}
+
+		tbody {
+			@apply bg-white;
+		}
+
+		td {
+			@apply px-4 py-2 border-b border-gray-200;
+		}
+
+		tr {
+			@apply border-b border-gray-200;
+		}
+	}
 }
