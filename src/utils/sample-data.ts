@@ -90,7 +90,32 @@ export const Tables: TablesType = {
 			id: "4",
 			author: "4",
 			title: "Hello World",
-			content: `\n# My Markdown Document\nHere's a paragraph in Markdown.\n<div class="custom-html">\n<h2>This is an HTML heading inside Markdown</h2>\n<p>This is a paragraph with custom styling.</p>\n</div>\n\n- Markdown list item 1\n\n- Markdown list item 2\n`,
+			content: `
+## My Content
+
+<p style="color: red;">This text should not be red.</p>
+
+<p><strong>Strong text with <em>emphasis</em> and a <span class="custom-class">custom class</span>.</strong></p>
+
+<table>
+  <thead style="background-color: blue;">
+    <tr>
+      <th>Header 1</th>
+      <th>Header 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Data 1</td>
+      <td>Data 2</td>
+    </tr>
+    <tr>
+      <td>Data 3</td>
+      <td>Data 4</td>
+    </tr>
+  </tbody>
+</table>
+`,
 
 			time: {
 				createdAt: new Date(),
