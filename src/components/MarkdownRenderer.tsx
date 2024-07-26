@@ -1,6 +1,7 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
+import DOMPurify from "dompurify";
 
 interface MarkdownRendererProps {
 	className?: string;
@@ -8,9 +9,14 @@ interface MarkdownRendererProps {
 }
 
 const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ className, content }) => {
+	const cleanHTML = DOMPurify.sanitize(content, {
+		FORBID_TAGS: ["style"],
+		FORBID_ATTR: ["style", "class", "id"],
+	});
+
 	return (
 		<ReactMarkdown className={className + ` markdown`} rehypePlugins={[rehypeRaw]}>
-			{content}
+			{cleanHTML}
 		</ReactMarkdown>
 	);
 };

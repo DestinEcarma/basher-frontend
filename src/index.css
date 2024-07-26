@@ -10,19 +10,19 @@
 	}
 	.markdown {
 		h1 {
-			@apply text-3xl font-bold mt-6 mb-4;
+			@apply text-3xl font-bold mb-4;
 		}
 		h2 {
-			@apply text-2xl font-semibold mt-5 mb-3;
+			@apply text-2xl font-semibold mb-3;
 		}
 		h3 {
-			@apply text-xl font-medium mt-4 mb-2;
+			@apply text-xl font-medium mb-2;
 		}
 		h4 {
-			@apply text-lg font-medium mt-3 mb-1.5;
+			@apply text-lg font-medium mb-1.5;
 		}
 		h5 {
-			@apply text-base font-medium mt-2 mb-1;
+			@apply text-base font-medium mb-1;
 		}
 		p {
 			@apply mb-4;
