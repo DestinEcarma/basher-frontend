@@ -9,7 +9,7 @@ interface TopicButtonProps {
 
 const TopicButton: React.FC<TopicButtonProps> = ({ Icon, onClick, count, status = false }) => {
 	return (
-		<div className="flex items-center gap-1 hover:cursor-pointer select-none" onClick={onClick}>
+		<div className="flex items-center gap-1 hover:cursor-pointer px-2 rounded-md hover:bg-gray-100 duration-200 select-none" onClick={onClick}>
 			<Icon color={status ? "#00A3FF" : "#808080"} />
 			<p className={status ? "text-[#00A3FF]" : "text-[#808080]"}>{count}</p>
 		</div>

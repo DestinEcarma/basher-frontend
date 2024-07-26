@@ -31,12 +31,12 @@ const TopicIcons: React.FC = () => {
 
 	return (
 		<div className="flex w-full justify-between items-end">
-			<div className="flex gap-4">
+			<div className="flex gap-1">
 				<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
 				<TopicButton Icon={BiComment} onClick={addComment} count={comments} />
 				<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} />
 			</div>
-			<div className="flex text-[#808080] items-center select-none hover:cursor-pointer">
+			<div className="flex text-[#808080] items-center px-2 py-1 rounded-lg hover:bg-gray-100 duration-200 select-none hover:cursor-pointer">
 				<LuReply color="#808080" className="size-7" />
 				<p>Reply</p>
 			</div>

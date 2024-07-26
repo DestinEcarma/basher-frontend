@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { BiLike, BiComment, BiLinkAlt } from "react-icons/bi";
+import { BiLike, BiLinkAlt } from "react-icons/bi";
+import { FaChevronDown } from "react-icons/fa";
 import { LuReply } from "react-icons/lu";
 import TopicButton from "./TopicButton";
+import ReplyButton from "./ReplyButton";
 
 const ReplyIcons: React.FC = () => {
 	const [likes, setLikes] = useState<number>(0);
@@ -32,12 +34,12 @@ const ReplyIcons: React.FC = () => {
 	return (
 		<div className="flex w-full justify-between items-end">
 			<div>
-				<TopicButton Icon={BiComment} onClick={addComment} count={comments} />
+				<ReplyButton Icon={FaChevronDown} onClick={addComment} count={comments} />
 			</div>
-			<div className="flex gap-4 text-[#808080] items-center select-none hover:cursor-pointer">
+			<div className="flex gap-1 text-[#808080] items-center select-none hover:cursor-pointer">
 				<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
 				<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} />
-				<div className="flex flex-row items-center">
+				<div className="flex flex-row items-center px-2 py-1 rounded-lg hover:bg-gray-100 duration-200">
 					<LuReply color="#808080" className="size-7" />
 					<span>Reply</span>
 				</div>
