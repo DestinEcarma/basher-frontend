@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Logo from "../components/Logo";
-import TopicContainer from "../features/topic/components/TopicContainer";
-import ReplyContainer from "../features/topic/components/ReplyContainer";
+import TopicContainer from "../features/Topic/components/TopicContainer";
+import ReplyContainer from "../features/Topic/components/ReplyContainer";
 import { Topic as TopicProps, Reply as ReplyProps } from "../utils/sample-data";
 import { getTopic, getReplies } from "../services/api";
 
@@ -10,6 +10,7 @@ const Topic = () => {
 	const { id } = useParams<{ id: string }>();
 	const [topic, setTopic] = useState<TopicProps | undefined>(undefined);
 	const [replies, setReplies] = useState<ReplyProps[] | undefined>(undefined);
+
 	const hasLoaded = useRef<boolean>(false);
 
 	const defaultTopic: TopicProps = {
@@ -48,7 +49,7 @@ const Topic = () => {
 	}, [id]);
 
 	return (
-		<div className="bg-[#F6F6F9] w-full min-h-screen pt-11">
+		<div className="bg-[#F6F6F9] w-full min-h-screen py-11">
 			<Logo />
 			<TopicContainer topic={topic || defaultTopic} />
 			{replies &&

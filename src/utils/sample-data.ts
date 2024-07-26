@@ -69,7 +69,7 @@ export const Tables: TablesType = {
 			id: "2",
 			author: "2",
 			title: "Hello World",
-			content: "## Lorem Ipsum\nIstaka n word",
+			content: "## Lorem Ipsum\nIstaka n word\n\n```This is code```",
 			time: {
 				createdAt: new Date(),
 				updatedAt: new Date(),
