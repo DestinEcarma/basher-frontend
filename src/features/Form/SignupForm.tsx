@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Input from "../../components/Input";
 import FormContainer from "../../components/FormContainer";
+import { AiOutlineMail, AiOutlineLock } from "react-icons/ai";
 import { Signup } from "../../services/api"; // Adjust the path as necessary
 
 const SignupForm: React.FC = () => {
@@ -37,6 +38,7 @@ const SignupForm: React.FC = () => {
 					placeholder="Email"
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
+					icon={<AiOutlineMail />}
 				/>
 				<Input
 					id="password"
@@ -44,6 +46,7 @@ const SignupForm: React.FC = () => {
 					placeholder="Password"
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
+					icon={<AiOutlineLock />}
 				/>
 				<Input
 					id="confirmPassword"
@@ -51,6 +54,7 @@ const SignupForm: React.FC = () => {
 					placeholder="Confirm Password"
 					value={confirmPassword}
 					onChange={(e) => setConfirmPassword(e.target.value)}
+					icon={<AiOutlineLock />}
 				/>
 				{error && <p className="text-red-500 text-center">{error}</p>}
 				<div className="flex items-center justify-between">
