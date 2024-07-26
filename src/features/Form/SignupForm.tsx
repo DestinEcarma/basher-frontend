@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Input from "../../components/Input";
 import FormContainer from "../../components/FormContainer";
-import { AiOutlineMail, AiOutlineLock } from "react-icons/ai";
+import { MdAlternateEmail, MdLockOutline } from "react-icons/md";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
 import { Signup } from "../../services/api"; // Adjust the path as necessary
@@ -42,7 +42,7 @@ const SignupForm: React.FC = () => {
 					placeholder="Email"
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
-					icon={<AiOutlineMail />}
+					icon={<MdAlternateEmail />}
 				/>
 				<div className="relative mb-4">
 					<Input
@@ -57,7 +57,7 @@ const SignupForm: React.FC = () => {
 								setShowPassword(false); // Reset password visibility to false if input is empty
 							}
 						}}
-						icon={<AiOutlineLock />}
+						icon={<MdLockOutline />}
 					/>
 					{password && (
 						<button
@@ -82,7 +82,7 @@ const SignupForm: React.FC = () => {
 								setShowConfirmPassword(false); // Reset password visibility to false if input is empty
 							}
 						}}
-						icon={<AiOutlineLock />}
+						icon={<MdLockOutline />}
 					/>
 					{confirmPassword && (
 						<button
