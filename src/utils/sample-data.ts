@@ -59,7 +59,7 @@ export const Tables: TablesType = {
 			title: "I was molested by sir godwin...",
 
 			content:
-				"Est asperiores fugiat At sunt voluptas rem laboriosam eligendi. Cum consequatur nobis ut dolorum suscipit qui illum  praesentium eos molestiae odit ut pariatur voluptas? Est asperiores fugiat At sunt voluptas rem laboriosam eligendi. Cum consequatur nobis ut dolorum suscipit qui illum  praesentium eos molestiae odit ut pariatur voluptas?",
+				"## I hate...\nEst asperiores fugiat At sunt voluptas rem laboriosam eligendi. Cum consequatur nobis ut dolorum suscipit qui illum  praesentium eos molestiae odit ut pariatur voluptas? Est asperiores fugiat At sunt voluptas rem laboriosam eligendi. Cum consequatur nobis ut dolorum suscipit qui illum  praesentium eos molestiae odit ut pariatur voluptas.\n\n[Facebook](https:facebook.com)\n\n - Meow\n<ol><li>nga</li><li>grrr</li></ol>",
 			time: {
 				createdAt: new Date(),
 				updatedAt: new Date(),
@@ -69,7 +69,54 @@ export const Tables: TablesType = {
 			id: "2",
 			author: "2",
 			title: "Hello World",
-			content: "Lorem Ipsum",
+			content: "## Lorem Ipsum\nIstaka n word",
+			time: {
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			},
+		},
+		{
+			id: "3",
+			author: "3",
+			title: "Hello World",
+			content: `\n# My Markdown Document\nHere's a paragraph in Markdown.\n<div class="custom-html">\n<h2>This is an HTML heading inside Markdown</h2>\n<p>This is a paragraph with custom styling.</p>\n</div>\n\n- Markdown list item 1\n\n- Markdown list item 2\n`,
+
+			time: {
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			},
+		},
+		{
+			id: "4",
+			author: "4",
+			title: "Hello World",
+			content: `
+## My Content
+
+<p style="color: red;">This text should not be red.</p>
+
+<p><strong>Strong text with <em>emphasis</em> and a <span class="custom-class">custom class</span>.</strong></p>
+
+<table>
+  <thead style="background-color: blue;">
+    <tr>
+      <th>Header 1</th>
+      <th>Header 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Data 1</td>
+      <td>Data 2</td>
+    </tr>
+    <tr>
+      <td>Data 3</td>
+      <td>Data 4</td>
+    </tr>
+  </tbody>
+</table>
+`,
+
 			time: {
 				createdAt: new Date(),
 				updatedAt: new Date(),
@@ -92,7 +139,7 @@ export const Tables: TablesType = {
 		{
 			id: "2",
 			author: "2",
-			content: "YAH I HATE SIR MONERATE",
+			content: "## YAH I HATE SIR MONERATE",
 			replyTo: "1",
 			time: {
 				createdAt: new Date(),
