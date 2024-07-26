@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
 	};
 
 	return (
-		<FormContainer title="Sign In">
+		<FormContainer title="Log In">
 			<form onSubmit={handleSubmit}>
 				<Input
 					id="email"
@@ -58,7 +58,7 @@ const LoginForm: React.FC = () => {
 						type="submit"
 						className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 					>
-						Sign In
+						Log In
 					</button>
 				</div>
 				<div className="text-center mt-4">
