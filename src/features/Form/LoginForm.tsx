@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Input from "../../components/Input";
 import FormContainer from "../../components/FormContainer";
-import { AiOutlineMail, AiOutlineLock } from "react-icons/ai";
+import { MdAlternateEmail, MdLockOutline } from "react-icons/md";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
 import { Login } from "../../services/api"; // Adjust the path as necessary
@@ -28,15 +28,15 @@ const LoginForm: React.FC = () => {
 	};
 
 	return (
-		<FormContainer title="Log In">
+		<FormContainer title="Login">
 			<form onSubmit={handleSubmit}>
 				<Input
 					id="email"
 					type="email"
-					placeholder="Enter your Email"
+					placeholder="Email"
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
-					icon={<AiOutlineMail />}
+					icon={<MdAlternateEmail />}
 				/>
 				<div className="relative mb-4">
 					<Input
@@ -51,7 +51,7 @@ const LoginForm: React.FC = () => {
 								setShowPassword(false); // Reset password visibility to false if input is empty
 							}
 						}}
-						icon={<AiOutlineLock />}
+						icon={<MdLockOutline />}
 					/>
 					{password && (
 						<button
@@ -78,7 +78,7 @@ const LoginForm: React.FC = () => {
 						type="submit"
 						className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
 					>
-						Log In
+						Login
 					</button>
 				</div>
 				<div className="text-center mt-4">
@@ -95,4 +95,3 @@ const LoginForm: React.FC = () => {
 };
 
 export default LoginForm;
-//FIXED
