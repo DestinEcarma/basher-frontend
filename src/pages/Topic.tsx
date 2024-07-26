@@ -10,7 +10,7 @@ const Topic = () => {
 	}, [id]);
 
 	return (
-		<div className="bg-[#F6F6F9] w-full min-h-screen">
+		<div className="bg-[#F6F6F9] w-full min-h-screen pt-11">
 			<Logo />
 			<TopicContainer />
 		</div>
