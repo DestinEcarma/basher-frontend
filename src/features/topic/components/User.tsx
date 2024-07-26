@@ -7,7 +7,7 @@ interface UserProps {
 
 const User: React.FC<UserProps> = ({ id, isOP }) => {
 	return (
-		<div className="flex text-xs items-center gap-1 leading-none">
+		<div className="flex text-xs items-center gap-1 leading-none select-none">
 			<h1 className="bg-accent text-white rounded-full px-2 py-1 flex items-center justify-center">
 				Anonymous #{id}
 			</h1>

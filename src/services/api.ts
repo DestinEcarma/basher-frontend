@@ -1,5 +1,5 @@
 // import axios from 'axios'
-import { Tables } from "../utils/sample-data";
+import { Topic as TopicProps, Reply as ReplyProps, Tables } from "../utils/sample-data";
 
 // const USER_PATH = '/user';
 
@@ -21,25 +21,34 @@ import { Tables } from "../utils/sample-data";
 // }
 
 /* TEMPORARY FUNCTIONS */
-const { users } = Tables;
+const { Users, Topics, Replies } = Tables;
 
-export function Login(email: string, password: string) {
-	const emailIndex = users.findIndex((data) => data.email === email);
+export function Login(email: string, password: string): boolean {
+	const emailIndex = Users.findIndex((data) => data.email === email);
 
-	if (emailIndex === -1 || users[emailIndex].password !== password) {
+	if (emailIndex === -1 || Users[emailIndex].password !== password) {
 		return false;
 	}
 
 	return true;
 }
 
-export function Signup(email: string, password: string) {
-	const emailIndex = users.findIndex((data) => data.email === email);
+export function Signup(email: string, password: string): boolean {
+	const emailIndex = Users.findIndex((data) => data.email === email);
 	console.log(password);
 
 	return emailIndex === -1;
 }
 
-export function Logout() {
+export function Logout(): boolean {
 	return true;
+}
+
+export function getTopic(id: string): TopicProps | undefined {
+	return Topics.find((data) => data.id === id);
+}
+
+export function getReplies(id: string): ReplyProps[] | undefined {
+	//returns replies to that topic/post @param id of post
+	return Replies.filter((data) => data.replyTo === id);
 }
