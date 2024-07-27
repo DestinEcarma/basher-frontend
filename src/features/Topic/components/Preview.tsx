@@ -7,7 +7,7 @@ interface PreviewProps {
 
 const Preview: React.FC<PreviewProps> = ({ preview }) => {
 	return (
-		<div className="w-full">
+		<div className="w-full max-h-[85vh] overflow-y-scroll">
 			<h1 className="text-gray-700 font-medium select-none">Preview:</h1>
 			<div>
 				<MarkdownRenderer content={preview} />
