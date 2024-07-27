@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Topic from "./pages/Topic";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import ForumPage from "./pages/ForumPage";
 
 const App: React.FC = () => {
 	return (
@@ -12,7 +13,7 @@ const App: React.FC = () => {
 					<Route path="/" element={<div>hello</div>} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignupPage />} />
-					<Route path="/forum" element={<div>Forum</div>} />
+					<Route path="/forum" element={<ForumPage />} />
 					<Route path="/topic/:id" element={<Topic />} />
 				</Routes>
 			</Suspense>
