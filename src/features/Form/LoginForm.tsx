@@ -4,23 +4,34 @@ import FormContainer from "../../components/FormContainer";
 import { MdAlternateEmail, MdLockOutline } from "react-icons/md";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
-import { Login } from "../../services/api"; // Adjust the path as necessary
+import { Login, LoginResults } from "./services/Login"; // Adjust the path as necessary
 
 const LoginForm: React.FC = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [rememberMe, setRememberMe] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
-			const response = await Login(email, password);
-			if (response === false) {
-				setError("Invalid email or password");
-			} else {
-				// Handle successful login (e.g., redirect or update state)
-				console.log("Login successful");
+			const response = await Login(email, password, rememberMe);
+			switch (response) {
+				case LoginResults.EMAIL_NOT_FOUND:
+				case LoginResults.INVALID_PASSWORD:
+					setError("Invalid Login Attempt");
+					return;
+				case LoginResults.BAD_REQUEST:
+					setError("Bad Request");
+					return;
+				case LoginResults.INTERNAL_SERVER_ERROR:
+					setError("Internal Server Error");
+					return;
+				case LoginResults.SUCCESS:
+					break;
+				default:
+					return;
 			}
 		} catch (error) {
 			setError("An error occurred during login");
@@ -66,7 +77,13 @@ const LoginForm: React.FC = () => {
 				{error && <p className="text-red-500 text-center">{error}</p>}
 				<div className="flex items-center justify-between mb-4">
 					<label className="block text-sm text-gray-700">
-						<input type="checkbox" className="mr-2 leading-tight" />
+						<input
+							id="rememberMe"
+							type="checkbox"
+							className="mr-2 leading-tight"
+							checked={rememberMe}
+							onChange={(e) => setRememberMe(e.target.checked)}
+						/>
 						Remember me
 					</label>
 					<a href="/forgot-password" className="text-sm text-blue-500 hover:text-blue-700">

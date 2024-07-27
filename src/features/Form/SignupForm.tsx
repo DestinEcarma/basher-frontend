@@ -4,7 +4,7 @@ import FormContainer from "../../components/FormContainer";
 import { MdAlternateEmail, MdLockOutline } from "react-icons/md";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
-import { SignUpResults, Signup } from "../SignUp/services/SignUp"; // Adjust the path as necessary
+import { SignUpResults, Signup } from "./services/SignUp"; // Adjust the path as necessary
 
 const SignupForm: React.FC = () => {
 	const [email, setEmail] = useState("");
@@ -22,13 +22,23 @@ const SignupForm: React.FC = () => {
 		}
 		try {
 			const response = await Signup(email, password);
-			if (response === SignUpResults.EMAIL_TAKEN) {
-				console.log(response);
-				setError("Email is already in use");
-			} else {
-				// Handle successful signup (e.g., redirect or update state)
-				console.log("Signup successful");
+			switch (response) {
+				case SignUpResults.EMAIL_TAKEN:
+					setError("Email is already in use");
+					return;
+				case SignUpResults.BAD_REQUEST:
+					setError("Bad Request");
+					return;
+				case SignUpResults.INTERNAL_SERVER_ERROR:
+					setError("Internal Server Error");
+					return;
+				case SignUpResults.SUCCESS:
+					break;
+				default:
+					return;
 			}
+
+			//SignUp Result Code here...
 		} catch (error) {
 			console.log(error);
 			setError("An error occurred during signup");
