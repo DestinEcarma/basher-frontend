@@ -1,26 +1,23 @@
-// import axios from 'axios'
+import axios from "axios";
 import { Topic as TopicProps, Reply as ReplyProps, Tables } from "../utils/sample-data";
 
-// const USER_PATH = '/user';
+export const USER_PATH = "/user";
+export const GRAPHQL_PATH = "/graphql";
 
-// const API = axios.create({
-// 	withCredentials: true,
-// 	baseURL: !process.env.NODE_ENV || process.env.NODE_ENV === "development" ? "http://localhost:5173/api" : "/api"
-// })
+export const API = axios.create({
+	withCredentials: true,
+	baseURL: "http://10.147.18.25:3000",
+});
 
 // export async function Login(username: string, password: string) {
 // 	return API.post(`${USER_PATH}/login`, { username, password });
-// }
-
-// export async function Signup(username: string, password: string) {
-// 	return API.post(`${USER_PATH}/signup`, { username, password });
 // }
 
 // export async function Logout() {
 // 	return API.delete(`${USER_PATH}/delete`);
 // }
 
-/* TEMPORARY FUNCTIONS */
+// /* TEMPORARY FUNCTIONS */
 const { Users, Topics, Replies } = Tables;
 
 export function Login(email: string, password: string): boolean {
