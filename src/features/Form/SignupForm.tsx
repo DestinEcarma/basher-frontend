@@ -4,7 +4,7 @@ import FormContainer from "../../components/FormContainer";
 import { MdAlternateEmail, MdLockOutline } from "react-icons/md";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
-import { SignUpResults, Signup } from "./services/SignUp"; // Adjust the path as necessary
+import { SignUpResults, signup } from "./services/signup"; // Adjust the path as necessary
 
 const SignupForm: React.FC = () => {
 	const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ const SignupForm: React.FC = () => {
 			return;
 		}
 		try {
-			const response = await Signup(email, password);
+			const response = await signup(email, password);
 			switch (response) {
 				case SignUpResults.EMAIL_TAKEN:
 					setError("Email is already in use");

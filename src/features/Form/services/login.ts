@@ -8,7 +8,7 @@ export enum LoginResults {
 	INTERNAL_SERVER_ERROR,
 }
 
-export async function Login(email: string, password: string, rememberMe: boolean): Promise<LoginResults | void> {
+export async function login(email: string, password: string, rememberMe: boolean): Promise<LoginResults | void> {
 	const LOGIN_QUERY = `
 		mutation ($input: LoginInput!) {
 			user {
