@@ -184,6 +184,18 @@ export const Tables: TablesType = {
 						"Aut omnis veritatis eos aliquid aliquid eum beatae assumenda rem consequuntur deserunt est quia nobis est galisum vitae! Est culpa magnam sit vitae facere qui unde recusandae sed voluptatem veritatis qui perspiciatis corporis. Id itaque dolores nam dignissimos delectus ad dolore praesentium et quia deleniti aut dolor minima in illo autem et nulla Quis.",
 					timestamp: new Date(),
 				},
+				{
+					author: "3",
+					content:
+						"Aut omnis veritatis eos aliquid aliquid eum beatae assumenda rem consequuntur deserunt est quia nobis est galisum vitae! Est culpa magnam sit vitae facere qui unde recusandae sed voluptatem veritatis qui perspiciatis corporis. Id itaque dolores nam dignissimos delectus ad dolore praesentium et quia deleniti aut dolor minima in illo autem et nulla Quis.",
+					timestamp: new Date(),
+				},
+				{
+					author: "4",
+					content:
+						"Aut omnis veritatis eos aliquid aliquid eum beatae assumenda rem consequuntur deserunt est quia nobis est galisum vitae! Est culpa magnam sit vitae facere qui unde recusandae sed voluptatem veritatis qui perspiciatis corporis. Id itaque dolores nam dignissimos delectus ad dolore praesentium et quia deleniti aut dolor minima in illo autem et nulla Quis.",
+					timestamp: new Date(),
+				},
 			],
 		},
 	],
