@@ -39,6 +39,8 @@ const SignupForm: React.FC = () => {
 			}
 
 			//SignUp Result Code here...
+			setError(null);
+			console.log(response);
 		} catch (error) {
 			console.log(error);
 			setError("An error occurred during signup");

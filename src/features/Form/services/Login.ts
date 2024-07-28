@@ -10,8 +10,10 @@ export enum LoginResults {
 
 export async function Login(email: string, password: string, rememberMe: boolean): Promise<LoginResults | void> {
 	const LOGIN_QUERY = `
-		mutation Login($input: SignUpInput!) {
-		login(input: $input)
+		mutation ($input: LoginInput!) {
+			user {
+				login(input: $input)
+			}
 		}`;
 
 	const response = await API.post(GRAPHQL_PATH, {
@@ -27,8 +29,8 @@ export async function Login(email: string, password: string, rememberMe: boolean
 
 	const result = response.data;
 
-	if (result.data === undefined && typeof result.errors === "object") {
-		const code = result.errors.extensions.code;
+	if (result.data === null && typeof result.errors === "object") {
+		const code = result.errors[0].extensions.code;
 
 		if (code) {
 			switch (code) {
