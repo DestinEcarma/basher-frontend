@@ -27,10 +27,20 @@ export interface Reply {
 	};
 }
 
+export interface SubReply {
+	author: string;
+	content: string;
+	timestamp: Date;
+}
+
 export interface TablesType {
 	Users: User[];
 	Topics: Topic[];
 	Replies: Reply[];
+	SubReply: {
+		id: string;
+		replies: SubReply[];
+	}[];
 }
 
 export const Tables: TablesType = {
@@ -155,6 +165,38 @@ export const Tables: TablesType = {
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			},
+		},
+	],
+
+	SubReply: [
+		{
+			id: "1",
+			replies: [
+				{
+					author: "1",
+					content:
+						"Lorem ipsum dolor sit amet. Et omnis velit ut quam sapiente quo maiores soluta ut suscipit quod eos sint perspiciatis sit exercitationem error. Qui ducimus porro nam quod voluptatem qui velit eius est voluptates officiis non voluptatem esse ut veniam delectus non magni debitis.",
+					timestamp: new Date(),
+				},
+				{
+					author: "2",
+					content:
+						"Aut omnis veritatis eos aliquid aliquid eum beatae assumenda rem consequuntur deserunt est quia nobis est galisum vitae! Est culpa magnam sit vitae facere qui unde recusandae sed voluptatem veritatis qui perspiciatis corporis. Id itaque dolores nam dignissimos delectus ad dolore praesentium et quia deleniti aut dolor minima in illo autem et nulla Quis.",
+					timestamp: new Date(),
+				},
+				{
+					author: "3",
+					content:
+						"Aut omnis veritatis eos aliquid aliquid eum beatae assumenda rem consequuntur deserunt est quia nobis est galisum vitae! Est culpa magnam sit vitae facere qui unde recusandae sed voluptatem veritatis qui perspiciatis corporis. Id itaque dolores nam dignissimos delectus ad dolore praesentium et quia deleniti aut dolor minima in illo autem et nulla Quis.",
+					timestamp: new Date(),
+				},
+				{
+					author: "4",
+					content:
+						"Aut omnis veritatis eos aliquid aliquid eum beatae assumenda rem consequuntur deserunt est quia nobis est galisum vitae! Est culpa magnam sit vitae facere qui unde recusandae sed voluptatem veritatis qui perspiciatis corporis. Id itaque dolores nam dignissimos delectus ad dolore praesentium et quia deleniti aut dolor minima in illo autem et nulla Quis.",
+					timestamp: new Date(),
+				},
+			],
 		},
 	],
 };

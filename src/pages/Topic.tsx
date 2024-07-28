@@ -17,7 +17,6 @@ const Topic = () => {
 		id: "-1",
 		author: "-1",
 		title: "",
-
 		content: "",
 		time: {
 			createdAt: new Date(),
@@ -54,7 +53,7 @@ const Topic = () => {
 			<TopicContainer topic={topic || defaultTopic} />
 			{replies &&
 				replies.map((reply, i) => {
-					return <ReplyContainer key={i} reply={reply} index={i + 1} />;
+					return <ReplyContainer key={i} reply={reply} />;
 				})}
 		</div>
 	);
