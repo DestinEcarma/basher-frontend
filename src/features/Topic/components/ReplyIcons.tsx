@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { BiLike, BiComment, BiLinkAlt } from "react-icons/bi";
+import { BiLike, BiLinkAlt } from "react-icons/bi";
+import { FaChevronDown } from "react-icons/fa";
 import TopicButton from "./TopicButton";
 import ReplyButton from "./ReplyButton";
+import DropDownButton from "./DropDownButton";
 
 interface ReplyIconsProps {
 	openReply: React.MouseEventHandler;
@@ -36,7 +38,7 @@ const ReplyIcons: React.FC<ReplyIconsProps> = ({ openReply }) => {
 	return (
 		<div className="flex w-full justify-between items-end">
 			<div>
-				<TopicButton Icon={BiComment} onClick={addComment} count={comments} />
+				<DropDownButton Icon={FaChevronDown} onClick={addComment} count={comments} />
 			</div>
 			<div className="flex gap-4 text-[#808080] items-center select-none hover:cursor-pointer">
 				<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
