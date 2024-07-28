@@ -29,7 +29,7 @@ export async function Signup(email: string, password: string): Promise<SignUpRes
 
 	if (result.data === null && typeof result.errors === "object") {
 		const code = result.errors[0].extensions.code;
-		
+
 		if (code) {
 			switch (code) {
 				case "EMAIL_TAKEN":

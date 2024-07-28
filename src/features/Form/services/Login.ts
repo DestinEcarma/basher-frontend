@@ -29,7 +29,7 @@ export async function Login(email: string, password: string, rememberMe: boolean
 
 	const result = response.data;
 
-	if (result.data === null  && typeof result.errors === "object") {
+	if (result.data === null && typeof result.errors === "object") {
 		const code = result.errors[0].extensions.code;
 
 		if (code) {
