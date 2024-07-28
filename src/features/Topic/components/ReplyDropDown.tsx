@@ -9,8 +9,7 @@ interface ReplyDropdownProps {
 const ReplyDropdown: React.FC<ReplyDropdownProps> = ({ replies }) => {
 	return (
 		<div className="flex flex-row items-stetch lg:max-w-7xl md:max-w-3xl w-full mt-3 mb-5">
-			<div className="border-l-4 border-gray-700 w-auto ml-10 mt-3 p-3">
-			</div>
+			<div className="border-l-4 border-gray-700 w-auto ml-10 mt-3 p-3"></div>
 			<div>
 				{replies.map((subreply) => (
 					<SubReply key={subreply.author} {...subreply} />
@@ -21,3 +20,4 @@ const ReplyDropdown: React.FC<ReplyDropdownProps> = ({ replies }) => {
 };
 
 export default ReplyDropdown;
+//fix
