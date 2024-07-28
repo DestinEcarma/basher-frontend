@@ -33,6 +33,10 @@ const LoginForm: React.FC = () => {
 				default:
 					return;
 			}
+
+			// Insert Login process
+			setError(null);
+			console.log("Successful Login")
 		} catch (error) {
 			setError("An error occurred during login");
 		}

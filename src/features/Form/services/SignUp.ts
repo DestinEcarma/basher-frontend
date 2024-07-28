@@ -9,8 +9,10 @@ export enum SignUpResults {
 
 export async function Signup(email: string, password: string): Promise<SignUpResults | void> {
 	const SIGNUP_QUERY = `
-		mutation SignUp($input: SignUpInput!) {
-		signUp(input: $input)
+		mutation ($input: SignUpInput!) {
+			user {
+				signUp(input: $input)
+			}
 		}`;
 
 	const response = await API.post(`${GRAPHQL_PATH}`, {
@@ -25,8 +27,9 @@ export async function Signup(email: string, password: string): Promise<SignUpRes
 
 	const result = response.data;
 
-	if (result.data === undefined && typeof result.errors === "object") {
-		const code = result.errors.extensions.code;
+	if (result.data === null && typeof result.errors === "object") {
+		const code = result.errors[0].extensions.code;
+		
 		if (code) {
 			switch (code) {
 				case "EMAIL_TAKEN":
