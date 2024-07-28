@@ -4,7 +4,7 @@ import FormContainer from "../../components/FormContainer";
 import { MdAlternateEmail, MdLockOutline } from "react-icons/md";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
-import { Login, LoginResults } from "./services/Login"; // Adjust the path as necessary
+import { login, LoginResults } from "./services/login"; // Adjust the path as necessary
 
 const LoginForm: React.FC = () => {
 	const [email, setEmail] = useState("");
@@ -16,7 +16,7 @@ const LoginForm: React.FC = () => {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
-			const response = await Login(email, password, rememberMe);
+			const response = await login(email, password, rememberMe);
 			switch (response) {
 				case LoginResults.EMAIL_NOT_FOUND:
 				case LoginResults.INVALID_PASSWORD:
