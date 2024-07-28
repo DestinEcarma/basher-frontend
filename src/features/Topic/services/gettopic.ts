@@ -9,9 +9,9 @@ export interface TopicProps {
 		likes: number;
 		shares: number;
 		views: number;
-		reply: number;
+		replies: number;
 	};
-	content: string[];
+	content: string;
 	activity: string;
 }
 
@@ -44,7 +44,7 @@ export async function getTopic(id: string): Promise<TopicProps | null> {
 		},
 	});
 
-	const result = response.data.topic.getById;
+	const result = response.data.data.topic.getById;
 
 	if (result === null) {
 		return null;
