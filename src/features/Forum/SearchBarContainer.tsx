@@ -3,10 +3,29 @@ import { FaSearch } from "react-icons/fa";
 import SortButton from "./SortButton";
 import AddNewTopic from "./AddNewTopic";
 
-const SearchBarContainer: React.FC = () => {
-	const [sortBy, setSortBy] = useState<"new" | "top" | "unreads" | null>(null);
-	const handleSort = (type: "new" | "top" | "unreads") => {
+interface SearchBarContainerProps {
+	onSearch: (searchTerm: string) => void;
+	onSort: (type: "new" | "top" | null) => void;
+}
+
+const SearchBarContainer: React.FC<SearchBarContainerProps> = ({ onSearch, onSort }) => {
+	const [searchTerm, setSearchTerm] = useState("");
+	const [sortBy, setSortBy] = useState<"new" | "top" | null>("new");
+
+	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchTerm(e.target.value);
+		onSearch(e.target.value);
+	};
+
+	const handleSort = (type: "new" | "top") => {
 		setSortBy(type);
+		onSort(type);
+	};
+
+	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") {
+			onSearch(searchTerm);
+		}
 	};
 
 	return (
@@ -15,11 +34,13 @@ const SearchBarContainer: React.FC = () => {
 			<input
 				type="text"
 				placeholder="Search"
+				value={searchTerm}
+				onChange={handleSearch}
+				onKeyPress={handleKeyPress}
 				className="w-1/2 h-4/5 px-[10px] text-sm ml-[12px] mr-2 outline-none"
-			></input>
+			/>
 			<SortButton label="New" isActive={sortBy === "new"} onClick={() => handleSort("new")} />
 			<SortButton label="Top" isActive={sortBy === "top"} onClick={() => handleSort("top")} />
-			<SortButton label="Unreads" isActive={sortBy === "unreads"} onClick={() => handleSort("unreads")} />
 			<AddNewTopic />
 		</div>
 	);

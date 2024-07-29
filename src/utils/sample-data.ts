@@ -10,6 +10,12 @@ export interface Topic {
 	title: string;
 	tags?: string[];
 	content: string;
+	counter: {
+		likes: number;
+		views: number;
+		shares: number;
+		replies: number;
+	};
 	time: {
 		createdAt: Date;
 		updatedAt: Date;
@@ -70,6 +76,12 @@ export const Tables: TablesType = {
 
 			content:
 				"## I hate...\nEst asperiores fugiat At sunt voluptas rem laboriosam eligendi. Cum consequatur nobis ut dolorum suscipit qui illum  praesentium eos molestiae odit ut pariatur voluptas? Est asperiores fugiat At sunt voluptas rem laboriosam eligendi. Cum consequatur nobis ut dolorum suscipit qui illum  praesentium eos molestiae odit ut pariatur voluptas.\n\n[Facebook](https:facebook.com)\n\n - Meow\n<ol><li>nga</li><li>grrr</li></ol>",
+			counter: {
+				likes: 0,
+				views: 1,
+				shares: 2,
+				replies: 3,
+			},
 			time: {
 				createdAt: new Date(),
 				updatedAt: new Date(),
@@ -80,6 +92,12 @@ export const Tables: TablesType = {
 			author: "2",
 			title: "Hello World",
 			content: "## Lorem Ipsum\nIstaka n word\n\n```This is code```",
+			counter: {
+				likes: 69,
+				views: 1,
+				shares: 2,
+				replies: 3,
+			},
 			time: {
 				createdAt: new Date(),
 				updatedAt: new Date(),
@@ -91,6 +109,12 @@ export const Tables: TablesType = {
 			title: "Hello World",
 			content: `\n# My Markdown Document\nHere's a paragraph in Markdown.\n<div class="custom-html">\n<h2>This is an HTML heading inside Markdown</h2>\n<p>This is a paragraph with custom styling.</p>\n</div>\n\n- Markdown list item 1\n\n- Markdown list item 2\n`,
 
+			counter: {
+				likes: 100,
+				views: 1,
+				shares: 2,
+				replies: 3,
+			},
 			time: {
 				createdAt: new Date(),
 				updatedAt: new Date(),
@@ -127,6 +151,29 @@ export const Tables: TablesType = {
 </table>
 `,
 
+			counter: {
+				likes: 6942,
+				views: 1,
+				shares: 2,
+				replies: 69,
+			},
+			time: {
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			},
+		},
+		{
+			id: "5",
+			author: "5",
+			title: "Unsa mani bai...",
+
+			content: "Pirdi ko ganiha sa sabong",
+			counter: {
+				likes: 777,
+				views: 6,
+				shares: 7,
+				replies: 8,
+			},
 			time: {
 				createdAt: new Date(),
 				updatedAt: new Date(),
