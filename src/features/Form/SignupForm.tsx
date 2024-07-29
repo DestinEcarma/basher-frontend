@@ -19,6 +19,9 @@ const SignupForm: React.FC = () => {
 		if (password !== confirmPassword) {
 			setError("Passwords do not match");
 			return;
+		} else if (password.length < 8) {
+			setError("Password must at least be 8 characters");
+			return;
 		}
 		try {
 			const response = await signup(email, password);
@@ -108,7 +111,7 @@ const SignupForm: React.FC = () => {
 						</button>
 					)}
 				</div>
-				{error && <p className="text-red-500 text-center">{error}</p>}
+				{error && <p className="text-red-500 text-center mb-2">{error}</p>}
 				<div className="flex items-center justify-between">
 					<button
 						type="submit"

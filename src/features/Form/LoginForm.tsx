@@ -80,7 +80,7 @@ const LoginForm: React.FC = () => {
 				</div>
 				{error && <p className="text-red-500 text-center">{error}</p>}
 				<div className="flex items-center justify-between mb-4">
-					<label className="block text-sm text-gray-700">
+					<label className="flex items-center leading-none text-sm text-gray-700">
 						<input
 							id="rememberMe"
 							type="checkbox"
