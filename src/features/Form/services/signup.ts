@@ -28,10 +28,10 @@ export async function signup(email: string, password: string): Promise<SignUpRes
 	const result = response.data;
 
 	if (result.data === null && typeof result.errors === "object") {
-		const code = result.errors[0].extensions.code;
+		const reason = result.errors[0].extensions.reason;
 
-		if (code) {
-			switch (code) {
+		if (reason) {
+			switch (reason) {
 				case "EMAIL_TAKEN":
 					return SignUpResults.EMAIL_TAKEN;
 				case "BAD_REQUEST":
