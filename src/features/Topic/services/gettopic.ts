@@ -2,7 +2,7 @@ import { GRAPHQL_PATH, API } from "../../../services/api";
 
 export interface TopicProps {
 	id: string;
-	author: string;
+	// author: string;
 	title: string;
 	tags: string[];
 	counter: {
@@ -21,7 +21,7 @@ export async function getTopic(id: string): Promise<TopicProps | null> {
 				topic {
 					getById(id: $id) {
 						id
-						author
+						# author
 						title
 						tags
 						counter {

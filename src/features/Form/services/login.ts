@@ -30,10 +30,10 @@ export async function login(email: string, password: string, rememberMe: boolean
 	const result = response.data;
 
 	if (result.data === null && typeof result.errors === "object") {
-		const code = result.errors[0].extensions.code;
+		const reason = result.errors[0].extensions.reason;
 
-		if (code) {
-			switch (code) {
+		if (reason) {
+			switch (reason) {
 				case "EMAIL_TAKEN":
 					return LoginResults.EMAIL_NOT_FOUND;
 				case "INVALID_PASSWORD":
