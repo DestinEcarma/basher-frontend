@@ -77,26 +77,6 @@ const Topic = () => {
 
 	const hasLoaded = useRef<boolean>(false);
 
-	async function receiveTopic(): Promise<void> {
-		if (id) {
-			try {
-				const topicResult: TopicProps | null = await getTopic(id);
-				const repliesResult: ReplyProps[] | null = await getReplies(id);
-				if (topicResult) {
-					setTopic(topicResult);
-					setReplies(repliesResult);
-					console.log(topicResult);
-				} else {
-					window.location.href = "/";
-				}
-			} catch (e) {
-				console.error(e);
-			}
-		} else {
-			alert("No ID");
-		}
-	}
-
 	const defaultTopic: TopicProps = {
 		id: "",
 		// author: "",
@@ -106,13 +86,33 @@ const Topic = () => {
 			likes: 0,
 			shares: 0,
 			views: 0,
-			replies: 0
+			replies: 0,
 		},
 		content: "",
-		activity: ""
+		activity: "",
 	};
 
 	useEffect(() => {
+		async function receiveTopic(): Promise<void> {
+			if (id) {
+				try {
+					const topicResult: TopicProps | null = await getTopic(id);
+					const repliesResult: ReplyProps[] | null = await getReplies(id);
+					if (topicResult) {
+						setTopic(topicResult);
+						setReplies(repliesResult);
+						console.log(topicResult);
+					} else {
+						window.location.href = "/";
+					}
+				} catch (e) {
+					console.error(e);
+				}
+			} else {
+				alert("No ID");
+			}
+		}
+
 		if (!hasLoaded.current) {
 			receiveTopic();
 		}
@@ -124,7 +124,8 @@ const Topic = () => {
 		<div className="bg-[#F6F6F9] w-full min-h-screen py-11">
 			{topic && <Logo />}
 			{topic && <TopicContainer topic={topic || defaultTopic} />}
-			{topic && replies &&
+			{topic &&
+				replies &&
 				replies.map((reply, i) => {
 					return <ReplyContainer key={i} reply={reply} />;
 				})}

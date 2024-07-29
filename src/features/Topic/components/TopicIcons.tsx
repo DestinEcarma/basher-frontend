@@ -61,7 +61,7 @@ interface TopicIconsProps {
 		shares: number;
 		views: number;
 		replies: number;
-	}
+	};
 }
 
 const TopicIcons: React.FC<TopicIconsProps> = ({ openReply, counter }) => {

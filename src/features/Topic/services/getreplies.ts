@@ -39,9 +39,9 @@ export async function getReplies(topic_id: string): Promise<ReplyProps[] | null>
 		variables: {
 			input: {
 				id: topic_id,
-				offset: 1
-			}
-		}
+				offset: 1,
+			},
+		},
 	});
 
 	const result = response.data.data.reply.getFromTopic;

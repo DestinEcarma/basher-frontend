@@ -12,7 +12,7 @@ export interface SubreplyProps {
 	activity: string;
 	parent: string;
 }
-	
+
 export async function getreplies(topic_id: string): Promise<SubreplyProps[] | null> {
 	const SUBREPLY_QUERY = `
 		temp
@@ -21,16 +21,15 @@ export async function getreplies(topic_id: string): Promise<SubreplyProps[] | nu
 	const response = await API.post(GRAPHQL_PATH, {
 		query: SUBREPLY_QUERY,
 		variables: {
-			id: topic_id
-		}
+			id: topic_id,
+		},
 	});
 
 	const result = response.data;
 
-	if(result.data === null) {
+	if (result.data === null) {
 		return null;
-	}
-	else {
+	} else {
 		return result.data;
 	}
 }

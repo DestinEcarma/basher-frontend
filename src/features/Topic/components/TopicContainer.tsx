@@ -64,7 +64,7 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 				<User author={"0"} isOP={true} />
 
 				<TopicContent content={topic.content} />
-				<TopicIcons openReply={openReply} counter = {topic.counter}/>
+				<TopicIcons openReply={openReply} counter={topic.counter} />
 			</div>
 			{willReply && <ReplyInputContainer User={<User author={"0"} isOP={true} />} openReply={openReply} />}
 		</div>
