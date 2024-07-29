@@ -6,7 +6,8 @@ import DropDownButton from "./DropDownButton";
 import TopicButton from "./TopicButton";
 import ReplyButton from "./ReplyButton";
 import ReplyDropdown from "./ReplyDropDown";
-import { Reply as ReplyProps, SubReply as SubReplyProps, Tables } from "../../../utils/sample-data";
+import { SubReply as SubReplyProps, Tables } from "../../../utils/sample-data";
+import { ReplyProps } from "../services/getreplies";
 import { FaChevronDown } from "react-icons/fa";
 import { BiLike, BiLinkAlt } from "react-icons/bi";
 
@@ -63,6 +64,11 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 	const addChain = (): void => {
 		setShares((prev) => prev + 1);
 	};
+
+	useEffect(() => {
+		setLikes(reply.counter.likes);
+		setShares(reply.counter.shares);
+	}, [reply]);
 
 	return (
 		<div className="flex flex-col justify-center items-center mt-4">
