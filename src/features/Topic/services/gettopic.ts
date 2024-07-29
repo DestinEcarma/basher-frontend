@@ -21,7 +21,6 @@ export async function getTopic(id: string): Promise<TopicProps | null> {
 				topic {
 					getById(id: $id) {
 						id
-						# author
 						title
 						tags
 						counter {

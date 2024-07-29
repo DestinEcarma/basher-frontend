@@ -6,7 +6,6 @@ import DropDownButton from "./DropDownButton";
 import TopicButton from "./TopicButton";
 import ReplyButton from "./ReplyButton";
 import ReplyDropdown from "./ReplyDropDown";
-import { SubReply as SubReplyProps, Tables } from "../../../utils/sample-data";
 import { ReplyProps } from "../services/getreplies";
 import { FaChevronDown } from "react-icons/fa";
 import { BiLike, BiLinkAlt } from "react-icons/bi";
@@ -25,16 +24,23 @@ function getCurrentTime() {
 const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 	const [willReply, setWillReply] = useState(false);
 	const [showSubReplies, setShowSubReplies] = useState(false);
-	const [subReplies, setSubReplies] = useState<SubReplyProps[]>([]);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [subReplies, _setSubReplies] = useState<
+		{
+			userIndex: number;
+			content: string;
+			timestamp: Date;
+		}[]
+	>([]);
 
 	useEffect(() => {
-		setSubReplies(() => {
-			if (showSubReplies) {
-				return Tables.SubReply.filter(({ id }) => id === reply.id).map(({ replies }) => replies)[0] ?? [];
-			} else {
-				return [];
-			}
-		});
+		// setSubReplies(() => {
+		// 	if (showSubReplies) {
+		// 		return Tables.SubReply.filter(({ id }) => id === reply.id).map(({ replies }) => replies)[0] ?? [];
+		// 	} else {
+		// 		return [];
+		// 	}
+		// });
 	}, [showSubReplies, reply]);
 
 	const openReply: React.MouseEventHandler = () => {

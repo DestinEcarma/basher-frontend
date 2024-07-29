@@ -2,7 +2,7 @@ import { GRAPHQL_PATH, API } from "../../../services/api";
 
 export interface ReplyProps {
 	id: string;
-	author: string;
+	userIndex: number;
 	counter: {
 		likes: number;
 		shares: number;
@@ -19,7 +19,7 @@ export async function getReplies(topic_id: string): Promise<ReplyProps[] | null>
 			reply {
 				getFromTopic(input: $input) {
 					id
-					author
+					userIndex
 					counter {
 						likes
 						shares
@@ -39,7 +39,7 @@ export async function getReplies(topic_id: string): Promise<ReplyProps[] | null>
 		variables: {
 			input: {
 				id: topic_id,
-				offset: 1,
+				offset: 0,
 			},
 		},
 	});

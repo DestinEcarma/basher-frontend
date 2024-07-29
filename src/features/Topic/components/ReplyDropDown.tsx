@@ -1,9 +1,12 @@
 import React from "react";
 import SubReply from "./SubReply";
-import { SubReply as SubReplyProps } from "../../../utils/sample-data";
 
 interface ReplyDropdownProps {
-	replies: SubReplyProps[];
+	replies: {
+		userIndex: number;
+		content: string;
+		timestamp: Date;
+	}[];
 }
 
 const ReplyDropdown: React.FC<ReplyDropdownProps> = ({ replies }) => {
@@ -12,7 +15,7 @@ const ReplyDropdown: React.FC<ReplyDropdownProps> = ({ replies }) => {
 			<div className="border-l-4 border-gray-700 w-auto ml-10 mt-3 p-3"></div>
 			<div>
 				{replies.map((subreply) => (
-					<SubReply key={subreply.author} {...subreply} />
+					<SubReply key={subreply.userIndex} {...subreply} />
 				))}
 			</div>
 		</div>
