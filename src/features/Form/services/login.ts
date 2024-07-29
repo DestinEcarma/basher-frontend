@@ -34,7 +34,7 @@ export async function login(email: string, password: string, rememberMe: boolean
 
 		if (reason) {
 			switch (reason) {
-				case "EMAIL_TAKEN":
+				case "EMAIL_NOT_FOUND":
 					return LoginResults.EMAIL_NOT_FOUND;
 				case "INVALID_PASSWORD":
 					return LoginResults.INVALID_PASSWORD;
