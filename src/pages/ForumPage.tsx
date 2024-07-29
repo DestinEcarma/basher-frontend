@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Logo from "../components/Logo";
 import SearchBarContainer from "../features/Forum/SearchBarContainer";
 import ForumContainer from "../features/Forum/ForumContainer";
 // import { Tables, Topic } from "../utils/sample-data";
@@ -52,9 +51,6 @@ const ForumPage: React.FC = () => {
 
 	return (
 		<div className="min-h-screen bg-gray-100 flex flex-col items-center">
-			<div className="top-10">
-				<Logo />
-			</div>
 			<div>
 				<SearchBarContainer onSearch={setSearchTerm} onSort={setSortType} />
 			</div>

@@ -64,7 +64,6 @@
 // api version
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import Logo from "../components/Logo";
 import TopicContainer from "../features/Topic/components/TopicContainer";
 import ReplyContainer from "../features/Topic/components/ReplyContainer";
 import { getTopic, TopicProps } from "../features/Topic/services/gettopic";
@@ -79,7 +78,6 @@ const Topic = () => {
 
 	const defaultTopic: TopicProps = {
 		id: "",
-		// author: "",
 		title: "",
 		tags: [""],
 		counter: {
@@ -122,7 +120,6 @@ const Topic = () => {
 
 	return (
 		<div className="bg-[#F6F6F9] w-full min-h-screen py-11">
-			{topic && <Logo />}
 			{topic && <TopicContainer topic={topic || defaultTopic} />}
 			{topic &&
 				replies &&

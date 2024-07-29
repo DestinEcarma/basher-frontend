@@ -8,6 +8,7 @@
 	body {
 		@apply font-roboto;
 	}
+
 	.markdown {
 		h1 {
 			@apply text-3xl font-bold mb-4;
