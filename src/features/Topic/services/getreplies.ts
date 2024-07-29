@@ -19,7 +19,7 @@ export async function getReplies(topic_id: string): Promise<ReplyProps[] | null>
 			reply {
 				getFromTopic(input: $input) {
 					id
-					author
+					# author
 					counter {
 						likes
 						shares
