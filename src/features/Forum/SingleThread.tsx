@@ -1,8 +1,9 @@
 import React from "react";
-import { Topic } from "../../utils/sample-data";
+// import { Topic } from "../../utils/sample-data";
+import { TopicProps } from "../Topic/services/gettopic";
 
 interface SingleThreadProps {
-	topic: Topic;
+	topic: TopicProps;
 }
 
 const SingleThread: React.FC<SingleThreadProps> = ({ topic }) => {
@@ -15,11 +16,13 @@ const SingleThread: React.FC<SingleThreadProps> = ({ topic }) => {
 	return (
 		<div className="">
 			<div className="border-b border-gray-200 p-4 grid grid-cols-3 gap-1">
-				<h3 className="text-lg font-bold col-span-2">{topic.title}</h3>
+				<a href={`../topic/${topic.id}`} className="text-lg font-bold col-span-2">
+					{topic.title}
+				</a>
 				<div className="grid grid-cols-3 gap-1 text-center">
 					<span>{topic.counter.replies}</span>
 					<span>{topic.counter.likes}</span>
-					<span>{formatDate(new Date(topic.time.updatedAt))}</span>
+					<span>{formatDate(new Date(topic.activity))}</span>
 				</div>
 			</div>
 		</div>

@@ -1,12 +1,13 @@
 import React from "react";
-import { Topic } from "../../utils/sample-data";
+// import { Topic } from "../../utils/sample-data";
 import SingleThread from "./SingleThread";
+import { TopicProps } from "../Topic/services/gettopic";
 
-interface TopicProps {
-	topics: Topic[];
+interface ForumProps {
+	topics: TopicProps[] | null;
 }
 
-const ForumContainer: React.FC<TopicProps> = ({ topics }) => {
+const ForumContainer: React.FC<ForumProps> = ({ topics }) => {
 	return (
 		<div className="w-[600px] h-[500px] bg-white shadow-xl p-[10px] rounded-lg">
 			<div className="grid grid-cols-3 gap-1 p-4">
@@ -17,9 +18,7 @@ const ForumContainer: React.FC<TopicProps> = ({ topics }) => {
 					<span>Activity</span>
 				</div>
 			</div>
-			{topics.map((topic) => (
-				<SingleThread key={topic.id} topic={topic} />
-			))}
+			{topics != null && topics.map((topic) => <SingleThread key={topic.id} topic={topic} />)}
 		</div>
 	);
 };
