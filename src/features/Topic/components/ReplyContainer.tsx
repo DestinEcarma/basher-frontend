@@ -80,7 +80,7 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 		<div className="flex flex-col justify-center items-center mt-4">
 			<div className="bg-white lg:max-w-7xl md:max-w-3xl w-full shadow-lg rounded-md pt-5 px-4 pb-3">
 				<div className="flex flex-row items-center gap-3">
-					<User index={reply.userIndex} isOP={false} />
+					<User index={reply.userIndex} />
 					<p className="text-sm text-gray-400">
 						{getCurrentTime()} {/* Temporary Time */}
 					</p>
@@ -100,9 +100,7 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 				</div>
 			</div>
 			{subReplies.length > 0 && showSubReplies && <ReplyDropdown replies={subReplies} />}
-			{willReply && (
-				<ReplyInputContainer User={<User index={reply.userIndex} isOP={false} />} openReply={openReply} />
-			)}
+			{willReply && <ReplyInputContainer User={<User index={reply.userIndex} />} openReply={openReply} />}
 		</div>
 	);
 };

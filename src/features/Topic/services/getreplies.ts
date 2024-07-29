@@ -13,7 +13,7 @@ export interface ReplyProps {
 	parent?: string;
 }
 
-export async function getReplies(topic_id: string): Promise<ReplyProps[] | null> {
+export async function getReplies(topic_id: string, offset: number): Promise<ReplyProps[] | null> {
 	const REPLY_QUERY = `
 		query GetReply($input: GetInput!) {
 			reply {
@@ -39,7 +39,7 @@ export async function getReplies(topic_id: string): Promise<ReplyProps[] | null>
 		variables: {
 			input: {
 				id: topic_id,
-				offset: 0,
+				offset,
 			},
 		},
 	});

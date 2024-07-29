@@ -73,6 +73,7 @@ const Topic = () => {
 	const { id } = useParams<{ id: string }>();
 	const [topic, setTopic] = useState<TopicProps | null>(null);
 	const [replies, setReplies] = useState<ReplyProps[] | null>(null);
+	const [offSet] = useState<number>(0);
 
 	const hasLoaded = useRef<boolean>(false);
 
@@ -95,7 +96,7 @@ const Topic = () => {
 			if (id) {
 				try {
 					const topicResult: TopicProps | null = await getTopic(id);
-					const repliesResult: ReplyProps[] | null = await getReplies(id);
+					const repliesResult: ReplyProps[] | null = await getReplies(id, offSet);
 					if (topicResult) {
 						setTopic(topicResult);
 						setReplies(repliesResult);
@@ -116,10 +117,10 @@ const Topic = () => {
 		}
 
 		hasLoaded.current = true;
-	}, [id]);
+	}, [id, offSet]);
 
 	return (
-		<div className="bg-[#F6F6F9] w-full min-h-screen py-11">
+		<div className="bg-[#F6F6F9] w-full pb-11">
 			{topic && <TopicContainer topic={topic || defaultTopic} />}
 			{topic &&
 				replies &&

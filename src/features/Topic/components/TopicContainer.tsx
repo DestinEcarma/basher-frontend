@@ -61,12 +61,12 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 			<div className="bg-white lg:max-w-7xl md:max-w-3xl w-full shadow-lg rounded-md pt-5 px-4 pb-3">
 				<h1 className="font-bold text-2xl leading-none">{topic.title}</h1>
 				<Tags tags={topic.tags} />
-				<User index={"0"} isOP={true} />
+				<User index={0} />
 
 				<TopicContent content={topic.content} />
 				<TopicIcons openReply={openReply} counter={topic.counter} />
 			</div>
-			{willReply && <ReplyInputContainer User={<User index={"0"} isOP={true} />} openReply={openReply} />}
+			{willReply && <ReplyInputContainer User={<User index={0} />} openReply={openReply} />}
 		</div>
 	);
 };
