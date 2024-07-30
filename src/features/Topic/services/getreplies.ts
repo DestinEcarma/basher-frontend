@@ -15,7 +15,7 @@ export interface ReplyProps {
 
 export async function getReplies(topic_id: string, offset: number): Promise<ReplyProps[] | null> {
 	const REPLY_QUERY = `
-		query GetReply($input: GetInput!) {
+		query GetReply($input: IdoffsetInput!) {
 			reply {
 				getFromTopic(input: $input) {
 					id

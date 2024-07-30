@@ -106,7 +106,7 @@ const TopicPage: React.FC = () => {
 					}
 				} catch (e) {
 					console.error(e);
-					window.location.href = "/";
+					// window.location.href = "/";
 				}
 			} else {
 				alert("No ID");
