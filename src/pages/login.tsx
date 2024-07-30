@@ -1,17 +1,20 @@
-import React, { useState } from "react";
-import Form from "@components/form";
+import { useMutation } from "@apollo/client";
 import Button from "@components/button";
 import CheckBox from "@components/checkbox";
+import Form from "@components/form";
 import InputBox from "@components/input-box";
+import { LeftSide, RightSide } from "@components/sides";
 import useShowPassword from "@components/use-show-password";
+import { LoginError } from "@features/login/error";
+import { LOGIN } from "@graphql/mutations";
+import { GraphqlError } from "@services/graphql";
+import { EMAIL_REGEX } from "@utils/defs";
+import React, { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { CgLock } from "react-icons/cg";
 import { MdAlternateEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-import { LeftSide, RightSide } from "@components/sides";
-import { login, LoginResults } from "@features/login/api";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { EMAIL_REGEX } from "@utils/defs";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface LoginFields {
 	email: string;
@@ -22,7 +25,7 @@ interface LoginFields {
 const LoginPage: React.FC = () => {
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useShowPassword();
-	const [loading, setLoading] = useState(false);
+	const [login, { data, loading, error }] = useMutation(LOGIN);
 
 	const {
 		register,
@@ -31,44 +34,40 @@ const LoginPage: React.FC = () => {
 		formState: { errors },
 	} = useForm<LoginFields>({ defaultValues: { rememberMe: false } });
 
-	const onSubmit: SubmitHandler<LoginFields> = async ({ email, password, rememberMe }) => {
-		setLoading(true);
+	useEffect(() => {
+		if (!error) return;
 
-		try {
-			const response = await login(email, password, rememberMe);
+		error.graphQLErrors.forEach((err: GraphqlError) => {
+			console.log(err.extensions?.reason);
 
-			switch (response) {
-				case LoginResults.EMAIL_NOT_FOUND:
+			switch (err.extensions?.reason) {
+				case LoginError.EMAIL_NOT_FOUND:
 					setError("email", { message: "Email not found" });
-					setLoading(false);
 					return;
-				case LoginResults.INVALID_PASSWORD:
+				case LoginError.INVALID_PASSWORD:
 					setError("password", { message: "Invalid password" });
-					setLoading(false);
 					return;
-				case LoginResults.BAD_REQUEST:
+				case LoginError.BAD_REQUEST:
 					alert("Bad Request");
-					setLoading(false);
 					return;
-				case LoginResults.INTERNAL_SERVER_ERROR:
+				case LoginError.INTERNAL_SERVER_ERROR:
 					alert("Internal Server Error");
-					setLoading(false);
 					return;
-				case LoginResults.SUCCESS:
-					break;
 				default:
 					alert("Unknown error");
-					setLoading(false);
 					return;
 			}
+		});
+	}, [error, setError]);
 
-			navigate("/forum");
-		} catch (error) {
-			alert("An error occurred during login");
-			console.error(error);
-		} finally {
-			setLoading(false);
-		}
+	useEffect(() => {
+		if (!data) return;
+
+		navigate("/");
+	}, [data, navigate]);
+
+	const onSubmit: SubmitHandler<LoginFields> = ({ email, password, rememberMe }) => {
+		login({ variables: { input: { email, password, rememberMe } } });
 	};
 
 	return (
