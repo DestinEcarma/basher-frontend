@@ -16,13 +16,13 @@ const SingleThread: React.FC<SingleThreadProps> = ({ topic }) => {
 	};
 	return (
 		<div className="">
-			<div className="border-b border-gray-200 grid grid-cols-3 gap-1 relative">
+			<div className="relative grid grid-cols-3 gap-1 border-b border-gray-200">
 				<a href={`../topic/${topic.id}`} className="col-span-2 text-lg font-bold">
 					{topic.title}
 				</a>
 				<TopicTag />
-			<div/>
-				<div className="grid grid-cols-3 gap-1 text-center font-bold text-[12px] p-4">
+				<div />
+				<div className="grid grid-cols-3 gap-1 p-4 text-center text-[12px] font-bold">
 					<span>{topic.counter.replies}</span>
 					<span>{topic.counter.likes}</span>
 					<span>{formatDate(new Date(topic.activity))}</span>

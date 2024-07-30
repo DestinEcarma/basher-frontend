@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react";
 
 const TopicTag = () => {
-  return (
-	<div className="mt-auto text-[#0096FB] text-xs mb-1" >
-	<a href="#">#Tag</a>
-	</div>
-  )
-}
+	return (
+		<div className="mb-1 mt-auto text-xs text-[#0096FB]">
+			<a href="#">#Tag</a>
+		</div>
+	);
+};
 
 export default TopicTag;
 
