@@ -17,7 +17,7 @@ Some examples of services that might be included in this directory are:
 Here is an example of a simple service that fetches user data from an external API:
 
 ```typescript
-// services/userService.ts
+// services/user.ts
 
 import axios from 'axios';
 

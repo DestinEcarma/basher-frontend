@@ -17,7 +17,7 @@ Some examples of components that might be included in this directory are:
 Here is an example of a simple button component written in TSX:
 
 ```tsx
-// components/Button.tsx
+// components/button.tsx
 
 import React from 'react';
 

@@ -17,7 +17,7 @@ Some examples of utility functions that might be included in this directory are:
 Here is an example of a simple utility function that capitalizes the first letter of a string:
 
 ```ts
-// utils/stringUtils.js
+// utils/helper.jss
 
 /**
  * Pads a number with leading zeros until it reaches the specified minimum length.

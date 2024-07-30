@@ -6,18 +6,18 @@ This directory contains the main pages of the React application, written in Type
 
 Some examples of pages that might be included in this directory are:
 
-- **HomePage**: The main landing page of the application.
-- **AboutPage**: A page that provides information about the application or company.
-- **ContactPage**: A page with a contact form or contact information.
-- **ProfilePage**: A user profile page.
-- **DashboardPage**: A page that displays user-specific data and actions.
+- **Home**: The main landing page of the application.
+- **About**: A page that provides information about the application or company.
+- **Contact**: A page with a contact form or contact information.
+- **Profile**: A user profile page.
+- **Dashboard**: A page that displays user-specific data and actions.
 
 ## Example Page
 
 Here is an example of a simple home page component written in TSX:
 
 ```tsx
-// pages/HomePage.tsx
+// pages/home.tsx
 
 import React from 'react';
 import Button from '../components/Button';

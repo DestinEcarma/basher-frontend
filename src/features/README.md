@@ -20,19 +20,19 @@ Here is an example of a simple feature module for a "Profile" feature:
 features/
 └── profile/
   ├── components/
-  │ └── ProfileCard.tsx
+  │ └── profile-card.tsx
   ├── utils/
-  │ └── formatDate.ts
+  │ └── format-date.ts
   ├── services/
-  │ └── profileService.ts
+  │ └── profile-service.ts
 ```
 
 ### Example Files
 
-#### ProfileCard.tsx
+#### profile-card.tsx
 
 ```tsx
-// features/profile/components/ProfileCard.tsx
+// features/profile/components/profile-card.tsx
 
 import React from 'react';
 
@@ -53,10 +53,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ name, email }) => {
 export default ProfileCard;
 ```
 
-#### formatDate.ts
+#### format-date.ts
 
 ```tsx
-// features/profile/utils/formatDate.ts
+// features/profile/utils/format-date.ts
 
 /**
  * Formats a date string into a more readable format.
@@ -69,10 +69,10 @@ export function formatDate(dateStr: string): string {
 }
 ```
 
-#### profileService.ts
+#### profile.ts
 
 ```tsx
-// features/profile/services/profileService.ts
+// features/profile/services/profile.ts
 
 import axios from 'axios';
 
