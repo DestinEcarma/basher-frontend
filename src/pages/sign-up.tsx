@@ -5,40 +5,34 @@ import InputBox from "@components/input-box";
 import useShowPassword from "@components/use-show-password";
 import { CgLock } from "react-icons/cg";
 import { MdAlternateEmail } from "react-icons/md";
-import { LeftSide, RightSide } from "@components/sides";
 import { Link, useNavigate } from "react-router-dom";
-import { signup as signUp, SignUpResults } from "@features/Form/services/signup";
+import { LeftSide, RightSide } from "@components/sides";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { signUp, SignUpResults } from "@features/Form/services/signup";
+import { EMAIL_REGEX } from "@utils/defs";
+
+interface SignUpFields {
+	email: string;
+	password: string;
+	confirmPassword: string;
+}
 
 const SignUpPage: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [showPassword, setShowPassword] = useShowPassword();
-	const [{ emailError, passwordError, confirmPasswordError }, setError] = React.useState({
-		emailError: "",
-		passwordError: "",
-		confirmPasswordError: "",
-	});
-
-	const [{ email, password, confirmPassword }, setForm] = React.useState({
-		email: "",
-		password: "",
-		confirmPassword: "",
-	});
+	const {
+		register,
+		setError,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<SignUpFields>();
 
 	const passwordType = showPassword ? "text" : "password";
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-
-		setForm((prev) => ({ ...prev, [name]: value }));
-		setError((prev) => ({ ...prev, [`${name}Error`]: "" }));
-	};
-
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
-
+	const onSubmit: SubmitHandler<SignUpFields> = async ({ email, password, confirmPassword }) => {
 		if (password !== confirmPassword) {
-			setError((prev) => ({ ...prev, confirmPasswordError: "Passwords do not match" }));
+			setError("confirmPassword", { message: "Password does not match" });
 			return;
 		}
 
@@ -46,7 +40,7 @@ const SignUpPage: React.FC = () => {
 			const response = await signUp(email, password);
 			switch (response) {
 				case SignUpResults.EMAIL_TAKEN:
-					setError((prev) => ({ ...prev, emailError: "Email is already taken" }));
+					setError("email", { message: "Email is already taken" });
 					return;
 				case SignUpResults.BAD_REQUEST:
 					alert("Bad Request");
@@ -68,16 +62,19 @@ const SignUpPage: React.FC = () => {
 	};
 
 	return (
-		<Form onSubmit={handleSubmit} size="w450px">
+		<Form onSubmit={handleSubmit(onSubmit)} size="w450px">
 			<h1 className="mb-4 text-center text-4xl font-bold">Sign Up</h1>
 			<div className="flex flex-col gap-4">
 				<InputBox
 					label="Email"
-					name="email"
-					type="email"
-					value={email}
-					error={emailError}
-					onChange={handleChange}
+					error={errors.email?.message}
+					{...register("email", {
+						required: "Email is required",
+						pattern: {
+							value: EMAIL_REGEX,
+							message: "Field must be a valid email",
+						},
+					})}
 				>
 					<LeftSide>
 						<MdAlternateEmail className="text-lg" />
@@ -85,11 +82,22 @@ const SignUpPage: React.FC = () => {
 				</InputBox>
 				<InputBox
 					label="Password"
-					name="password"
-					value={password}
 					type={passwordType}
-					error={passwordError}
-					onChange={handleChange}
+					error={errors.password?.message}
+					{...register("password", {
+						required: "Password is required",
+						minLength: {
+							value: 8,
+							message: "Password must be at least 8 characters",
+						},
+						validate: (value) => {
+							if (value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
+								return true;
+							}
+
+							return "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+						},
+					})}
 				>
 					<LeftSide>
 						<CgLock className="text-lg" />
@@ -98,11 +106,11 @@ const SignUpPage: React.FC = () => {
 				</InputBox>
 				<InputBox
 					label="Confirm Password"
-					name="confirmPassword"
 					type={passwordType}
-					value={confirmPassword}
-					error={confirmPasswordError}
-					onChange={handleChange}
+					error={errors.confirmPassword?.message}
+					{...register("confirmPassword", {
+						required: "Confirm Password is required",
+					})}
 				>
 					<LeftSide>
 						<CgLock className="text-lg" />
