@@ -7,7 +7,7 @@ export enum SignUpResults {
 	INTERNAL_SERVER_ERROR,
 }
 
-export async function signup(email: string, password: string): Promise<SignUpResults | void> {
+export async function signUp(email: string, password: string): Promise<SignUpResults | void> {
 	const SIGNUP_QUERY = `
 		mutation ($input: SignUpInput!) {
 			user {
