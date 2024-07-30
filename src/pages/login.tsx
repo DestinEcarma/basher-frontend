@@ -60,7 +60,7 @@ const LoginPage: React.FC = () => {
 	useEffect(() => {
 		if (!data) return;
 
-		navigate("/");
+		navigate("/forum");
 	}, [data, navigate]);
 
 	const onSubmit: SubmitHandler<LoginFields> = ({ email, password, rememberMe }) => {
