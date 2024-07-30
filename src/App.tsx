@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Topic from "./pages/Topic";
-import LoginPage from "./pages/login";
+import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/sign-up";
 import ForumPage from "./pages/ForumPage";
 import Logo from "./components/Logo";

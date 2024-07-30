@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Form from "@components/form";
 import Button from "@components/button";
 import InputBox from "@components/input-box";
@@ -10,6 +10,7 @@ import { LeftSide, RightSide } from "@components/sides";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { signUp, SignUpResults } from "@features/Form/services/signup";
 import { EMAIL_REGEX } from "@utils/defs";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface SignUpFields {
 	email: string;
@@ -21,6 +22,7 @@ const SignUpPage: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [showPassword, setShowPassword] = useShowPassword();
+	const [loading, setLoading] = useState(false); 
 	const {
 		register,
 		setError,
@@ -36,21 +38,26 @@ const SignUpPage: React.FC = () => {
 			return;
 		}
 
+		setLoading(true); 
 		try {
 			const response = await signUp(email, password);
 			switch (response) {
 				case SignUpResults.EMAIL_TAKEN:
 					setError("email", { message: "Email is already taken" });
+					setLoading(false); 
 					return;
 				case SignUpResults.BAD_REQUEST:
 					alert("Bad Request");
+					setLoading(false);
 					return;
 				case SignUpResults.INTERNAL_SERVER_ERROR:
 					alert("Internal Server Error");
+					setLoading(false); 
 					return;
 				case SignUpResults.SUCCESS:
 					break;
 				default:
+					setLoading(false); 
 					return;
 			}
 
@@ -58,6 +65,8 @@ const SignUpPage: React.FC = () => {
 		} catch (error) {
 			alert("An error occurred during sign up");
 			console.error(error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -117,8 +126,12 @@ const SignUpPage: React.FC = () => {
 					</LeftSide>
 					<RightSide>{setShowPassword}</RightSide>
 				</InputBox>
-				<Button type="submit" size="full">
-					Sign Up
+				<Button type="submit" size="full" disabled={loading}>
+					{loading ? (
+						<AiOutlineLoading3Quarters className="animate-spin mr-2" />
+					) : (
+						"Sign Up"
+					)}
 				</Button>
 				<p className="flex justify-center gap-2 text-sm">
 					Already have an account?

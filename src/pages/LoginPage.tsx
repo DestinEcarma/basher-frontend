@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Form from "@components/form";
 import Button from "@components/button";
 import CheckBox from "@components/checkbox";
@@ -11,6 +11,7 @@ import { LeftSide, RightSide } from "@components/sides";
 import { login, LoginResults } from "@features/Form/services/login";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { EMAIL_REGEX } from "@utils/defs";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface LoginFields {
 	email: string;
@@ -21,6 +22,7 @@ interface LoginFields {
 const LoginPage: React.FC = () => {
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useShowPassword();
+	const [loading, setLoading] = useState(false);
 
 	const {
 		register,
@@ -30,26 +32,33 @@ const LoginPage: React.FC = () => {
 	} = useForm<LoginFields>({ defaultValues: { rememberMe: false } });
 
 	const onSubmit: SubmitHandler<LoginFields> = async ({ email, password, rememberMe }) => {
+		setLoading(true); 
+
 		try {
 			const response = await login(email, password, rememberMe);
 
 			switch (response) {
 				case LoginResults.EMAIL_NOT_FOUND:
 					setError("email", { message: "Email not found" });
+					setLoading(false); 
 					return;
 				case LoginResults.INVALID_PASSWORD:
 					setError("password", { message: "Invalid password" });
+					setLoading(false); 
 					return;
 				case LoginResults.BAD_REQUEST:
 					alert("Bad Request");
+					setLoading(false); 
 					return;
 				case LoginResults.INTERNAL_SERVER_ERROR:
 					alert("Internal Server Error");
+					setLoading(false); 
 					return;
 				case LoginResults.SUCCESS:
 					break;
 				default:
-					alert("Unkown error");
+					alert("Unknown error");
+					setLoading(false);
 					return;
 			}
 
@@ -57,18 +66,10 @@ const LoginPage: React.FC = () => {
 		} catch (error) {
 			alert("An error occurred during login");
 			console.error(error);
+		} finally {
+			setLoading(false); 
 		}
 	};
-
-	console.log(
-		register("email", {
-			required: "Email is required",
-			pattern: {
-				value: EMAIL_REGEX,
-				message: "Field must be a valid email",
-			},
-		}),
-	);
 
 	return (
 		<Form onSubmit={handleSubmit(onSubmit)} size="w450px">
@@ -106,8 +107,12 @@ const LoginPage: React.FC = () => {
 						Forgot password?
 					</Link>
 				</div>
-				<Button type="submit" size="full">
-					Login
+				<Button type="submit" size="full" disabled={loading}>
+					{loading ? (
+						<AiOutlineLoading3Quarters className="animate-spin mr-2" />
+					) : (
+						"Login"
+					)}
 				</Button>
 				<p className="flex justify-center gap-2 text-sm">
 					Don't have an account?
