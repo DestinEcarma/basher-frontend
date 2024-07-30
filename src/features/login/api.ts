@@ -1,4 +1,4 @@
-import { GRAPHQL_PATH, API } from "../../../services/api";
+import { GRAPHQL_PATH, API } from "@services/api";
 
 export enum LoginResults {
 	SUCCESS,

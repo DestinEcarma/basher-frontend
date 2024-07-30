@@ -1,70 +1,69 @@
 import React, { useState } from "react";
 import Form from "@components/form";
 import Button from "@components/button";
-import CheckBox from "@components/checkbox";
 import InputBox from "@components/input-box";
 import useShowPassword from "@components/use-show-password";
 import { CgLock } from "react-icons/cg";
+import { EMAIL_REGEX } from "@utils/defs";
 import { MdAlternateEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { LeftSide, RightSide } from "@components/sides";
-import { login, LoginResults } from "@features/Form/services/login";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { EMAIL_REGEX } from "@utils/defs";
+import { signUp, SignUpResults } from "@features/sign-up/api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-interface LoginFields {
+interface SignUpFields {
 	email: string;
 	password: string;
-	rememberMe: boolean;
+	confirmPassword: string;
 }
 
-const LoginPage: React.FC = () => {
+const SignUpPage: React.FC = () => {
 	const navigate = useNavigate();
+
 	const [showPassword, setShowPassword] = useShowPassword();
 	const [loading, setLoading] = useState(false);
-
 	const {
 		register,
 		setError,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<LoginFields>({ defaultValues: { rememberMe: false } });
+	} = useForm<SignUpFields>();
 
-	const onSubmit: SubmitHandler<LoginFields> = async ({ email, password, rememberMe }) => {
+	const passwordType = showPassword ? "text" : "password";
+
+	const onSubmit: SubmitHandler<SignUpFields> = async ({ email, password, confirmPassword }) => {
+		if (password !== confirmPassword) {
+			setError("confirmPassword", { message: "Password does not match" });
+			return;
+		}
+
 		setLoading(true);
-
 		try {
-			const response = await login(email, password, rememberMe);
-
+			const response = await signUp(email, password);
 			switch (response) {
-				case LoginResults.EMAIL_NOT_FOUND:
-					setError("email", { message: "Email not found" });
+				case SignUpResults.EMAIL_TAKEN:
+					setError("email", { message: "Email is already taken" });
 					setLoading(false);
 					return;
-				case LoginResults.INVALID_PASSWORD:
-					setError("password", { message: "Invalid password" });
-					setLoading(false);
-					return;
-				case LoginResults.BAD_REQUEST:
+				case SignUpResults.BAD_REQUEST:
 					alert("Bad Request");
 					setLoading(false);
 					return;
-				case LoginResults.INTERNAL_SERVER_ERROR:
+				case SignUpResults.INTERNAL_SERVER_ERROR:
 					alert("Internal Server Error");
 					setLoading(false);
 					return;
-				case LoginResults.SUCCESS:
+				case SignUpResults.SUCCESS:
 					break;
 				default:
-					alert("Unknown error");
 					setLoading(false);
 					return;
 			}
 
 			navigate("/forum");
 		} catch (error) {
-			alert("An error occurred during login");
+			alert("An error occurred during sign up");
 			console.error(error);
 		} finally {
 			setLoading(false);
@@ -73,7 +72,7 @@ const LoginPage: React.FC = () => {
 
 	return (
 		<Form onSubmit={handleSubmit(onSubmit)} size="w450px">
-			<h1 className="mb-4 text-center text-4xl font-bold">Login</h1>
+			<h1 className="mb-4 text-center text-4xl font-bold">Sign Up</h1>
 			<div className="flex flex-col gap-4">
 				<InputBox
 					label="Email"
@@ -92,28 +91,48 @@ const LoginPage: React.FC = () => {
 				</InputBox>
 				<InputBox
 					label="Password"
+					type={passwordType}
 					error={errors.password?.message}
-					type={showPassword ? "text" : "password"}
-					{...register("password", { required: "Password is required" })}
+					{...register("password", {
+						required: "Password is required",
+						minLength: {
+							value: 8,
+							message: "Password must be at least 8 characters",
+						},
+						validate: (value) => {
+							if (value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
+								return true;
+							}
+
+							return "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+						},
+					})}
 				>
 					<LeftSide>
 						<CgLock className="text-lg" />
 					</LeftSide>
 					<RightSide>{setShowPassword}</RightSide>
 				</InputBox>
-				<div className="flex items-center justify-between">
-					<CheckBox label="Remember Me" {...register("rememberMe")} />
-					<Link to="/login" className="text-sm text-blue-500">
-						Forgot password?
-					</Link>
-				</div>
+				<InputBox
+					label="Confirm Password"
+					type={passwordType}
+					error={errors.confirmPassword?.message}
+					{...register("confirmPassword", {
+						required: "Confirm Password is required",
+					})}
+				>
+					<LeftSide>
+						<CgLock className="text-lg" />
+					</LeftSide>
+					<RightSide>{setShowPassword}</RightSide>
+				</InputBox>
 				<Button type="submit" size="full" className="flex items-center justify-center" disabled={loading}>
-					{loading ? <AiOutlineLoading3Quarters className="my-1 animate-spin" /> : "Login"}
+					{loading ? <AiOutlineLoading3Quarters className="my-1 animate-spin" /> : "Sign Up"}
 				</Button>
 				<p className="flex justify-center gap-2 text-sm">
-					Don't have an account?
-					<Link to="/sign-up" className="text-blue-500">
-						Sign Up
+					Already have an account?
+					<Link to="/login" className="text-blue-500">
+						Login
 					</Link>
 				</p>
 			</div>
@@ -121,4 +140,4 @@ const LoginPage: React.FC = () => {
 	);
 };
 
-export default LoginPage;
+export default SignUpPage;
