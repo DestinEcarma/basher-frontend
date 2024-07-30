@@ -6,11 +6,11 @@ import React from "react";
 interface ButtonProps extends ReactButtonAttributes, VariantProps<typeof variants> {}
 
 const variants = cva(
-	"p-2 font-bold rounded-lg shadow text-white text-center focus:ring transition-[background-color,box-shadow]",
+	"rounded-lg p-2 text-center font-bold text-white shadow transition-[background-color,box-shadow] focus:ring",
 	{
 		variants: {
 			variant: {
-				primary: "bg-gray-950 hover:bg-gray-800 focus:bg-gray-800 ring-gray-500",
+				primary: "bg-gray-950 ring-gray-500 hover:bg-gray-800 focus:bg-gray-800",
 				ghost: "bg-transparent text-black shadow-none ring-transparent",
 			},
 			size: {
