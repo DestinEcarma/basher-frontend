@@ -1,5 +1,5 @@
-import React from "react";
 import SubReply from "./SubReply";
+import React from "react";
 
 interface ReplyDropdownProps {
 	replies: {

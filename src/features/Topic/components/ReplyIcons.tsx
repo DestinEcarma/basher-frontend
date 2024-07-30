@@ -1,9 +1,9 @@
+import DropDownButton from "./DropDownButton";
+import ReplyButton from "./ReplyButton";
+import TopicButton from "./TopicButton";
 import React, { useState } from "react";
 import { BiLike, BiLinkAlt } from "react-icons/bi";
 import { FaChevronDown } from "react-icons/fa";
-import TopicButton from "./TopicButton";
-import ReplyButton from "./ReplyButton";
-import DropDownButton from "./DropDownButton";
 
 interface ReplyIconsProps {
 	openReply: React.MouseEventHandler;

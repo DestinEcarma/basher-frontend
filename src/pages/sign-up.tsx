@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import Form from "@components/form";
 import Button from "@components/button";
+import Form from "@components/form";
 import InputBox from "@components/input-box";
+import { LeftSide, RightSide } from "@components/sides";
 import useShowPassword from "@components/use-show-password";
-import { CgLock } from "react-icons/cg";
+import { signUp, SignUpResults } from "@features/sign-up/api";
 import { EMAIL_REGEX } from "@utils/defs";
+import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { CgLock } from "react-icons/cg";
 import { MdAlternateEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-import { LeftSide, RightSide } from "@components/sides";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { signUp, SignUpResults } from "@features/sign-up/api";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface SignUpFields {
 	email: string;

@@ -1,7 +1,7 @@
-import React from "react";
-import { mergeClasses } from "@utils/helper";
 import { ReactButtonAttributes } from "@utils/defs";
+import { mergeClasses } from "@utils/helper";
 import { VariantProps, cva } from "class-variance-authority";
+import React from "react";
 
 interface ButtonProps extends ReactButtonAttributes, VariantProps<typeof variants> {}
 

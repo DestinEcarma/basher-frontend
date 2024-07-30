@@ -1,5 +1,5 @@
-import React from "react";
 import MarkdownRenderer from "../../../components/MarkdownRenderer";
+import React from "react";
 
 const ReplyContent: React.FC<{ content: string }> = ({ content }) => {
 	return (

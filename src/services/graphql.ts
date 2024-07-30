@@ -1,6 +1,6 @@
-import { GraphQLFormattedError } from "graphql";
-import { onError } from "@apollo/client/link/error";
 import { ApolloClient, from, HttpLink, InMemoryCache } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
+import { GraphQLFormattedError } from "graphql";
 
 export interface GraphqlError extends GraphQLFormattedError {
 	readonly extensions?: {

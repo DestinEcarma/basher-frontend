@@ -1,7 +1,7 @@
+import DOMPurify from "dompurify";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import DOMPurify from "dompurify";
 
 interface MarkdownRendererProps {
 	className?: string;

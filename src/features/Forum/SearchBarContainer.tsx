@@ -1,7 +1,7 @@
+import AddNewTopic from "./AddNewTopic";
+import SortButton from "./SortButton";
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import SortButton from "./SortButton";
-import AddNewTopic from "./AddNewTopic";
 
 interface SearchBarContainerProps {
 	onSearch: (searchTerm: string) => void;

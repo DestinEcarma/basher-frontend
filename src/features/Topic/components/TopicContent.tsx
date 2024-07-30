@@ -1,5 +1,5 @@
-import React from "react";
 import MarkdownRenderer from "../../../components/MarkdownRenderer";
+import React from "react";
 
 interface ContentProps {
 	content: string;

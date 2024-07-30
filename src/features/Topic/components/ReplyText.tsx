@@ -1,5 +1,5 @@
-import React, { SetStateAction, useRef } from "react";
 import ReplyInputIcons from "./ReplyInputIcons";
+import React, { SetStateAction, useRef } from "react";
 
 interface ReplyTextProps {
 	changePreview: React.ChangeEventHandler<HTMLTextAreaElement>;

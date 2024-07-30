@@ -5,14 +5,11 @@
 // import ReplyContainer from "../features/Topic/components/ReplyContainer";
 // import { Topic as TopicProps, Reply as ReplyProps } from "../utils/sample-data";
 // import { getTopic, getReplies } from "../services/api";
-
 // const Topic = () => {
 // 	const { id } = useParams<{ id: string }>();
 // 	const [topic, setTopic] = useState<TopicProps | undefined>(undefined);
 // 	const [replies, setReplies] = useState<ReplyProps[] | undefined>(undefined);
-
 // 	const hasLoaded = useRef<boolean>(false);
-
 // 	const defaultTopic: TopicProps = {
 // 		id: "-1",
 // 		author: "-1",
@@ -23,7 +20,6 @@
 // 			updatedAt: new Date(),
 // 		},
 // 	};
-
 // 	useEffect(() => {
 // 		if (!hasLoaded.current) {
 // 			if (id) {
@@ -43,10 +39,8 @@
 // 				alert("No ID");
 // 			}
 // 		}
-
 // 		hasLoaded.current = true;
 // 	}, [id]);
-
 // 	return (
 // 		<div className="bg-[#F6F6F9] w-full min-h-screen py-11">
 // 			<Logo />
@@ -58,16 +52,14 @@
 // 		</div>
 // 	);
 // };
-
 // export default Topic;
-
 // api version
+import ReplyContainer from "../features/Topic/components/ReplyContainer";
+import TopicContainer from "../features/Topic/components/TopicContainer";
+import { getReplies, ReplyProps } from "../features/Topic/services/getreplies";
+import { getTopic, TopicProps } from "../features/Topic/services/gettopic";
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import TopicContainer from "../features/Topic/components/TopicContainer";
-import ReplyContainer from "../features/Topic/components/ReplyContainer";
-import { getTopic, TopicProps } from "../features/Topic/services/gettopic";
-import { getReplies, ReplyProps } from "../features/Topic/services/getreplies";
 
 const TopicPage: React.FC = () => {
 	const { id } = useParams<{ id: string }>();
