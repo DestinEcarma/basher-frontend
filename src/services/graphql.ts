@@ -1,5 +1,13 @@
-import { ApolloClient, from, HttpLink, InMemoryCache } from "@apollo/client";
+import { GraphQLFormattedError } from "graphql";
 import { onError } from "@apollo/client/link/error";
+import { ApolloClient, from, HttpLink, InMemoryCache } from "@apollo/client";
+
+export interface GraphqlError extends GraphQLFormattedError {
+	readonly extensions?: {
+		readonly code?: string;
+		readonly reason?: string;
+	};
+}
 
 export const client = new ApolloClient({
 	cache: new InMemoryCache(),
@@ -8,7 +16,7 @@ export const client = new ApolloClient({
 		onError(({ graphQLErrors, networkError }) => {
 			if (graphQLErrors) {
 				graphQLErrors.map(({ message, locations, path }) => {
-					alert(`Graphql error ${message} ${locations} ${path}`);
+					console.error(`Graphql error ${message} ${locations} ${path}`);
 				});
 			}
 
