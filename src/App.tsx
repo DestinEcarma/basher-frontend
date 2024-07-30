@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Topic from "./pages/Topic";
+import TopicPage from "./pages/TopicPage";
 import LoginPage from "./pages/LoginPage";
-import SignUpPage from "./pages/sign-up";
+import SignUpPage from "./pages/SignupPage";
 import ForumPage from "./pages/ForumPage";
 import Logo from "./components/Logo";
 
@@ -24,7 +24,7 @@ const App: React.FC = () => {
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/sign-up" element={<SignUpPage />} />
 						<Route path="/forum" element={<ForumPage />} />
-						<Route path="/topic/:id" element={<Topic />} />
+						<Route path="/topic/:id" element={<TopicPage />} />
 					</Routes>
 				</Suspense>
 			</BrowserRouter>
