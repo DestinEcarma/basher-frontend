@@ -1,11 +1,13 @@
+import { useMutation } from "@apollo/client";
 import Button from "@components/button";
 import Form from "@components/form";
 import InputBox from "@components/input-box";
 import { LeftSide, RightSide } from "@components/sides";
 import useShowPassword from "@components/use-show-password";
-import { signUp, SignUpResults } from "@features/sign-up/api";
-import { EMAIL_REGEX } from "@utils/defs";
-import React, { useState } from "react";
+import { SIGN_UP } from "@graphql/mutations";
+import { GraphqlError, GraphqlErrorType } from "@services/graphql";
+import { EMAIL_REGEX, PASSWORD_REGEX } from "@utils/defs";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { CgLock } from "react-icons/cg";
@@ -22,7 +24,7 @@ const SignUpPage: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [showPassword, setShowPassword] = useShowPassword();
-	const [loading, setLoading] = useState(false);
+	const [signUp, { data, loading, error }] = useMutation(SIGN_UP);
 	const {
 		register,
 		setError,
@@ -30,45 +32,42 @@ const SignUpPage: React.FC = () => {
 		formState: { errors },
 	} = useForm<SignUpFields>();
 
-	const passwordType = showPassword ? "text" : "password";
+	useEffect(() => {
+		if (!error) return;
 
-	const onSubmit: SubmitHandler<SignUpFields> = async ({ email, password, confirmPassword }) => {
-		if (password !== confirmPassword) {
-			setError("confirmPassword", { message: "Password does not match" });
-			return;
-		}
-
-		setLoading(true);
-		try {
-			const response = await signUp(email, password);
-			switch (response) {
-				case SignUpResults.EMAIL_TAKEN:
+		error.graphQLErrors.forEach((err: GraphqlError) => {
+			switch (err.extensions?.reason) {
+				case GraphqlErrorType.EMAIL_TAKEN:
 					setError("email", { message: "Email is already taken" });
-					setLoading(false);
 					return;
-				case SignUpResults.BAD_REQUEST:
+				case GraphqlErrorType.BAD_REQUEST:
 					alert("Bad Request");
-					setLoading(false);
 					return;
-				case SignUpResults.INTERNAL_SERVER_ERROR:
+				case GraphqlErrorType.INTERNAL_SERVER_ERROR:
 					alert("Internal Server Error");
-					setLoading(false);
 					return;
-				case SignUpResults.SUCCESS:
-					break;
 				default:
-					setLoading(false);
+					alert("Unknown error");
 					return;
 			}
+		});
+	}, [error, setError]);
 
-			navigate("/forum");
-		} catch (error) {
-			alert("An error occurred during sign up");
-			console.error(error);
-		} finally {
-			setLoading(false);
+	useEffect(() => {
+		if (!data) return;
+
+		navigate("/forum");
+	}, [data, navigate]);
+
+	const onSubmit: SubmitHandler<SignUpFields> = ({ email, password, confirmPassword }) => {
+		if (password !== confirmPassword) {
+			return setError("confirmPassword", { message: "Password does not match" });
 		}
+
+		signUp({ variables: { input: { email, password } } });
 	};
+
+	const passwordType = showPassword ? "text" : "password";
 
 	return (
 		<Form onSubmit={handleSubmit(onSubmit)} size="w450px">
@@ -100,9 +99,7 @@ const SignUpPage: React.FC = () => {
 							message: "Password must be at least 8 characters",
 						},
 						validate: (value) => {
-							if (value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
-								return true;
-							}
+							if (value.match(PASSWORD_REGEX)) return true;
 
 							return "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
 						},

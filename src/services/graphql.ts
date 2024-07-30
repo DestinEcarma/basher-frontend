@@ -9,6 +9,20 @@ export interface GraphqlError extends GraphQLFormattedError {
 	};
 }
 
+export enum GraphqlErrorType {
+	// General errors
+	BAD_REQUEST = "BAD_REQUEST",
+
+	// Login errors
+	EMAIL_NOT_FOUND = "EMAIL_NOT_FOUND",
+	INVALID_PASSWORD = "INVALID_PASSWORD",
+
+	// Sign up errors
+	EMAIL_TAKEN = "EMAIL_TAKEN",
+
+	INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
+}
+
 export const client = new ApolloClient({
 	cache: new InMemoryCache(),
 	link: from([

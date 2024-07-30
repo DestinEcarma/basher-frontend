@@ -5,9 +5,8 @@ import Form from "@components/form";
 import InputBox from "@components/input-box";
 import { LeftSide, RightSide } from "@components/sides";
 import useShowPassword from "@components/use-show-password";
-import { LoginError } from "@features/login/defs";
 import { LOGIN } from "@graphql/mutations";
-import { GraphqlError } from "@services/graphql";
+import { GraphqlError, GraphqlErrorType } from "@services/graphql";
 import { EMAIL_REGEX } from "@utils/defs";
 import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -39,16 +38,16 @@ const LoginPage: React.FC = () => {
 
 		error.graphQLErrors.forEach((err: GraphqlError) => {
 			switch (err.extensions?.reason) {
-				case LoginError.EMAIL_NOT_FOUND:
+				case GraphqlErrorType.EMAIL_NOT_FOUND:
 					setError("email", { message: "Email not found" });
 					return;
-				case LoginError.INVALID_PASSWORD:
+				case GraphqlErrorType.INVALID_PASSWORD:
 					setError("password", { message: "Invalid password" });
 					return;
-				case LoginError.BAD_REQUEST:
+				case GraphqlErrorType.BAD_REQUEST:
 					alert("Bad Request");
 					return;
-				case LoginError.INTERNAL_SERVER_ERROR:
+				case GraphqlErrorType.INTERNAL_SERVER_ERROR:
 					alert("Internal Server Error");
 					return;
 				default:
