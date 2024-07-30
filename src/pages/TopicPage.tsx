@@ -121,7 +121,7 @@ const TopicPage: React.FC = () => {
 	}, [id, offSet]);
 
 	return (
-		<div className="min-h-screen w-full bg-[#F6F6F9] py-11">
+		<div className="w-full bg-[#F6F6F9] pb-11">
 			{topic && <TopicContainer topic={topic || defaultTopic} />}
 			{topic &&
 				replies &&
