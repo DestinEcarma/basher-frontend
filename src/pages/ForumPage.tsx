@@ -50,7 +50,7 @@ const ForumPage: React.FC = () => {
 	}, [offSet]);
 
 	return (
-		<div className="bg-gray-100 flex flex-col items-center">
+		<div className="flex min-h-screen flex-col items-center bg-gray-100">
 			<div>
 				<SearchBarContainer onSearch={setSearchTerm} onSort={setSortType} />
 			</div>

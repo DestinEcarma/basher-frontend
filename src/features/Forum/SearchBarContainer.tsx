@@ -29,15 +29,15 @@ const SearchBarContainer: React.FC<SearchBarContainerProps> = ({ onSearch, onSor
 	};
 
 	return (
-		<div className="w-[600px] h-[50px] bg-white shadow-xl mt-10 mb-5 flex items-center px-[10px] rounded-lg">
-			<FaSearch className="text-gray-400 ml-[12px]" />
+		<div className="mb-5 mt-10 flex h-[50px] w-[600px] items-center rounded-lg bg-white px-[10px] shadow-xl">
+			<FaSearch className="ml-[12px] text-gray-400" />
 			<input
 				type="text"
 				placeholder="Search"
 				value={searchTerm}
 				onChange={handleSearch}
 				onKeyPress={handleKeyPress}
-				className="w-1/2 h-4/5 px-[10px] text-sm ml-[12px] mr-2 outline-none"
+				className="ml-[12px] mr-2 h-4/5 w-1/2 px-[10px] text-sm outline-none"
 			/>
 			<SortButton label="New" isActive={sortBy === "new"} onClick={() => handleSort("new")} />
 			<SortButton label="Top" isActive={sortBy === "top"} onClick={() => handleSort("top")} />

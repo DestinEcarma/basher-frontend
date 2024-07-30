@@ -77,8 +77,8 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 	}, [reply]);
 
 	return (
-		<div className="flex flex-col justify-center items-center mt-4">
-			<div className="bg-white lg:max-w-7xl md:max-w-3xl w-full shadow-lg rounded-md pt-5 px-4 pb-3">
+		<div className="mt-4 flex flex-col items-center justify-center">
+			<div className="w-full rounded-md bg-white px-4 pb-3 pt-5 shadow-lg md:max-w-3xl lg:max-w-7xl">
 				<div className="flex flex-row items-center gap-3">
 					<User index={reply.userIndex} />
 					<p className="text-sm text-gray-400">
@@ -88,11 +88,11 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 
 				<ReplyContent content={reply.content} />
 
-				<div className="flex w-full justify-between items-end">
+				<div className="flex w-full items-end justify-between">
 					<div>
 						<DropDownButton Icon={FaChevronDown} onClick={handleDropdownClick} count={0} />
 					</div>
-					<div className="flex gap-4 text-[#808080] items-center select-none hover:cursor-pointer">
+					<div className="flex select-none items-center gap-4 text-[#808080] hover:cursor-pointer">
 						<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
 						<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} />
 						<ReplyButton onClick={openReply} />

@@ -2,9 +2,9 @@ import { GRAPHQL_PATH, API } from "../../../services/api";
 
 export enum LoginResults {
 	SUCCESS,
+	BAD_REQUEST,
 	EMAIL_NOT_FOUND,
 	INVALID_PASSWORD,
-	BAD_REQUEST,
 	INTERNAL_SERVER_ERROR,
 }
 

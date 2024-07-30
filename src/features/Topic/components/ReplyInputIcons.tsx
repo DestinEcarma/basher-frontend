@@ -47,7 +47,7 @@ const ReplyInputIcons: React.FC<ReplyInputIconsProps> = ({ setPreview, textareaR
 	};
 
 	return (
-		<div className="absolute top-0 left-1 px-1 border-b-[1px] w-[calc(100%-0.5rem)] flex gap-2 items-center">
+		<div className="absolute left-1 top-0 flex w-[calc(100%-0.5rem)] items-center gap-2 border-b-[1px] px-1">
 			<ReplyInputButton Icon={FaBold} addElement={addBold("bold")} />
 			<ReplyInputButton Icon={FaItalic} addElement={addBold("italic")} />
 			<ReplyInputButton Icon={FaLink} addElement={addBold("link")} />

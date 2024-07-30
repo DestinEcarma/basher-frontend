@@ -22,7 +22,7 @@ const AddNewTopic: React.FC = () => {
 		<>
 			<div>
 				<button
-					className="flex items-center text-xs text-white bg-black p-1 rounded-md"
+					className="flex items-center rounded-md bg-black p-1 text-xs text-white"
 					onClick={handleNewTopicClick}
 				>
 					<FaPlus className="mr-1" />
@@ -30,18 +30,18 @@ const AddNewTopic: React.FC = () => {
 				</button>
 			</div>
 			{showReplyInput && (
-				<div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div className="bg-white p-6 rounded-lg w-11/12 max-w-2xl">
-						<h2 className="text-lg font-bold mb-4">Create New Topic</h2>
+				<div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+					<div className="w-11/12 max-w-2xl rounded-lg bg-white p-6">
+						<h2 className="mb-4 text-lg font-bold">Create New Topic</h2>
 						<ReplyText changePreview={changePreview} preview={preview} setPreview={setPreview} />
-						<div className="flex justify-end mt-4">
+						<div className="mt-4 flex justify-end">
 							<button
-								className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+								className="mr-2 rounded bg-gray-500 px-4 py-2 text-white"
 								onClick={handleCloseReply}
 							>
 								Cancel
 							</button>
-							<button className="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
+							<button className="rounded bg-blue-500 px-4 py-2 text-white">Submit</button>
 						</div>
 					</div>
 				</div>

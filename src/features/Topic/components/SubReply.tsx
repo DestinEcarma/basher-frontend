@@ -9,7 +9,7 @@ interface SubReplyProps {
 
 const SubReply: React.FC<SubReplyProps> = ({ userIndex, content }) => {
 	return (
-		<div className="subreply flex gap-3 flex-col justify-center mt-3 bg-white w-full shadow-lg rounded-md pt-5 px-4 pb-5">
+		<div className="subreply mt-3 flex w-full flex-col justify-center gap-3 rounded-md bg-white px-4 pb-5 pt-5 shadow-lg">
 			<User index={userIndex} isOP={false} />
 			<p className="content">{content}</p>
 			{/* <p className="timestamp">{timestamp.toString()}</p>	 */}

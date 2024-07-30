@@ -9,9 +9,9 @@ interface ForumProps {
 
 const ForumContainer: React.FC<ForumProps> = ({ topics }) => {
 	return (
-		<div className="w-[600px] h-[500px] bg-white shadow-xl p-[10px] rounded-lg">
+		<div className="h-[500px] w-[600px] rounded-lg bg-white p-[10px] shadow-xl">
 			<div className="grid grid-cols-3 gap-1 p-4">
-				<h3 className="font-black col-span-2">Topics</h3>
+				<h3 className="col-span-2 font-black">Topics</h3>
 				<div className="grid grid-cols-3 gap-1 text-center">
 					<span>Replies</span>
 					<span>Likes</span>

@@ -120,7 +120,7 @@ const Topic = () => {
 	}, [id, offSet]);
 
 	return (
-		<div className="bg-[#F6F6F9] w-full pb-11">
+		<div className="min-h-screen w-full bg-[#F6F6F9] py-11">
 			{topic && <TopicContainer topic={topic || defaultTopic} />}
 			{topic &&
 				replies &&

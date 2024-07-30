@@ -36,11 +36,11 @@ const ReplyIcons: React.FC<ReplyIconsProps> = ({ openReply }) => {
 	};
 
 	return (
-		<div className="flex w-full justify-between items-end">
+		<div className="flex w-full items-end justify-between">
 			<div>
 				<DropDownButton Icon={FaChevronDown} onClick={addComment} count={comments} />
 			</div>
-			<div className="flex gap-4 text-[#808080] items-center select-none hover:cursor-pointer">
+			<div className="flex select-none items-center gap-4 text-[#808080] hover:cursor-pointer">
 				<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
 				<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} />
 				<ReplyButton onClick={openReply} />

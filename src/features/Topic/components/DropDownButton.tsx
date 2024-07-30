@@ -9,7 +9,7 @@ interface DropDownButtonProps {
 const DropDownButton: React.FC<DropDownButtonProps> = ({ Icon, onClick, count }) => {
 	return (
 		<button
-			className="flex items-center gap-1 px-3 py-1 rounded-lg hover:cursor-pointer hover:bg-gray-100 duration-100 select-none"
+			className="flex select-none items-center gap-1 rounded-lg px-3 py-1 duration-100 hover:cursor-pointer hover:bg-gray-100"
 			onClick={onClick}
 		>
 			<p className="text-[#808080]">{count} Replies</p>

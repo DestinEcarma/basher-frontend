@@ -13,7 +13,7 @@ const ReplyButton: React.FC<ReplyButtonProps> = ({ onClick, className, color }) 
 	return (
 		<div
 			onClick={onClick}
-			className={`flex items-center select-none hover:cursor-pointer ${className}`}
+			className={`flex select-none items-center hover:cursor-pointer ${className}`}
 			style={{ color: color || defaultColor }}
 		>
 			<LuReply color={color || defaultColor} className="size-7" />

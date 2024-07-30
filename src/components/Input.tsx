@@ -12,12 +12,12 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({ id, type, placeholder, value, onChange, icon }) => {
 	return (
 		<div className="mb-4">
-			<label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={id}>
+			<label className="mb-2 block text-sm font-bold text-gray-700" htmlFor={id}>
 				{placeholder}
 			</label>
 			<div className="relative">
 				{icon && (
-					<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">{icon}</div>
+					<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">{icon}</div>
 				)}
 				<input
 					id={id}
@@ -25,7 +25,7 @@ const Input: React.FC<InputProps> = ({ id, type, placeholder, value, onChange, i
 					value={value}
 					onChange={onChange}
 					placeholder={placeholder}
-					className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${icon ? "pl-10" : ""}`}
+					className={`focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none ${icon ? "pl-10" : ""}`}
 					required
 				/>
 			</div>

@@ -6,24 +6,29 @@
 
 @layer base {
 	body {
-		@apply font-roboto;
+		@apply bg-gray-100 font-roboto;
+	}
+
+	button,
+	input {
+		@apply outline-none;
 	}
 
 	.markdown {
 		h1 {
-			@apply text-3xl font-bold mb-4;
+			@apply mb-4 text-3xl font-bold;
 		}
 		h2 {
-			@apply text-2xl font-semibold mb-3;
+			@apply mb-3 text-2xl font-semibold;
 		}
 		h3 {
-			@apply text-xl font-medium mb-2;
+			@apply mb-2 text-xl font-medium;
 		}
 		h4 {
-			@apply text-lg font-medium mb-1.5;
+			@apply mb-1.5 text-lg font-medium;
 		}
 		h5 {
-			@apply text-base font-medium mb-1;
+			@apply mb-1 text-base font-medium;
 		}
 		p {
 			@apply mb-4;
@@ -64,7 +69,7 @@
 		}
 
 		th {
-			@apply px-4 py-2 border-b border-gray-300 text-left text-gray-700;
+			@apply border-b border-gray-300 px-4 py-2 text-left text-gray-700;
 		}
 
 		tbody {
@@ -72,7 +77,7 @@
 		}
 
 		td {
-			@apply px-4 py-2 border-b border-gray-200;
+			@apply border-b border-gray-200 px-4 py-2;
 		}
 
 		tr {

@@ -15,8 +15,8 @@ const SingleThread: React.FC<SingleThreadProps> = ({ topic }) => {
 	};
 	return (
 		<div className="">
-			<div className="border-b border-gray-200 p-4 grid grid-cols-3 gap-1">
-				<a href={`../topic/${topic.id}`} className="text-lg font-bold col-span-2">
+			<div className="grid grid-cols-3 gap-1 border-b border-gray-200 p-4">
+				<a href={`../topic/${topic.id}`} className="col-span-2 text-lg font-bold">
 					{topic.title}
 				</a>
 				<div className="grid grid-cols-3 gap-1 text-center">

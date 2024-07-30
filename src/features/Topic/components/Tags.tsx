@@ -6,7 +6,7 @@ interface TagsProps {
 
 const Tags: React.FC<TagsProps> = ({ tags }) => {
 	return (
-		<div className="flex text-[#0096FB] text-xs leading-none mt-1 mb-3 gap-1">
+		<div className="mb-3 mt-1 flex gap-1 text-xs leading-none text-[#0096FB]">
 			{tags.map((tag, i) => {
 				return (
 					<a href={`/topic/${tag.substring(1)}`} key={i}>

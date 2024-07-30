@@ -1,5 +1,14 @@
 {
 	"compilerOptions": {
+		// Paths
+		"paths": {
+			"@utils/*": ["./src/utils/*"],
+			"@pages/*": ["./src/pages/*"],
+			"@features/*": ["./src/features/*"],
+			"@services/*": ["./src/services/*"],
+			"@components/*": ["./src/components/*"]
+		},
+
 		"composite": true,
 		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 		"target": "ES2020",

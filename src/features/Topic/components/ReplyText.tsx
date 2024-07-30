@@ -14,7 +14,7 @@ const ReplyText: React.FC<ReplyTextProps> = ({ changePreview, preview, setPrevie
 		<div className="relative">
 			<textarea
 				ref={textareaRef}
-				className="outline-blue-300 w-full min-w-96 min-h-80 max-h-[85vh] overflow-y-scroll rounded-md border-gray-200 border-2 p-2 pt-8 placeholder:text-gray-400 text-[#808080] resize-none"
+				className="max-h-[85vh] min-h-80 w-full min-w-96 resize-none overflow-y-scroll rounded-md border-2 border-gray-200 p-2 pt-8 text-[#808080] outline-blue-300 placeholder:text-gray-400"
 				placeholder="Type here. Use Markdown or HTML to format."
 				name="reply"
 				id="reply"

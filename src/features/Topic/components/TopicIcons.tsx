@@ -98,7 +98,7 @@ const TopicIcons: React.FC<TopicIconsProps> = ({ openReply, counter }) => {
 	}, [counter]);
 
 	return (
-		<div className="flex w-full justify-between items-end">
+		<div className="flex w-full items-end justify-between">
 			<div className="flex gap-4">
 				<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
 				<TopicButton Icon={BiComment} onClick={addComment} count={comments} />

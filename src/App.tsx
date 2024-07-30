@@ -1,14 +1,14 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Topic from "./pages/Topic";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
+import LoginPage from "./pages/login";
+import SignUpPage from "./pages/sign-up";
 import ForumPage from "./pages/ForumPage";
 import Logo from "./components/Logo";
 
 const App: React.FC = () => {
 	return (
-		<div className="bg-[#F6F6F9] min-h-screen">
+		<div className="min-h-screen bg-[#F6F6F9]">
 			<Logo />
 			<BrowserRouter>
 				<Suspense fallback={<div>Loading...</div>}>
@@ -16,13 +16,13 @@ const App: React.FC = () => {
 						<Route
 							path="/"
 							element={
-								<a href="/forum" className="underline text-blue-500">
+								<a href="/forum" className="text-blue-500 underline">
 									Forum
 								</a>
 							}
 						/>
 						<Route path="/login" element={<LoginPage />} />
-						<Route path="/signup" element={<SignupPage />} />
+						<Route path="/sign-up" element={<SignUpPage />} />
 						<Route path="/forum" element={<ForumPage />} />
 						<Route path="/topic/:id" element={<Topic />} />
 					</Routes>

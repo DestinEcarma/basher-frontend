@@ -25,22 +25,22 @@ const ReplyInputContainer: React.FC<ReplyInputContainerProps> = ({ User, openRep
 	};
 
 	return (
-		<div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-end justify-center min-h-screen w-full bg-black bg-opacity-30">
-			<div className="bg-white lg:max-w-7xl md:max-w-3xl w-full shadow-lg rounded-md pt-5 px-4 pb-3 mt-4 flex gap-5 max-h-screen">
-				<div className="w-full flex flex-col">
+		<div className="fixed left-1/2 top-1/2 flex min-h-screen w-full -translate-x-1/2 -translate-y-1/2 items-end justify-center bg-black bg-opacity-30">
+			<div className="mt-4 flex max-h-screen w-full gap-5 rounded-md bg-white px-4 pb-3 pt-5 shadow-lg md:max-w-3xl lg:max-w-7xl">
+				<div className="flex w-full flex-col">
 					{User != null && (
-						<div className="flex mb-2 items-center gap-1">
-							<h1 className="text-gray-700 font-medium">Replying to</h1>
+						<div className="mb-2 flex items-center gap-1">
+							<h1 className="font-medium text-gray-700">Replying to</h1>
 							{User}
 						</div>
 					)}
 					<ReplyText changePreview={changePreview} preview={preview} setPreview={setPreview} />
-					<div className="flex mt-2 items-center gap-4">
+					<div className="mt-2 flex items-center gap-4">
 						<ReplyButton
 							color="#FFFFFF"
-							className="bg-accent hover:bg-accent-light transition-colors py-1 px-2 rounded-md"
+							className="rounded-md bg-accent px-2 py-1 transition-colors hover:bg-accent-light"
 						/>
-						<p onClick={openReply} className="text-[#808080] hover:cursor-pointer select-none">
+						<p onClick={openReply} className="select-none text-[#808080] hover:cursor-pointer">
 							Close
 						</p>
 						<div className="flex items-center gap-2">

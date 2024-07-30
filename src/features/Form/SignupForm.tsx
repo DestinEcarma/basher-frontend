@@ -80,7 +80,7 @@ const SignupForm: React.FC = () => {
 						<button
 							type="button"
 							onClick={() => setShowPassword(!showPassword)}
-							className="absolute inset-y-0 right-0 pt-7 pr-3 flex items-center text-gray-500 focus:outline-none"
+							className="absolute inset-y-0 right-0 flex items-center pr-3 pt-7 text-gray-500 focus:outline-none"
 						>
 							{showPassword ? <IoEyeSharp /> : <FaEyeSlash />}
 						</button>
@@ -105,22 +105,22 @@ const SignupForm: React.FC = () => {
 						<button
 							type="button"
 							onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-							className="absolute inset-y-0 right-0 pt-7 pr-3 flex items-center text-gray-500 focus:outline-none"
+							className="absolute inset-y-0 right-0 flex items-center pr-3 pt-7 text-gray-500 focus:outline-none"
 						>
 							{showConfirmPassword ? <IoEyeSharp /> : <FaEyeSlash />}
 						</button>
 					)}
 				</div>
-				{error && <p className="text-red-500 text-center mb-2">{error}</p>}
+				{error && <p className="text-center text-red-500">{error}</p>}
 				<div className="flex items-center justify-between">
 					<button
 						type="submit"
-						className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+						className="focus:shadow-outline w-full rounded bg-black px-4 py-2 font-bold text-white hover:bg-gray-800 focus:outline-none"
 					>
 						Sign Up
 					</button>
 				</div>
-				<div className="text-center mt-4">
+				<div className="mt-4 text-center">
 					<p className="text-sm text-gray-600">
 						Already have an account?{" "}
 						<a href="/login" className="text-blue-500 hover:text-blue-700">
