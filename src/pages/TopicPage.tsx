@@ -62,14 +62,14 @@
 // export default Topic;
 
 // api version
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import TopicContainer from "../features/Topic/components/TopicContainer";
 import ReplyContainer from "../features/Topic/components/ReplyContainer";
 import { getTopic, TopicProps } from "../features/Topic/services/gettopic";
 import { getReplies, ReplyProps } from "../features/Topic/services/getreplies";
 
-const Topic = () => {
+const TopicPage: React.FC = () => {
 	const { id } = useParams<{ id: string }>();
 	const [topic, setTopic] = useState<TopicProps | null>(null);
 	const [replies, setReplies] = useState<ReplyProps[] | null>(null);
@@ -106,6 +106,7 @@ const Topic = () => {
 					}
 				} catch (e) {
 					console.error(e);
+					window.location.href = "/";
 				}
 			} else {
 				alert("No ID");
@@ -131,4 +132,4 @@ const Topic = () => {
 	);
 };
 
-export default Topic;
+export default TopicPage;

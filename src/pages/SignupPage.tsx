@@ -22,7 +22,7 @@ const SignUpPage: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [showPassword, setShowPassword] = useShowPassword();
-	const [loading, setLoading] = useState(false); 
+	const [loading, setLoading] = useState(false);
 	const {
 		register,
 		setError,
@@ -38,13 +38,13 @@ const SignUpPage: React.FC = () => {
 			return;
 		}
 
-		setLoading(true); 
+		setLoading(true);
 		try {
 			const response = await signUp(email, password);
 			switch (response) {
 				case SignUpResults.EMAIL_TAKEN:
 					setError("email", { message: "Email is already taken" });
-					setLoading(false); 
+					setLoading(false);
 					return;
 				case SignUpResults.BAD_REQUEST:
 					alert("Bad Request");
@@ -52,12 +52,12 @@ const SignUpPage: React.FC = () => {
 					return;
 				case SignUpResults.INTERNAL_SERVER_ERROR:
 					alert("Internal Server Error");
-					setLoading(false); 
+					setLoading(false);
 					return;
 				case SignUpResults.SUCCESS:
 					break;
 				default:
-					setLoading(false); 
+					setLoading(false);
 					return;
 			}
 
@@ -126,12 +126,8 @@ const SignUpPage: React.FC = () => {
 					</LeftSide>
 					<RightSide>{setShowPassword}</RightSide>
 				</InputBox>
-				<Button type="submit" size="full" disabled={loading}>
-					{loading ? (
-						<AiOutlineLoading3Quarters className="animate-spin mr-2" />
-					) : (
-						"Sign Up"
-					)}
+				<Button type="submit" size="full" className="flex items-center justify-center" disabled={loading}>
+					{loading ? <AiOutlineLoading3Quarters className="my-1 animate-spin" /> : "Sign Up"}
 				</Button>
 				<p className="flex justify-center gap-2 text-sm">
 					Already have an account?

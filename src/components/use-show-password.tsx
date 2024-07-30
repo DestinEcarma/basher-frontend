@@ -12,7 +12,7 @@ const useShowPassword = (): [boolean, JSX.Element] => {
 			onClick={() => setShowPassword(toggle)}
 			className="text-lg transition-transform hover:scale-125 focus:scale-125"
 		>
-			{showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+			{showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
 		</button>,
 	];
 };

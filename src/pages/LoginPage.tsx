@@ -32,7 +32,7 @@ const LoginPage: React.FC = () => {
 	} = useForm<LoginFields>({ defaultValues: { rememberMe: false } });
 
 	const onSubmit: SubmitHandler<LoginFields> = async ({ email, password, rememberMe }) => {
-		setLoading(true); 
+		setLoading(true);
 
 		try {
 			const response = await login(email, password, rememberMe);
@@ -40,19 +40,19 @@ const LoginPage: React.FC = () => {
 			switch (response) {
 				case LoginResults.EMAIL_NOT_FOUND:
 					setError("email", { message: "Email not found" });
-					setLoading(false); 
+					setLoading(false);
 					return;
 				case LoginResults.INVALID_PASSWORD:
 					setError("password", { message: "Invalid password" });
-					setLoading(false); 
+					setLoading(false);
 					return;
 				case LoginResults.BAD_REQUEST:
 					alert("Bad Request");
-					setLoading(false); 
+					setLoading(false);
 					return;
 				case LoginResults.INTERNAL_SERVER_ERROR:
 					alert("Internal Server Error");
-					setLoading(false); 
+					setLoading(false);
 					return;
 				case LoginResults.SUCCESS:
 					break;
@@ -67,7 +67,7 @@ const LoginPage: React.FC = () => {
 			alert("An error occurred during login");
 			console.error(error);
 		} finally {
-			setLoading(false); 
+			setLoading(false);
 		}
 	};
 
@@ -107,12 +107,8 @@ const LoginPage: React.FC = () => {
 						Forgot password?
 					</Link>
 				</div>
-				<Button type="submit" size="full" disabled={loading}>
-					{loading ? (
-						<AiOutlineLoading3Quarters className="animate-spin mr-2" />
-					) : (
-						"Login"
-					)}
+				<Button type="submit" size="full" className="flex items-center justify-center" disabled={loading}>
+					{loading ? <AiOutlineLoading3Quarters className="my-1 animate-spin" /> : "Login"}
 				</Button>
 				<p className="flex justify-center gap-2 text-sm">
 					Don't have an account?
