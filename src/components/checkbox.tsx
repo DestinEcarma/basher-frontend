@@ -1,15 +1,14 @@
-import { ReactInputAttributes, ReactLabelAttributes } from "@utils/defs";
 import React from "react";
 import { FaCheck } from "react-icons/fa";
+import { ReactInputAttributes, ReactLabelAttributes } from "@utils/defs";
 
-interface CheckBoxProps {
+interface CheckBoxProps extends ReactInputAttributes {
 	label?: string;
-	checked: boolean;
-	name: ReactInputAttributes["name"];
-	onChange: ReactInputAttributes["onChange"];
 }
 
-const CheckBox: React.FC<CheckBoxProps> = ({ label, checked, name, onChange }) => {
+const CheckBox = React.forwardRef<HTMLInputElement, CheckBoxProps>(({ label, name, ...props }, ref) => {
+	const [checked, setChecked] = React.useState(props.value ?? false);
+
 	const boxClassName: ReactLabelAttributes["className"] = [
 		"relative",
 		"h-5",
@@ -24,13 +23,20 @@ const CheckBox: React.FC<CheckBoxProps> = ({ label, checked, name, onChange }) =
 		"data-[checked='true']:bg-blue-500",
 	].join(" ");
 
+	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		props.onChange?.(e);
+		setChecked(e.target.checked);
+	};
+
 	return (
 		<div className="flex items-center gap-2 [&:has(label:hover)>label]:border-blue-500">
 			<label data-checked={checked} htmlFor={name} className={boxClassName}>
 				<input
 					type="checkbox"
-					name={name}
 					id={name}
+					ref={ref}
+					name={name}
+					{...props}
 					onChange={onChange}
 					className="h-full w-full appearance-none"
 				/>
@@ -45,6 +51,6 @@ const CheckBox: React.FC<CheckBoxProps> = ({ label, checked, name, onChange }) =
 			)}
 		</div>
 	);
-};
+});
 
 export default CheckBox;
