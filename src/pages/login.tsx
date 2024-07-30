@@ -9,55 +9,36 @@ import { MdAlternateEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { LeftSide, RightSide } from "@components/sides";
 import { login, LoginResults } from "@features/Form/services/login";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { EMAIL_REGEX } from "@utils/defs";
+
+interface LoginFields {
+	email: string;
+	password: string;
+	rememberMe: boolean;
+}
 
 const LoginPage: React.FC = () => {
 	const navigate = useNavigate();
-
 	const [showPassword, setShowPassword] = useShowPassword();
-	const [{ emailError, passwordError }, setError] = React.useState({
-		emailError: "",
-		passwordError: "",
-	});
 
-	const [{ email, password, rememberMe }, setForm] = React.useState({
-		email: "",
-		password: "",
-		rememberMe: false,
-	});
+	const {
+		register,
+		setError,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<LoginFields>({ defaultValues: { rememberMe: false } });
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value, checked } = e.target;
-
-		if (name === "rememberMe") {
-			return setForm((prev) => ({ ...prev, [name]: checked }));
-		}
-
-		setForm((prev) => ({ ...prev, [name]: value }));
-		setError((prev) => ({ ...prev, [`${name}Error`]: "" }));
-	};
-
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
-
-		if (!email) {
-			return setError((prev) => ({ ...prev, emailError: "Email is required" }));
-		}
-
-		if (!password) {
-			return setError((prev) => ({ ...prev, passwordError: "Password is required" }));
-		}
-
-		setError({ emailError: "", passwordError: "" });
-
+	const onSubmit: SubmitHandler<LoginFields> = async ({ email, password, rememberMe }) => {
 		try {
 			const response = await login(email, password, rememberMe);
 
 			switch (response) {
 				case LoginResults.EMAIL_NOT_FOUND:
-					setError((prev) => ({ ...prev, emailError: "Email not found" }));
+					setError("email", { message: "Email not found" });
 					return;
 				case LoginResults.INVALID_PASSWORD:
-					setError((prev) => ({ ...prev, passwordError: "Invalid password" }));
+					setError("password", { message: "Invalid password" });
 					return;
 				case LoginResults.BAD_REQUEST:
 					alert("Bad Request");
@@ -79,17 +60,30 @@ const LoginPage: React.FC = () => {
 		}
 	};
 
+	console.log(
+		register("email", {
+			required: "Email is required",
+			pattern: {
+				value: EMAIL_REGEX,
+				message: "Field must be a valid email",
+			},
+		}),
+	);
+
 	return (
-		<Form onSubmit={handleSubmit} size="w450px">
+		<Form onSubmit={handleSubmit(onSubmit)} size="w450px">
 			<h1 className="mb-4 text-center text-4xl font-bold">Login</h1>
 			<div className="flex flex-col gap-4">
 				<InputBox
 					label="Email"
-					name="email"
-					type="email"
-					value={email}
-					error={emailError}
-					onChange={handleChange}
+					error={errors.email?.message}
+					{...register("email", {
+						required: "Email is required",
+						pattern: {
+							value: EMAIL_REGEX,
+							message: "Field must be a valid email",
+						},
+					})}
 				>
 					<LeftSide>
 						<MdAlternateEmail className="text-lg" />
@@ -97,11 +91,9 @@ const LoginPage: React.FC = () => {
 				</InputBox>
 				<InputBox
 					label="Password"
-					name="password"
-					value={password}
-					error={passwordError}
-					onChange={handleChange}
+					error={errors.password?.message}
 					type={showPassword ? "text" : "password"}
+					{...register("password", { required: "Password is required" })}
 				>
 					<LeftSide>
 						<CgLock className="text-lg" />
@@ -109,7 +101,7 @@ const LoginPage: React.FC = () => {
 					<RightSide>{setShowPassword}</RightSide>
 				</InputBox>
 				<div className="flex items-center justify-between">
-					<CheckBox name="rememberMe" label="Remember Me" checked={rememberMe} onChange={handleChange} />
+					<CheckBox label="Remember Me" {...register("rememberMe")} />
 					<Link to="/login" className="text-sm text-blue-500">
 						Forgot password?
 					</Link>
