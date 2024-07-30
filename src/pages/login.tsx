@@ -5,7 +5,7 @@ import Form from "@components/form";
 import InputBox from "@components/input-box";
 import { LeftSide, RightSide } from "@components/sides";
 import useShowPassword from "@components/use-show-password";
-import { LoginError } from "@features/login/error";
+import { LoginError } from "@features/login/defs";
 import { LOGIN } from "@graphql/mutations";
 import { GraphqlError } from "@services/graphql";
 import { EMAIL_REGEX } from "@utils/defs";
