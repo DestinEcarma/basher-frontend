@@ -8,5 +8,11 @@
 	"[markdown]": {
 		"editor.wordWrap": "on",
 		"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-	}
+	},
+
+	// Tailwind CSS IntelliSense configuration
+	"tailwindCSS.experimental.classRegex": [
+		["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+		["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+	]
 }
