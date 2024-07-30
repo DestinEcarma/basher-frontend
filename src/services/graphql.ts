@@ -5,7 +5,6 @@ import { GraphQLFormattedError } from "graphql";
 export interface GraphqlError extends GraphQLFormattedError {
 	readonly extensions?: {
 		readonly code?: string;
-		readonly reason?: string;
 	};
 }
 

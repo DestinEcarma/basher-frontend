@@ -36,7 +36,7 @@ const SignUpPage: React.FC = () => {
 		if (!error) return;
 
 		error.graphQLErrors.forEach((err: GraphqlError) => {
-			switch (err.extensions?.reason) {
+			switch (err.message) {
 				case GraphqlErrorType.EMAIL_TAKEN:
 					setError("email", { message: "Email is already taken" });
 					return;
