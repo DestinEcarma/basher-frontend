@@ -119,7 +119,7 @@ const LoginPage: React.FC = () => {
 				</Button>
 				<p className="flex justify-center gap-2 text-sm">
 					Don't have an account?
-					<Link to="/signup" className="text-blue-500">
+					<Link to="/sign-up" className="text-blue-500">
 						Sign Up
 					</Link>
 				</p>
