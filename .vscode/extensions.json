@@ -8,6 +8,7 @@
 		"wix.vscode-import-cost",
 		"csstools.postcss",
 		"esbenp.prettier-vscode",
-		"bradlc.vscode-tailwindcss"
+		"bradlc.vscode-tailwindcss",
+		"apollographql.vscode-apollo"
 	]
 }
