@@ -38,8 +38,6 @@ const LoginPage: React.FC = () => {
 		if (!error) return;
 
 		error.graphQLErrors.forEach((err: GraphqlError) => {
-			console.log(err.extensions?.reason);
-
 			switch (err.extensions?.reason) {
 				case LoginError.EMAIL_NOT_FOUND:
 					setError("email", { message: "Email not found" });
