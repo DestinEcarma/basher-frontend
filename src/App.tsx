@@ -8,7 +8,7 @@ import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 
 const App: React.FC = () => {
 	return (
-		<div className="min-h-screen bg-[#F6F6F9]">
+		<div className="flex h-dvh flex-col">
 			<Logo />
 			<BrowserRouter>
 				<Suspense fallback={<div>Loading...</div>}>
