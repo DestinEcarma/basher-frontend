@@ -1,4 +1,4 @@
-export default {
+module.exports = {
 	client: {
 		service: {
 			name: "basher",
