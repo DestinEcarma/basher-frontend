@@ -4,7 +4,7 @@ import LoginPage from "@pages/login";
 import SignUpPage from "@pages/sign-up";
 import TopicPage from "@pages/topic";
 import React, { Suspense } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 
 const App: React.FC = () => {
 	return (
@@ -16,9 +16,9 @@ const App: React.FC = () => {
 						<Route
 							path="/"
 							element={
-								<a href="/forum" className="text-blue-500 underline">
+								<Link to="/forum" className="text-blue-500 underline">
 									Forum
-								</a>
+								</Link>
 							}
 						/>
 						<Route path="/login" element={<LoginPage />} />

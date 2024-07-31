@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface TagsProps {
 	tags: string[];
@@ -9,9 +10,9 @@ const Tags: React.FC<TagsProps> = ({ tags }) => {
 		<div className="mb-3 mt-1 flex gap-1 text-xs leading-none text-[#0096FB]">
 			{tags.map((tag, i) => {
 				return (
-					<a href={`/topic/${tag.substring(1)}`} key={i}>
+					<Link to={`/topic/${tag.substring(1)}`} key={i}>
 						{i !== tags.length - 1 ? `#${tag},` : `#tag`}
-					</a>
+					</Link>
 				);
 			})}
 		</div>

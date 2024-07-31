@@ -6,7 +6,7 @@ import { useQuery } from "@apollo/client";
 import { GET_TOPIC, GET_REPLIES } from "@graphql/queries";
 import { GraphqlError, GraphqlErrorType } from "@services/graphql";
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const TopicPage: React.FC = () => {
@@ -20,6 +20,19 @@ const TopicPage: React.FC = () => {
 			id,
 		},
 	});
+
+	const useScrollToHash = () => {
+		const { hash } = useLocation();
+
+		useEffect(() => {
+			if (hash) {
+				const element = document.getElementById(hash.substring(1));
+				if (element) {
+					element.scrollIntoView({ behavior: "smooth" });
+				}
+			}
+		}, [hash]);
+	};
 
 	const repliesResponse = useQuery(GET_REPLIES, {
 		variables: {
@@ -96,6 +109,8 @@ const TopicPage: React.FC = () => {
 
 		setReplies(repliesResponse.data.reply.getFromTopic);
 	}, [repliesResponse]);
+
+	useScrollToHash();
 
 	return (
 		<div className="w-full bg-[#F6F6F9] pb-11">

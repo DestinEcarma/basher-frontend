@@ -10,7 +10,10 @@ export interface ReplyProps {
 	};
 	content: string;
 	activity: string;
-	parent?: string;
+	parent?: {
+		id: number;
+		userIndex: number;
+	};
 }
 
 export async function getReplies(topic_id: string, offset: number): Promise<ReplyProps[] | null> {

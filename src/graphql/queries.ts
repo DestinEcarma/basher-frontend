@@ -44,7 +44,10 @@ export const GET_REPLIES = gql`
 				id
 				userIndex
 				content
-				parent
+				parent {
+					id
+					userIndex
+				}
 				activity
 				counter {
 					likes
