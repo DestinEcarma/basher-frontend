@@ -1,61 +1,67 @@
-import ForumContainer from "../features/Forum/ForumContainer";
-import SearchBarContainer from "../features/Forum/SearchBarContainer";
-// import { Tables, Topic } from "../utils/sample-data";
-import { getForumTopics } from "../features/Forum/services/gettopics";
-import { TopicProps } from "../features/Topic/services/gettopic";
-import React, { useState, useEffect } from "react";
+import { useQuery } from "@apollo/client";
+import Button from "@components/button";
+import TopicRow from "@features/Forum/components/topic-row";
+import TopicSkeleton from "@features/Forum/components/topic-skeleton";
+import { GET_TOPICS, GetTopicsQuery } from "@features/Forum/utils/defs";
+import React, { useEffect } from "react";
+import { FaPlus } from "react-icons/fa";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 const ForumPage: React.FC = () => {
-	const [topics, setTopics] = useState<TopicProps[] | null>(null);
-	const [searchTerm, setSearchTerm] = useState("");
-	const [sortType, setSortType] = useState<"new" | "top" | null>(null);
-	const [offSet] = useState<number>(0);
+	const { loading, error, data } = useQuery<GetTopicsQuery>(GET_TOPICS, {
+		variables: {
+			offset: 0,
+		},
+	});
 
 	useEffect(() => {
-		let filteredTopics = null; //just so i can use haha
+		if (!error) return;
 
-		if (topics !== null) {
-			filteredTopics = topics.filter((topic) => topic.title.toLowerCase().includes(searchTerm.toLowerCase()));
-
-			if (sortType === "new") {
-				filteredTopics = filteredTopics.sort(
-					(a, b) => new Date(b.activity).getTime() - new Date(a.activity).getTime(),
-				);
-			} else if (sortType === "top") {
-				filteredTopics = filteredTopics.sort(
-					(a, b) => b.counter.replies + b.counter.likes - (a.counter.replies + a.counter.likes),
-				);
-			}
-		}
-
-		setTopics(filteredTopics);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [searchTerm, sortType]);
-
-	useEffect(() => {
-		async function receiveForumTopics() {
-			if (offSet != null) {
-				try {
-					const topicsResult: TopicProps[] | null = await getForumTopics(offSet);
-					if (topicsResult) {
-						setTopics(topicsResult);
-					}
-				} catch (e) {
-					console.error(e);
-				}
-			}
-		}
-
-		receiveForumTopics();
-	}, [offSet]);
+		// TODO: Implement error handling
+		console.error(error);
+	});
 
 	return (
-		<div className="flex flex-col items-center bg-gray-100">
-			<div>
-				<SearchBarContainer onSearch={setSearchTerm} onSort={setSortType} />
+		<div className="mx-auto flex h-full w-full flex-col gap-8 pb-8 md:max-w-3xl lg:max-w-7xl">
+			{/*
+			// TODO: Convert to a separate component
+			*/}
+			<div className="flex w-full justify-between gap-8 rounded-lg bg-white px-8 py-4 shadow-lg">
+				<form className="flex flex-grow items-center gap-2">
+					<Button variant="ghost" size="sm" className="group">
+						<FaMagnifyingGlass className="text-gray-400 transition-colors group-hover:text-black" />
+					</Button>
+					<input placeholder="Search" className="flex-grow" />
+				</form>
+				<div className="flex gap-2">
+					<Button variant="ghost" size="sm" className="font-normal">
+						New
+					</Button>
+					<Button variant="ghost" size="sm" className="font-normal">
+						Unread
+					</Button>
+					<Button variant="ghost" size="sm" className="font-normal">
+						Top
+					</Button>
+					<Button size="sm" className="flex items-center gap-2 font-normal">
+						<FaPlus />
+						New Topic
+					</Button>
+				</div>
 			</div>
-			<div>
-				<ForumContainer topics={topics} />
+			<div className="h-full w-full rounded-lg bg-white p-8 shadow-lg">
+				<table className="w-full table-auto">
+					<thead>
+						<tr>
+							<th className="w-full text-left">Topic</th>
+							<th className="px-4 font-normal text-gray-500">Replies</th>
+							<th className="px-4 font-normal text-gray-500">Likes</th>
+							<th className="px-4 font-normal text-gray-500">Activity</th>
+						</tr>
+					</thead>
+					{loading && <TopicSkeleton />}
+					{!loading && data?.topic.get.map((topic) => <TopicRow key={topic.id} {...topic} />)}
+				</table>
 			</div>
 		</div>
 	);

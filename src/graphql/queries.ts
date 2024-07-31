@@ -1,22 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const GET_TOPICS = gql`
-	query GetTopics($offset: Int!) {
-		topic {
-			get(offset: $offset) {
-				id
-				title
-				tags
-				activity
-				counter {
-					likes
-					replies
-				}
-			}
-		}
-	}
-`;
-
 export const GET_TOPIC = gql`
 	query GetTopic($id: ID!) {
 		topic {
