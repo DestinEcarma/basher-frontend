@@ -28,7 +28,6 @@ function getCurrentTime() {
 const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 	const [willReply, setWillReply] = useState(false);
 	const [showSubReplies, setShowSubReplies] = useState(false);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [subReplies, setSubReplies] = useState<
 		{
 			id: number;
