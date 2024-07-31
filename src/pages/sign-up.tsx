@@ -5,7 +5,7 @@ import InputBox from "@components/input-box";
 import { LeftSide, RightSide } from "@components/sides";
 import useShowPassword from "@components/use-show-password";
 import { PASSWORD_REGEX, SIGN_UP, SignUpFields } from "@features/sign-up/defs";
-import { GraphqlError, GraphqlErrorType } from "@services/graphql";
+import { GraphqlErrorType } from "@services/graphql";
 import { EMAIL_REGEX } from "@utils/defs";
 import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -13,6 +13,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { CgLock } from "react-icons/cg";
 import { MdAlternateEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const SignUpPage: React.FC = () => {
 	const navigate = useNavigate();
@@ -29,28 +30,23 @@ const SignUpPage: React.FC = () => {
 	useEffect(() => {
 		if (!error) return;
 
-		error.graphQLErrors.forEach((err: GraphqlError) => {
-			switch (err.message) {
-				case GraphqlErrorType.EMAIL_TAKEN:
-					setError("email", { message: "Email is already taken" });
-					return;
-				case GraphqlErrorType.BAD_REQUEST:
-					alert("Bad Request");
-					return;
-				case GraphqlErrorType.INTERNAL_SERVER_ERROR:
-					alert("Internal Server Error");
-					return;
-				default:
-					alert("Unknown error");
-					return;
-			}
+		error.graphQLErrors.forEach(({ message }) => {
+			if (message !== GraphqlErrorType.EMAIL_TAKEN) return;
+
+			setError("email", { message: "Email is already taken" });
 		});
 	}, [error, setError]);
 
 	useEffect(() => {
 		if (!data) return;
 
-		navigate("/forum");
+		const onClose = () => navigate("/forum");
+
+		toast.success("Signed up successfully", {
+			duration: 3000,
+			onDismiss: onClose,
+			onAutoClose: onClose,
+		});
 	}, [data, navigate]);
 
 	const onSubmit: SubmitHandler<SignUpFields> = ({ email, password, confirmPassword }) => {

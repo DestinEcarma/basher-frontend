@@ -6,7 +6,7 @@ import InputBox from "@components/input-box";
 import { LeftSide, RightSide } from "@components/sides";
 import useShowPassword from "@components/use-show-password";
 import { LOGIN, LoginFields } from "@features/login/defs";
-import { GraphqlError, GraphqlErrorType } from "@services/graphql";
+import { GraphqlErrorType } from "@services/graphql";
 import { EMAIL_REGEX } from "@utils/defs";
 import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -32,23 +32,14 @@ const LoginPage: React.FC = () => {
 	useEffect(() => {
 		if (!error) return;
 
-		error.graphQLErrors.forEach((err: GraphqlError) => {
-			switch (err.message) {
+		error.graphQLErrors.forEach(({ message }) => {
+			switch (message) {
 				case GraphqlErrorType.EMAIL_NOT_FOUND:
 					setError("email", { message: "Email not found" });
-					return;
+					break;
 				case GraphqlErrorType.INVALID_PASSWORD:
 					setError("password", { message: "Invalid password" });
-					return;
-				case GraphqlErrorType.BAD_REQUEST:
-					toast.error("An error occurred: Bad Request");
-					return;
-				case GraphqlErrorType.INTERNAL_SERVER_ERROR:
-					toast.error("An error occurred: Internal Server Error");
-					return;
-				default:
-					toast.error("An error occurred: Unknown Error");
-					return;
+					break;
 			}
 		});
 	}, [error, setError]);

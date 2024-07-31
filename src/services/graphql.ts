@@ -1,6 +1,7 @@
 import { ApolloClient, from, HttpLink, InMemoryCache } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { GraphQLFormattedError } from "graphql";
+import { toast } from "sonner";
 
 export interface GraphqlError extends GraphQLFormattedError {
 	readonly extensions?: {
@@ -25,16 +26,25 @@ export enum GraphqlErrorType {
 export const client = new ApolloClient({
 	cache: new InMemoryCache(),
 	link: from([
-		// Temporary error handling
 		onError(({ graphQLErrors, networkError }) => {
 			if (graphQLErrors) {
-				graphQLErrors.map(({ message, locations, path }) => {
-					console.error(`Graphql error ${message} ${locations} ${path}`);
+				graphQLErrors.map(({ message }: GraphqlError) => {
+					switch (message) {
+						case GraphqlErrorType.BAD_REQUEST:
+							toast.error("An error occurred: Bad Request");
+							break;
+						case GraphqlErrorType.INTERNAL_SERVER_ERROR:
+							toast.error("An error occurred: Internal Server Error");
+							break;
+						default:
+							toast.error("An error occurred: Unknown Error");
+							break;
+					}
 				});
 			}
 
 			if (networkError) {
-				alert(`Network error ${networkError}`);
+				toast.error("An error occurred: Network Error");
 			}
 		}),
 
