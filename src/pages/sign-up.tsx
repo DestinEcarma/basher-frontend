@@ -123,7 +123,7 @@ const SignUpPage: React.FC = () => {
 					</LeftSide>
 					<RightSide>{setShowPassword}</RightSide>
 				</InputBox>
-				<Button type="submit" size="full" className="flex items-center justify-center" disabled={loading}>
+				<Button type="submit" size="w-full" className="flex items-center justify-center" disabled={loading}>
 					{loading ? <AiOutlineLoading3Quarters className="my-1 animate-spin" /> : "Sign Up"}
 				</Button>
 				<p className="flex justify-center gap-2 text-sm">
