@@ -4,21 +4,15 @@ import Form from "@components/form";
 import InputBox from "@components/input-box";
 import { LeftSide, RightSide } from "@components/sides";
 import useShowPassword from "@components/use-show-password";
-import { SIGN_UP } from "@graphql/mutations";
+import { PASSWORD_REGEX, SIGN_UP, SignUpFields } from "@features/sign-up/defs";
 import { GraphqlError, GraphqlErrorType } from "@services/graphql";
-import { EMAIL_REGEX, PASSWORD_REGEX } from "@utils/defs";
+import { EMAIL_REGEX } from "@utils/defs";
 import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { CgLock } from "react-icons/cg";
 import { MdAlternateEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-
-interface SignUpFields {
-	email: string;
-	password: string;
-	confirmPassword: string;
-}
 
 const SignUpPage: React.FC = () => {
 	const navigate = useNavigate();
@@ -101,7 +95,7 @@ const SignUpPage: React.FC = () => {
 						validate: (value) => {
 							if (value.match(PASSWORD_REGEX)) return true;
 
-							return "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+							return "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special charact";
 						},
 					})}
 				>

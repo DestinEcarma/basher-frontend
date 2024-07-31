@@ -5,7 +5,7 @@ import Form from "@components/form";
 import InputBox from "@components/input-box";
 import { LeftSide, RightSide } from "@components/sides";
 import useShowPassword from "@components/use-show-password";
-import { LOGIN } from "@graphql/mutations";
+import { LOGIN, LoginFields } from "@features/login/defs";
 import { GraphqlError, GraphqlErrorType } from "@services/graphql";
 import { EMAIL_REGEX } from "@utils/defs";
 import React, { useEffect } from "react";
@@ -14,12 +14,6 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { CgLock } from "react-icons/cg";
 import { MdAlternateEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-
-interface LoginFields {
-	email: string;
-	password: string;
-	rememberMe: boolean;
-}
 
 const LoginPage: React.FC = () => {
 	const navigate = useNavigate();
