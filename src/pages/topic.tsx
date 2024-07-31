@@ -2,11 +2,11 @@ import ReplyContainer from "../features/Topic/components/ReplyContainer";
 import TopicContainer from "../features/Topic/components/TopicContainer";
 import { ReplyProps } from "../features/Topic/services/getreplies";
 import { TopicProps } from "../features/Topic/services/gettopic";
+import { useQuery } from "@apollo/client";
+import { GET_TOPIC, GET_REPLIES } from "@graphql/queries";
 import { GraphqlError, GraphqlErrorType } from "@services/graphql";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@apollo/client";
-import { GET_TOPIC, GET_REPLIES } from "@graphql/queries";
 import { useNavigate } from "react-router-dom";
 
 const TopicPage: React.FC = () => {
@@ -17,17 +17,17 @@ const TopicPage: React.FC = () => {
 	const navigate = useNavigate();
 	const topicResponse = useQuery(GET_TOPIC, {
 		variables: {
-			id
-		}
+			id,
+		},
 	});
 
 	const repliesResponse = useQuery(GET_REPLIES, {
 		variables: {
 			input: {
 				id,
-				offset
-			}
-		}
+				offset,
+			},
+		},
 	});
 
 	const defaultTopic: TopicProps = {
@@ -45,10 +45,10 @@ const TopicPage: React.FC = () => {
 	};
 
 	useEffect(() => {
-		if(!topicResponse || !topicResponse.error) return;
+		if (!topicResponse || !topicResponse.error) return;
 
 		topicResponse.error.graphQLErrors.forEach((err: GraphqlError) => {
-			switch(err.message) {
+			switch (err.message) {
 				case GraphqlErrorType.BAD_REQUEST:
 					alert("Bad request");
 					return;
@@ -59,14 +59,14 @@ const TopicPage: React.FC = () => {
 					alert("Unknown Error");
 					return;
 			}
-		})
+		});
 	}, [topicResponse]);
 
 	useEffect(() => {
 		console.log(topicResponse);
-		if(!topicResponse || !topicResponse.data) return;
+		if (!topicResponse || !topicResponse.data) return;
 
-		if(!topicResponse.data.topic.getById) {
+		if (!topicResponse.data.topic.getById) {
 			navigate("/");
 		}
 
@@ -74,10 +74,10 @@ const TopicPage: React.FC = () => {
 	}, [topicResponse, navigate]);
 
 	useEffect(() => {
-		if(!repliesResponse || !repliesResponse.error) return;
+		if (!repliesResponse || !repliesResponse.error) return;
 
 		repliesResponse.error.graphQLErrors.forEach((err: GraphqlError) => {
-			switch(err.message) {
+			switch (err.message) {
 				case GraphqlErrorType.BAD_REQUEST:
 					alert("Bad request");
 					return;
@@ -88,11 +88,11 @@ const TopicPage: React.FC = () => {
 					alert("Unknown Error");
 					return;
 			}
-		})
+		});
 	}, [repliesResponse]);
 
 	useEffect(() => {
-		if(!repliesResponse || !repliesResponse.data) return;
+		if (!repliesResponse || !repliesResponse.data) return;
 
 		setReplies(repliesResponse.data.reply.getFromTopic);
 	}, [repliesResponse]);
