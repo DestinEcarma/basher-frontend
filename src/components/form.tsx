@@ -5,7 +5,7 @@ import React from "react";
 interface FormProps extends Omit<React.HTMLProps<HTMLFormElement>, "size">, VariantProps<typeof variants> {}
 
 const variants = cva(
-	"fixed left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-8 shadow-lg mx-2",
+	"fixed left-1/2 top-1/2 mx-2 w-full -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-8 shadow-lg",
 	{
 		variants: {
 			size: {

@@ -1,6 +1,6 @@
-import React from "react";
 import { LeftSide, RightSide } from "./sides";
 import { ReactInputAttributes } from "@utils/defs";
+import React from "react";
 
 interface InputBoxProps extends Omit<ReactInputAttributes, "type"> {
 	label?: string;

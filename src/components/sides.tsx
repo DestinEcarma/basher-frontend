@@ -1,5 +1,5 @@
-import React from "react";
 import { Children } from "@utils/defs";
+import React from "react";
 
 export const LeftSide: React.FC<Children> = ({ children }) => {
 	return children;

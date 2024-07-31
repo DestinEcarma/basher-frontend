@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import ReplyButton from "./ReplyButton";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ToggleSwitch from "../../../components/ToggleSwitch";
 import Preview from "./Preview";
+import ReplyButton from "./ReplyButton";
 import ReplyText from "./ReplyText";
+import React, { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface ReplyInputContainerProps {
 	User?: React.ReactElement;

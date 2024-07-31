@@ -1,5 +1,5 @@
-import axios from "axios";
 import { Topic as TopicProps, Reply as ReplyProps, Tables } from "../utils/sample-data";
+import axios from "axios";
 
 export const USER_PATH = "/user";
 export const GRAPHQL_PATH = "/graphql";

@@ -9,3 +9,5 @@ export type ReactButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement
 export const EMAIL_REGEX =
 	// eslint-disable-next-line no-useless-escape
 	/(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@[*[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+]*/;
+
+export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;

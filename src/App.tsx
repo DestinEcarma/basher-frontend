@@ -1,10 +1,10 @@
-import React, { Suspense } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import TopicPage from "@pages/topic";
+import Logo from "@components/Logo";
+import ForumPage from "@pages/forum";
 import LoginPage from "@pages/login";
 import SignUpPage from "@pages/sign-up";
-import ForumPage from "@pages/forum";
-import Logo from "@components/Logo";
+import TopicPage from "@pages/topic";
+import React, { Suspense } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App: React.FC = () => {
 	return (

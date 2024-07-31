@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import SearchBarContainer from "../features/Forum/SearchBarContainer";
 import ForumContainer from "../features/Forum/ForumContainer";
+import SearchBarContainer from "../features/Forum/SearchBarContainer";
 // import { Tables, Topic } from "../utils/sample-data";
 import { getForumTopics } from "../features/Forum/services/gettopics";
 import { TopicProps } from "../features/Topic/services/gettopic";
+import React, { useState, useEffect } from "react";
 
 const ForumPage: React.FC = () => {
 	const [topics, setTopics] = useState<TopicProps[] | null>(null);

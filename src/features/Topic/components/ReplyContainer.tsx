@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import User from "./User";
-import ReplyContent from "./ReplyContent";
-import ReplyInputContainer from "./ReplyInputContainer";
-import DropDownButton from "./DropDownButton";
-import TopicButton from "./TopicButton";
-import ReplyButton from "./ReplyButton";
-import ReplyDropdown from "./ReplyDropDown";
 import { ReplyProps } from "../services/getreplies";
-import { FaChevronDown } from "react-icons/fa";
+import DropDownButton from "./DropDownButton";
+import ReplyButton from "./ReplyButton";
+import ReplyContent from "./ReplyContent";
+import ReplyDropdown from "./ReplyDropDown";
+import ReplyInputContainer from "./ReplyInputContainer";
+import TopicButton from "./TopicButton";
+import User from "./User";
+import React, { useEffect, useState } from "react";
 import { BiLike, BiLinkAlt } from "react-icons/bi";
+import { FaChevronDown } from "react-icons/fa";
 
 interface ReplyContainerProps {
 	reply: ReplyProps;

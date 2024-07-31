@@ -5,26 +5,21 @@
 // import TopicIcons from "./TopicIcons";
 // import { Topic as TopicProps } from "../../../utils/sample-data";
 // import ReplyInputContainer from "./ReplyInputContainer";
-
 // interface TopicContainerProps {
 // 	topic: TopicProps;
 // }
-
 // const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 // 	const tags: string[] = ["#hate", "#usc", "#godwin"];
 // 	const [willReply, setWillReply] = useState(false);
-
 // 	const openReply: React.MouseEventHandler = () => {
 // 		setWillReply((prev) => !prev);
 // 	};
-
 // 	return (
 // 		<div className="flex flex-col justify-center items-center mt-[2.813rem]">
 // 			<div className="bg-white lg:max-w-7xl md:max-w-3xl w-full shadow-lg rounded-md pt-5 px-4 pb-3">
 // 				<h1 className="font-bold text-2xl leading-none">{topic.title}</h1>
 // 				<Tags tags={tags} />
 // 				<User author={"0"} isOP={true} />
-
 // 				<TopicContent content={topic.content} />
 // 				<TopicIcons openReply={openReply} />
 // 			</div>
@@ -32,17 +27,15 @@
 // 		</div>
 // 	);
 // };
-
 // export default TopicContainer;
-
 // api version
-import React, { useState } from "react";
-import User from "./User";
+import { TopicProps } from "../services/gettopic";
+import ReplyInputContainer from "./ReplyInputContainer";
 import Tags from "./Tags";
 import TopicContent from "./TopicContent";
 import TopicIcons from "./TopicIcons";
-import { TopicProps } from "../services/gettopic";
-import ReplyInputContainer from "./ReplyInputContainer";
+import User from "./User";
+import React, { useState } from "react";
 
 interface TopicContainerProps {
 	topic: TopicProps;

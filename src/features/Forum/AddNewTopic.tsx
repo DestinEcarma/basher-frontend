@@ -1,6 +1,6 @@
+import ReplyText from "../Topic/components/ReplyText";
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import ReplyText from "../Topic/components/ReplyText";
 
 const AddNewTopic: React.FC = () => {
 	const [showReplyInput, setShowReplyInput] = useState(false);

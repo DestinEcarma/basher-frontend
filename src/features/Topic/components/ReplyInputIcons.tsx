@@ -1,6 +1,6 @@
+import ReplyInputButton from "./ReplyInputButton";
 import React, { SetStateAction } from "react";
 import { FaBold, FaItalic, FaLink, FaCode, FaListUl, FaListOl } from "react-icons/fa";
-import ReplyInputButton from "./ReplyInputButton";
 
 interface ReplyInputIconsProps {
 	setPreview: React.Dispatch<SetStateAction<string>>;

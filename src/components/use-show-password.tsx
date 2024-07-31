@@ -1,5 +1,5 @@
-import React from "react";
 import { toggle } from "@utils/helper";
+import React from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const useShowPassword = (): [boolean, JSX.Element] => {

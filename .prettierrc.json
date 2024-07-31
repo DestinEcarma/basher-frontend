@@ -1,11 +1,11 @@
 {
+	"plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+
 	"useTabs": true,
 	"tabWidth": 4,
 	"semi": true,
 	"singleQuote": false,
 	"printWidth": 120,
-
-	"plugins": ["prettier-plugin-tailwindcss"],
 
 	"overrides": [
 		{
@@ -15,5 +15,8 @@
 				"useTabs": false
 			}
 		}
-	]
+	],
+
+	"tailwindFunctions": ["cva"],
+	"tailwindAttributes": [".*ClassName"]
 }

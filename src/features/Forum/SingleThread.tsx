@@ -1,7 +1,7 @@
-import React from "react";
 // import { Topic } from "../../utils/sample-data";
 import { TopicProps } from "../Topic/services/gettopic";
 import TopicTag from "./TopicTag";
+import React from "react";
 
 interface SingleThreadProps {
 	topic: TopicProps;

@@ -1,7 +1,7 @@
-import React from "react";
+import { TopicProps } from "../Topic/services/gettopic";
 // import { Topic } from "../../utils/sample-data";
 import SingleThread from "./SingleThread";
-import { TopicProps } from "../Topic/services/gettopic";
+import React from "react";
 
 interface ForumProps {
 	topics: TopicProps[] | null;

@@ -1,6 +1,6 @@
+import { ReactInputAttributes } from "@utils/defs";
 import React from "react";
 import { FaCheck } from "react-icons/fa";
-import { ReactInputAttributes } from "@utils/defs";
 
 interface CheckBoxProps extends ReactInputAttributes {
 	label?: string;
