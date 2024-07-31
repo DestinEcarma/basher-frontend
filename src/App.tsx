@@ -5,11 +5,13 @@ import SignUpPage from "@pages/sign-up";
 import TopicPage from "@pages/topic";
 import React, { Suspense } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { Toaster } from "sonner";
 
 const App: React.FC = () => {
 	return (
 		<div className="flex h-dvh flex-col">
 			<Logo />
+			<Toaster richColors duration={5000} closeButton position="top-right" />
 			<BrowserRouter>
 				<Suspense fallback={<div>Loading...</div>}>
 					<Routes>
