@@ -1,73 +1,34 @@
-// import { useState, useEffect, useRef } from "react";
-// import { useParams } from "react-router-dom";
-// import Logo from "../components/Logo";
-// import TopicContainer from "../features/Topic/components/TopicContainer";
-// import ReplyContainer from "../features/Topic/components/ReplyContainer";
-// import { Topic as TopicProps, Reply as ReplyProps } from "../utils/sample-data";
-// import { getTopic, getReplies } from "../services/api";
-// const Topic = () => {
-// 	const { id } = useParams<{ id: string }>();
-// 	const [topic, setTopic] = useState<TopicProps | undefined>(undefined);
-// 	const [replies, setReplies] = useState<ReplyProps[] | undefined>(undefined);
-// 	const hasLoaded = useRef<boolean>(false);
-// 	const defaultTopic: TopicProps = {
-// 		id: "-1",
-// 		author: "-1",
-// 		title: "",
-// 		content: "",
-// 		time: {
-// 			createdAt: new Date(),
-// 			updatedAt: new Date(),
-// 		},
-// 	};
-// 	useEffect(() => {
-// 		if (!hasLoaded.current) {
-// 			if (id) {
-// 				try {
-// 					const topicResult: TopicProps | undefined = getTopic(id);
-// 					const repliesResult: ReplyProps[] | undefined = getReplies(id);
-// 					if (topicResult) {
-// 						setTopic(topicResult);
-// 						setReplies(repliesResult);
-// 					} else {
-// 						window.location.href = "/";
-// 					}
-// 				} catch (e) {
-// 					console.error(e);
-// 				}
-// 			} else {
-// 				alert("No ID");
-// 			}
-// 		}
-// 		hasLoaded.current = true;
-// 	}, [id]);
-// 	return (
-// 		<div className="bg-[#F6F6F9] w-full min-h-screen py-11">
-// 			<Logo />
-// 			<TopicContainer topic={topic || defaultTopic} />
-// 			{replies &&
-// 				replies.map((reply, i) => {
-// 					return <ReplyContainer key={i} reply={reply} />;
-// 				})}
-// 		</div>
-// 	);
-// };
-// export default Topic;
-// api version
 import ReplyContainer from "../features/Topic/components/ReplyContainer";
 import TopicContainer from "../features/Topic/components/TopicContainer";
-import { getReplies, ReplyProps } from "../features/Topic/services/getreplies";
-import { getTopic, TopicProps } from "../features/Topic/services/gettopic";
-import React, { useState, useEffect, useRef } from "react";
+import { ReplyProps } from "../features/Topic/services/getreplies";
+import { TopicProps } from "../features/Topic/services/gettopic";
+import { GraphqlError, GraphqlErrorType } from "@services/graphql";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { GET_TOPIC, GET_REPLIES } from "@graphql/queries";
+import { useNavigate } from "react-router-dom";
 
 const TopicPage: React.FC = () => {
 	const { id } = useParams<{ id: string }>();
 	const [topic, setTopic] = useState<TopicProps | null>(null);
 	const [replies, setReplies] = useState<ReplyProps[] | null>(null);
-	const [offSet] = useState<number>(0);
+	const [offset] = useState<number>(0);
+	const navigate = useNavigate();
+	const topicResponse = useQuery(GET_TOPIC, {
+		variables: {
+			id
+		}
+	});
 
-	const hasLoaded = useRef<boolean>(false);
+	const repliesResponse = useQuery(GET_REPLIES, {
+		variables: {
+			input: {
+				id,
+				offset
+			}
+		}
+	});
 
 	const defaultTopic: TopicProps = {
 		id: "",
@@ -84,33 +45,57 @@ const TopicPage: React.FC = () => {
 	};
 
 	useEffect(() => {
-		async function receiveTopic(): Promise<void> {
-			if (id) {
-				try {
-					const topicResult: TopicProps | null = await getTopic(id);
-					const repliesResult: ReplyProps[] | null = await getReplies(id, offSet);
-					if (topicResult) {
-						setTopic(topicResult);
-						setReplies(repliesResult);
-						console.log(topicResult);
-					} else {
-						window.location.href = "/";
-					}
-				} catch (e) {
-					console.error(e);
-					// window.location.href = "/";
-				}
-			} else {
-				alert("No ID");
+		if(!topicResponse || !topicResponse.error) return;
+
+		topicResponse.error.graphQLErrors.forEach((err: GraphqlError) => {
+			switch(err.message) {
+				case GraphqlErrorType.BAD_REQUEST:
+					alert("Bad request");
+					return;
+				case GraphqlErrorType.INTERNAL_SERVER_ERROR:
+					alert("Internal Server Error");
+					return;
+				default:
+					alert("Unknown Error");
+					return;
 			}
+		})
+	}, [topicResponse]);
+
+	useEffect(() => {
+		console.log(topicResponse);
+		if(!topicResponse || !topicResponse.data) return;
+
+		if(!topicResponse.data.topic.getById) {
+			navigate("/");
 		}
 
-		if (!hasLoaded.current) {
-			receiveTopic();
-		}
+		setTopic(topicResponse.data.topic.getById);
+	}, [topicResponse, navigate]);
 
-		hasLoaded.current = true;
-	}, [id, offSet]);
+	useEffect(() => {
+		if(!repliesResponse || !repliesResponse.error) return;
+
+		repliesResponse.error.graphQLErrors.forEach((err: GraphqlError) => {
+			switch(err.message) {
+				case GraphqlErrorType.BAD_REQUEST:
+					alert("Bad request");
+					return;
+				case GraphqlErrorType.INTERNAL_SERVER_ERROR:
+					alert("Internal Server Error");
+					return;
+				default:
+					alert("Unknown Error");
+					return;
+			}
+		})
+	}, [repliesResponse]);
+
+	useEffect(() => {
+		if(!repliesResponse || !repliesResponse.data) return;
+
+		setReplies(repliesResponse.data.reply.getFromTopic);
+	}, [repliesResponse]);
 
 	return (
 		<div className="w-full bg-[#F6F6F9] pb-11">
