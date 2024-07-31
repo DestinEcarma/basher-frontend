@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client";
 import Button from "@components/button";
-import TopicRow from "@features/Forum/components/topic-row";
-import TopicSkeleton from "@features/Forum/components/topic-skeleton";
-import { GET_TOPICS, GetTopicsQuery } from "@features/Forum/utils/defs";
+import TopicRow from "@features/forum/components/topic-row";
+import TopicSkeleton from "@features/forum/components/topic-skeleton";
+import { GET_TOPICS, GetTopicsQuery } from "@features/forum/utils/defs";
 import React, { useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
