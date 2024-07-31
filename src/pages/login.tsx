@@ -12,8 +12,10 @@ import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { CgLock } from "react-icons/cg";
+import { FaCheck } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const LoginPage: React.FC = () => {
 	const navigate = useNavigate();
@@ -39,13 +41,13 @@ const LoginPage: React.FC = () => {
 					setError("password", { message: "Invalid password" });
 					return;
 				case GraphqlErrorType.BAD_REQUEST:
-					alert("Bad Request");
+					toast.error("An error occurred: Bad Request");
 					return;
 				case GraphqlErrorType.INTERNAL_SERVER_ERROR:
-					alert("Internal Server Error");
+					toast.error("An error occurred: Internal Server Error");
 					return;
 				default:
-					alert("Unknown error");
+					toast.error("An error occurred: Unknown Error");
 					return;
 			}
 		});
@@ -54,7 +56,13 @@ const LoginPage: React.FC = () => {
 	useEffect(() => {
 		if (!data) return;
 
-		navigate("/forum");
+		const onClose = () => navigate("/forum");
+
+		toast.success("Logged in successfully", {
+			duration: 3000,
+			onDismiss: onClose,
+			onAutoClose: onClose,
+		});
 	}, [data, navigate]);
 
 	const onSubmit: SubmitHandler<LoginFields> = ({ email, password, rememberMe }) => {
@@ -97,8 +105,19 @@ const LoginPage: React.FC = () => {
 						Forgot password?
 					</Link>
 				</div>
-				<Button type="submit" size="w-full" className="flex items-center justify-center" disabled={loading}>
-					{loading ? <AiOutlineLoading3Quarters className="my-1 animate-spin" /> : "Login"}
+				<Button
+					type="submit"
+					size="w-full"
+					className="flex items-center justify-center"
+					disabled={loading || data}
+				>
+					{loading ? (
+						<AiOutlineLoading3Quarters className="my-1 animate-spin" />
+					) : data ? (
+						<FaCheck />
+					) : (
+						"Login"
+					)}
 				</Button>
 				<p className="flex justify-center gap-2 text-sm">
 					Don't have an account?
