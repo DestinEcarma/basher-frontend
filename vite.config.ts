@@ -8,6 +8,7 @@ export default defineConfig({
 		alias: {
 			"@utils": "/src/utils",
 			"@pages": "/src/pages",
+			"@hooks": "/src/hooks",
 			"@graphql": "/src/graphql",
 			"@features": "/src/features",
 			"@services": "/src/services",
