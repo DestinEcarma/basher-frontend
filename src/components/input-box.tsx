@@ -1,46 +1,71 @@
 import { LeftSide, RightSide } from "./sides";
-import { ReactInputAttributes } from "@utils/defs";
+import { ReactInputAttributes, ReactLabelAttributes } from "@utils/defs";
+import { mergeClasses } from "@utils/helper";
 import React from "react";
 
-interface InputBoxProps extends Omit<ReactInputAttributes, "type"> {
+export interface InputBoxProps extends Omit<ReactInputAttributes, "type"> {
 	label?: string;
 	error?: string;
 	type?: Exclude<ReactInputAttributes["type"], "radio" | "checkbox">;
 }
 
-const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(
-	({ error, name, label, children, ...props }, ref) => {
-		const leftSide = [] as React.ReactNode[];
-		const rightSide = [] as React.ReactNode[];
+export type InputBoxPropsNoRef = Omit<InputBoxProps, "ref">;
 
-		React.Children.forEach(children, (child) => {
-			if (!React.isValidElement(child)) {
-				return;
-			}
+export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(({ error, name, label, ...props }, ref) => {
+	let customeLabel: React.ReactNode = undefined;
 
-			if (child.type === LeftSide) {
-				leftSide.push(child);
-			} else if (child.type === RightSide) {
-				rightSide.push(child);
-			}
-		});
+	React.Children.forEach(props.children, (child) => {
+		if (!React.isValidElement(child)) return;
 
+		if (child.type === InputLabel) {
+			customeLabel = child;
+		}
+	});
+
+	return (
+		<div className="flex flex-col gap-2">
+			{customeLabel ?? (label && <InputLabel htmlFor={name} children={label} />)}
+			<InputField id={name} placeholder={label} ref={ref} {...props} />
+			{error && <p className="text-xs text-red-500">{error}</p>}
+		</div>
+	);
+});
+
+export const InputLabel = React.forwardRef<HTMLLabelElement, ReactLabelAttributes>(
+	({ children, className, ...props }, ref) => {
 		return (
-			<div className="flex flex-col gap-2">
-				{label && (
-					<label htmlFor={name} className="w-fit text-sm font-medium hover:cursor-pointer">
-						{label}
-					</label>
-				)}
-				<div className="flex items-center gap-2 rounded-lg border p-2 shadow transition-colors [&:has(input:focus)]:border-blue-500">
-					{leftSide}
-					<input ref={ref} id={name} name={name} placeholder={label} {...props} className="w-full text-sm" />
-					{rightSide}
-				</div>
-				{error && <p className="text-xs text-red-500">{error}</p>}
-			</div>
+			<label
+				className={mergeClasses(["w-fit text-sm font-medium hover:cursor-pointer", className])}
+				ref={ref}
+				{...props}
+			>
+				{children}
+			</label>
 		);
 	},
 );
 
-export default InputBox;
+type FieldInputProps = Omit<InputBoxProps, "label" | "error">;
+
+const InputField = React.forwardRef<HTMLInputElement, FieldInputProps>(({ className, children, ...props }, ref) => {
+	let leftSide: React.ReactNode = undefined;
+	let rightSide: React.ReactNode = undefined;
+
+	React.Children.forEach(children, (child) => {
+		if (!React.isValidElement(child)) return;
+
+		if (child.type === LeftSide) {
+			leftSide = child;
+		} else if (child.type === RightSide) {
+			rightSide = child;
+		}
+	});
+
+	return (
+		<div className="flex items-center gap-2 rounded-lg border p-2 shadow transition-colors [&:has(input:focus)]:border-blue-500">
+			{leftSide}
+			<input className={mergeClasses(["w-full text-sm", className])} ref={ref} {...props} />
+			{rightSide}
+		</div>
+	);
+});

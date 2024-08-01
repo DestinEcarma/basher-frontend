@@ -3,7 +3,7 @@ import { mergeClasses } from "@utils/helper";
 import { VariantProps, cva } from "class-variance-authority";
 import React from "react";
 
-interface ButtonProps extends ReactButtonAttributes, VariantProps<typeof variants> {}
+export interface ButtonProps extends ReactButtonAttributes, VariantProps<typeof variants> {}
 
 const variants = cva(
 	[
@@ -29,8 +29,6 @@ const variants = cva(
 	},
 );
 
-const Button: React.FC<ButtonProps> = ({ size, variant, className, ...props }) => {
+export const Button: React.FC<ButtonProps> = ({ size, variant, className, ...props }) => {
 	return <button className={mergeClasses(variants({ variant, size, className }))} {...props} />;
 };
-
-export default Button;

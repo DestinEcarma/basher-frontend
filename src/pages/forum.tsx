@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import Button from "@components/button";
+import { Button } from "@components/button";
 import TopicRow from "@features/forum/components/topic-row";
 import TopicSkeleton from "@features/forum/components/topic-skeleton";
 import { GET_TOPICS, GetTopicsQuery } from "@features/forum/utils/defs";
