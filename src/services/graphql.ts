@@ -37,6 +37,10 @@ export const client = new ApolloClient({
 							toast.error("An error occurred: Internal Server Error");
 							break;
 						default:
+							if (Object.values(GraphqlErrorType).includes(message as GraphqlErrorType)) {
+								break;
+							}
+
 							toast.error("An error occurred: Unknown Error");
 							break;
 					}
