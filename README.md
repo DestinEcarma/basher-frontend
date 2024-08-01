@@ -1,6 +1,6 @@
 # Basher
 
-Basher is a forum-based web application where all users are anonymous. This project is built using React and TypeScript, following specific naming conventions for different types of files. It uses **Tailwind** CSS for styling and **Axios** for HTTP client requests.
+Basher is a forum-based web application where all users are anonymous. This project is built using React and TypeScript, following specific naming conventions for different types of files. It uses **Tailwind** CSS for styling and **Apollo** for HTTP client requests.
 
 ## Project Structure
 
