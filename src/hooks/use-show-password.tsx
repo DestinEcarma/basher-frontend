@@ -2,19 +2,20 @@ import { toggle } from "@utils/helper";
 import React from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-const useShowPassword = (): [boolean, JSX.Element] => {
+const useShowPassword = (): [boolean, React.FC] => {
 	const [showPassword, setShowPassword] = React.useState(false);
 
-	return [
-		showPassword,
+	const showPasswordButton: React.FC = () => (
 		<button
 			type="button"
 			onClick={() => setShowPassword(toggle)}
 			className="text-lg transition-transform hover:scale-125 focus:scale-125"
 		>
 			{showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
-		</button>,
-	];
+		</button>
+	);
+
+	return [showPassword, showPasswordButton];
 };
 
 export default useShowPassword;

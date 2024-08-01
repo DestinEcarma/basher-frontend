@@ -4,8 +4,8 @@ import CheckBox from "@components/checkbox";
 import Form from "@components/form";
 import InputBox from "@components/input-box";
 import { LeftSide, RightSide } from "@components/sides";
-import useShowPassword from "@components/use-show-password";
 import { LOGIN, LoginFields } from "@features/login/defs";
+import useShowPassword from "@hooks/use-show-password";
 import { GraphqlErrorType } from "@services/graphql";
 import { EMAIL_REGEX } from "@utils/defs";
 import React, { useEffect } from "react";
@@ -19,7 +19,7 @@ import { toast } from "sonner";
 
 const LoginPage: React.FC = () => {
 	const navigate = useNavigate();
-	const [showPassword, setShowPassword] = useShowPassword();
+	const [showPassword, ShowPasswordButton] = useShowPassword();
 	const [login, { data, loading, error }] = useMutation(LOGIN);
 
 	const {
@@ -88,7 +88,9 @@ const LoginPage: React.FC = () => {
 					<LeftSide>
 						<CgLock className="text-lg" />
 					</LeftSide>
-					<RightSide>{setShowPassword}</RightSide>
+					<RightSide>
+						<ShowPasswordButton />
+					</RightSide>
 				</InputBox>
 				<div className="flex items-center justify-between">
 					<CheckBox label="Remember Me" {...register("rememberMe")} />

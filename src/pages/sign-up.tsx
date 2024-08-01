@@ -3,8 +3,8 @@ import Button from "@components/button";
 import Form from "@components/form";
 import InputBox from "@components/input-box";
 import { LeftSide, RightSide } from "@components/sides";
-import useShowPassword from "@components/use-show-password";
 import { PASSWORD_REGEX, SIGN_UP, SignUpFields } from "@features/sign-up/defs";
+import useShowPassword from "@hooks/use-show-password";
 import { GraphqlErrorType } from "@services/graphql";
 import { EMAIL_REGEX } from "@utils/defs";
 import React, { useEffect } from "react";
@@ -18,7 +18,7 @@ import { toast } from "sonner";
 const SignUpPage: React.FC = () => {
 	const navigate = useNavigate();
 
-	const [showPassword, setShowPassword] = useShowPassword();
+	const [showPassword, ShowPasswordButton] = useShowPassword();
 	const [signUp, { data, loading, error }] = useMutation(SIGN_UP);
 	const {
 		register,
@@ -98,7 +98,9 @@ const SignUpPage: React.FC = () => {
 					<LeftSide>
 						<CgLock className="text-lg" />
 					</LeftSide>
-					<RightSide>{setShowPassword}</RightSide>
+					<RightSide>
+						<ShowPasswordButton />
+					</RightSide>
 				</InputBox>
 				<InputBox
 					label="Confirm Password"
@@ -111,7 +113,9 @@ const SignUpPage: React.FC = () => {
 					<LeftSide>
 						<CgLock className="text-lg" />
 					</LeftSide>
-					<RightSide>{setShowPassword}</RightSide>
+					<RightSide>
+						<ShowPasswordButton />
+					</RightSide>
 				</InputBox>
 				<Button type="submit" size="w-full" className="flex items-center justify-center" disabled={loading}>
 					{loading ? <AiOutlineLoading3Quarters className="my-1 animate-spin" /> : "Sign Up"}
