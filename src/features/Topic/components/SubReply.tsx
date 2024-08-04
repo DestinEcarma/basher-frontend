@@ -1,3 +1,4 @@
+import JumpToButton from "./JumpToButton";
 import User from "./User";
 import MarkdownRenderer from "@components/MarkdownRenderer";
 import React from "react";
@@ -16,6 +17,7 @@ const SubReply: React.FC<SubReplyProps> = ({ userIndex, content }) => {
 			<div className="content flex w-full flex-col gap-5">
 				<MarkdownRenderer content={content} />
 			</div>
+			<JumpToButton replyId="1">Jump to Reply</JumpToButton>
 		</div>
 	);
 };
