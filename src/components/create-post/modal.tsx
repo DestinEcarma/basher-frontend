@@ -46,15 +46,20 @@ export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props 
 	});
 
 	const onSubmitWrapper: SubmitHandler<CreatePostFields> = ({ content, title, tags }) => {
-		onSubmit(
-			content,
-			title,
-			tags
-				.trim()
-				.split(" ")
-				.map((tag) => ({ name: tag }))
-				.filter((tag) => tag.name.length > 0),
-		);
+		if (props.mode === "create" || props.mode === "editTopic") {
+			onSubmit(
+				content,
+				title,
+				tags
+					.trim()
+					.split(" ")
+					.map((tag) => ({ name: tag }))
+					.filter((tag) => tag.name.length > 0),
+			);
+		} else {
+			(onSubmit as (content: string) => void)(content);
+		}
+
 		eventEmitter.emit("close");
 	};
 
