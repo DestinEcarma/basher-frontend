@@ -1,11 +1,12 @@
-import { ReplyProps } from "../services/getreplies";
+import { CREATE_REPLY, CreateReply, Reply } from "../utils/defs";
+import { eventCreateReply } from "../utils/event";
 import DropDownButton from "./DropDownButton";
 import ReplyButton from "./ReplyButton";
 import ReplyContent from "./ReplyContent";
 import ReplyDropdown from "./ReplyDropDown";
 import TopicButton from "./TopicButton";
 import User from "./User";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import createPost from "@components/create-post";
 import { GET_SUB_REPLIES } from "@graphql/queries";
 import React, { useEffect, useState } from "react";
@@ -15,7 +16,8 @@ import { LuReply } from "react-icons/lu";
 import { NavLink } from "react-router-dom";
 
 interface ReplyContainerProps {
-	reply: ReplyProps;
+	topicId: string;
+	reply: Reply;
 }
 
 function getCurrentTime() {
@@ -25,19 +27,20 @@ function getCurrentTime() {
 	return `${hours}:${minutes}`;
 }
 
-const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
+const ReplyContainer: React.FC<ReplyContainerProps> = ({ topicId, reply }) => {
 	// const [willReply, setWillReply] = useState(false);
 	const [showSubReplies, setShowSubReplies] = useState(false);
-	const [subReplies, setSubReplies] = useState<
-		{
-			id: number;
-			userIndex: number;
-			content: string;
-			timestamp: Date;
-		}[]
-	>([]);
+	const [subReplies, setSubReplies] = useState<Reply[]>([]);
 
 	const [getSubReplies] = useLazyQuery(GET_SUB_REPLIES);
+
+	const [createReply, { data }] = useMutation<CreateReply>(CREATE_REPLY);
+
+	useEffect(() => {
+		if (data) {
+			eventCreateReply(data.reply.create);
+		}
+	}, [data]);
 
 	useEffect(() => {
 		async function fetchSubReplies() {
@@ -59,23 +62,28 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 		fetchSubReplies();
 	}, [showSubReplies, reply, getSubReplies]);
 
-	// const openReply: React.MouseEventHandler = () => {
-	// 	setWillReply((prev) => !prev);
-	// };
-
 	const onClickCreateSubReply = () => {
 		createPost.open({
 			mode: "reply",
 			postId: reply.id,
 			replyUserIndex: reply.userIndex,
 			onSubmit: (content) => {
-				console.log(content);
+				createReply({
+					variables: {
+						input: {
+							content,
+							topic: topicId,
+							parent: reply.id,
+						},
+					},
+				});
+
+				createPost.close();
 			},
 		});
 	};
 
 	const handleDropdownClick: React.MouseEventHandler = () => {
-		console.log(showSubReplies);
 		setShowSubReplies((prev) => !prev);
 	};
 
@@ -151,7 +159,6 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 				</div>
 			</div>
 			{subReplies.length > 0 && showSubReplies && <ReplyDropdown replies={subReplies} />}
-			{/* {willReply && <ReplyInputContainer User={<User index={reply.userIndex} />} openReply={onClickCreateSubReply} />} */}
 		</div>
 	);
 };

@@ -3,22 +3,20 @@ import { LuReply } from "react-icons/lu";
 
 interface ReplyButtonProps {
 	onClick?: React.MouseEventHandler;
-	className?: string;
 	color?: string;
 }
 
-const ReplyButton: React.FC<ReplyButtonProps> = ({ onClick, className, color }) => {
+const ReplyButton: React.FC<ReplyButtonProps> = ({ onClick, color }) => {
 	const defaultColor: string = "#808080";
 
 	return (
-		<div
+		<button
 			onClick={onClick}
-			className={`flex select-none items-center hover:cursor-pointer ${className}`}
-			style={{ color: color || defaultColor }}
+			className="flex select-none items-center gap-2 rounded-lg px-3 py-1 duration-100 hover:cursor-pointer hover:bg-gray-100"
 		>
 			<LuReply color={color || defaultColor} className="size-7" />
 			<p>Reply</p>
-		</div>
+		</button>
 	);
 };
 

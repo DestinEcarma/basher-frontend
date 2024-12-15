@@ -1,13 +1,9 @@
+import { Reply } from "../utils/defs";
 import SubReply from "./SubReply";
 import React from "react";
 
 interface ReplyDropdownProps {
-	replies: {
-		id: number;
-		userIndex: number;
-		content: string;
-		timestamp: Date;
-	}[];
+	replies: Reply[];
 }
 
 const ReplyDropdown: React.FC<ReplyDropdownProps> = ({ replies }) => {
