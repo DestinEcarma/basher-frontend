@@ -85,6 +85,7 @@ export const Inputs: React.FC<InputsProps> = ({
 			{isTopicMode && displayTitleAndTag()}
 			<div className="mb-4 flex-grow overflow-hidden rounded-lg border shadow transition-colors [&:has(textarea:focus)]:border-blue-500">
 				<MDEditor {...mdEditorAttributes} />
+				{errors.content?.message && <p className="text-xs text-red-500">{errors.content?.message}</p>}
 			</div>
 		</>
 	);
