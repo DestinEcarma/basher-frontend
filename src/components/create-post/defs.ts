@@ -3,25 +3,25 @@ import { CreateTopicFields, Tag, Topic } from "@features/forum/utils/defs";
 
 export type CreatePostProps =
 	| {
-			mode: "create";
-			onSubmit: (content: string, title: string, tags: Tag[]) => void;
-	  }
+		mode: "create";
+		onSubmit: (content: string, title: string, tags: Tag[]) => void;
+	}
 	| {
-			mode: "reply";
-			postId: string;
-			replyUserIndex: number;
-			onSubmit: (content: string) => void;
-	  }
+		mode: "reply";
+		postId: string;
+		replyUserIndex: number;
+		onSubmit: (content: string) => void;
+	}
 	| {
-			mode: "editTopic";
-			topic: Topic;
-			onSubmit: (content: string, title: string, tags: Tag[]) => void;
-	  }
+		mode: "editTopic";
+		topic: Topic;
+		onSubmit: (content: string, title: string, tags: Tag[]) => void;
+	}
 	| {
-			mode: "editReply";
-			reply: Reply;
-			onSubmit: (content: string) => void;
-	  };
+		mode: "editReply";
+		reply: Reply;
+		onSubmit: (content: string) => void;
+	};
 
 export type CreatePostFields = CreateTopicFields & { tags: string };
 
