@@ -10,7 +10,7 @@ const Tags: React.FC<TagsProps> = ({ tags }) => {
 		<div className="mb-3 mt-1 flex gap-1 text-xs leading-none text-[#0096FB]">
 			{tags.map((tag, i) => {
 				return (
-					<Link to={`/topic/${tag.substring(1)}`} key={i}>
+					<Link to={`/forum?query=%23${tag}`} key={i}>
 						{`#${tag}`}
 					</Link>
 				);
