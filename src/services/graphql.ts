@@ -25,6 +25,7 @@ export enum GraphqlErrorType {
 
 export const client = new ApolloClient({
 	cache: new InMemoryCache(),
+	credentials: "include",
 	link: from([
 		onError(({ graphQLErrors, networkError }) => {
 			if (graphQLErrors) {
@@ -52,6 +53,6 @@ export const client = new ApolloClient({
 			}
 		}),
 
-		new HttpLink({ uri: "http://10.147.18.25:3000/graphql" }),
+		new HttpLink({ uri: "/graphql" }),
 	]),
 });

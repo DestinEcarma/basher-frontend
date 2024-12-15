@@ -15,4 +15,13 @@ export default defineConfig({
 			"@components": "/src/components",
 		},
 	},
+	server: {
+		proxy: {
+			"/graphql": {
+				target: "http://10.147.18.25:3000",
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/graphql/, "/graphql"),
+			},
+		},
+	}
 });
