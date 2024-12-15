@@ -82,9 +82,7 @@ const ForumPage: React.FC = () => {
 						</tr>
 					</thead>
 					{queryLoading && <TopicSkeleton />}
-					<tbody>
-						{!queryLoading && topics.map((topic) => <TopicRow key={topic.id} {...topic} />)}
-					</tbody>
+					<tbody>{!queryLoading && topics.map((topic) => <TopicRow key={topic.id} {...topic} />)}</tbody>
 				</table>
 			</div>
 		</div>

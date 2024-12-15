@@ -55,6 +55,7 @@ export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props 
 				.map((tag) => ({ name: tag }))
 				.filter((tag) => tag.name.length > 0),
 		);
+		eventEmitter.emit("close");
 	};
 
 	const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
