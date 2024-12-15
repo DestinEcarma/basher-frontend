@@ -2,6 +2,7 @@ import { eventEmitter } from "./event";
 import { Form, FormProps } from "./form";
 import { useQuery } from "@apollo/client";
 import { Button } from "@components/button";
+import User from "@features/Topic/components/User";
 import { AUTH, AuthQuery } from "@utils/defs";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -77,10 +78,20 @@ export const CreatePostModal: React.FC<CreatePostProps> = (props) => {
 				{/*
 					TODO: Change title depending on the mode
 				*/}
-				<h1 className="mb-2">Create a new Topic</h1>
+				{props.mode == "create" ? (
+					<h1 className="mb-2">Create a new Topic</h1>
+				) : (
+					props.mode == "reply" && (
+						<div className="mb-2 flex items-center gap-1">
+							<h1>Replying to</h1>
+							<User index={props.replyUserIndex} />
+						</div>
+					)
+				)}
+
 				<Form {...props} />
 				<div className="flex flex-shrink-0 gap-4">
-					<Button onClick={onSubmit}>Create Topic</Button>
+					<Button onClick={onSubmit}>{props.mode == "create" ? "Create Topic" : "Reply"}</Button>
 					<Button variant={"ghost"} onClick={onClose}>
 						Close
 					</Button>

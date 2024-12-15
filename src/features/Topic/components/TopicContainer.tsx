@@ -30,12 +30,11 @@
 // export default TopicContainer;
 // api version
 import { TopicProps } from "../services/gettopic";
-import ReplyInputContainer from "./ReplyInputContainer";
 import Tags from "./Tags";
 import TopicContent from "./TopicContent";
 import TopicIcons from "./TopicIcons";
 import User from "./User";
-import React, { useState } from "react";
+import createPost from "@components/create-post";
 
 interface TopicContainerProps {
 	topic: TopicProps;
@@ -43,10 +42,21 @@ interface TopicContainerProps {
 
 const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 	// const tags: string[] = ["#hate", "#usc", "#godwin"];
-	const [willReply, setWillReply] = useState(false);
+	// const [willReply, setWillReply] = useState(false);
 
-	const openReply: React.MouseEventHandler = () => {
-		setWillReply((prev) => !prev);
+	// const openReply: React.MouseEventHandler = () => {
+	// 	setWillReply((prev) => !prev);
+	// };
+
+	const onClickCreateReply = () => {
+		createPost.open({
+			mode: "reply",
+			postId: topic.id,
+			replyUserIndex: 0,
+			onSubmit: (content) => {
+				console.log(content);
+			},
+		});
 	};
 
 	return (
@@ -57,9 +67,9 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 				<User index={0} />
 
 				<TopicContent content={topic.content} />
-				<TopicIcons openReply={openReply} counter={topic.counter} />
+				<TopicIcons openReply={onClickCreateReply} counter={topic.counter} />
 			</div>
-			{willReply && <ReplyInputContainer User={<User index={0} />} openReply={openReply} />}
+			{/* {willReply && <ReplyInputContainer User={<User index={0} />} openReply={onClickCreateReply} />} */}
 		</div>
 	);
 };

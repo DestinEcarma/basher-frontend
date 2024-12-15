@@ -4,7 +4,7 @@ interface DropDownButtonProps {
 	Icon: React.ElementType;
 	onClick?: React.MouseEventHandler<HTMLButtonElement>;
 	count: number;
-	showSubReplies: boolean;
+	showSubReplies?: boolean;
 }
 
 const DropDownButton: React.FC<DropDownButtonProps> = ({ Icon, onClick, count, showSubReplies }) => {

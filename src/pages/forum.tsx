@@ -9,7 +9,7 @@ import { FaPlus } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
 const ForumPage: React.FC = () => {
-	const [offset, setOffset] = React.useState<number>(0);
+	const [offset] = React.useState<number>(0);
 	const [topics, setTopics] = React.useState<GetTopicsQuery["topic"]["get"]>([]);
 
 	const { loading, data } = useQuery<GetTopicsQuery>(GET_TOPICS, {

@@ -13,7 +13,7 @@ import remarkRehype from "remark-rehype";
 
 export type FormProps =
 	| { mode: "create" }
-	| { mode: "reply"; postId: string }
+	| { mode: "reply"; postId: string; replyUserIndex: number }
 	| { mode: "editTopic"; topic: Topic }
 	| { mode: "editReply"; reply: Reply };
 
@@ -89,7 +89,7 @@ export const Form: React.FC<FormProps> = () => {
 	return (
 		<>
 			<div className="mb-4 grid grid-cols-2 gap-4">
-				<InputBox placeholder="Title" />
+				<InputBox placeholder={`Title`} />
 				<InputBox placeholder="#tags (e.g. #usc #dcism)" />
 			</div>
 			<div className="mb-4 flex-grow overflow-hidden rounded-lg border shadow transition-colors [&:has(textarea:focus)]:border-blue-500">

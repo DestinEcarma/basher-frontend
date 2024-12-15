@@ -3,10 +3,10 @@ import DropDownButton from "./DropDownButton";
 import ReplyButton from "./ReplyButton";
 import ReplyContent from "./ReplyContent";
 import ReplyDropdown from "./ReplyDropDown";
-import ReplyInputContainer from "./ReplyInputContainer";
 import TopicButton from "./TopicButton";
 import User from "./User";
 import { useLazyQuery } from "@apollo/client";
+import createPost from "@components/create-post";
 import { GET_SUB_REPLIES } from "@graphql/queries";
 import React, { useEffect, useState } from "react";
 import { BiLike, BiLinkAlt } from "react-icons/bi";
@@ -26,7 +26,7 @@ function getCurrentTime() {
 }
 
 const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
-	const [willReply, setWillReply] = useState(false);
+	// const [willReply, setWillReply] = useState(false);
 	const [showSubReplies, setShowSubReplies] = useState(false);
 	const [subReplies, setSubReplies] = useState<
 		{
@@ -59,8 +59,19 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 		fetchSubReplies();
 	}, [showSubReplies, reply, getSubReplies]);
 
-	const openReply: React.MouseEventHandler = () => {
-		setWillReply((prev) => !prev);
+	// const openReply: React.MouseEventHandler = () => {
+	// 	setWillReply((prev) => !prev);
+	// };
+
+	const onClickCreateSubReply = () => {
+		createPost.open({
+			mode: "reply",
+			postId: reply.id,
+			replyUserIndex: reply.userIndex,
+			onSubmit: (content) => {
+				console.log(content);
+			},
+		});
 	};
 
 	const handleDropdownClick: React.MouseEventHandler = () => {
@@ -131,12 +142,12 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 					<div className="flex select-none items-center gap-4 text-[#808080] hover:cursor-pointer">
 						<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
 						<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} />
-						<ReplyButton onClick={openReply} />
+						<ReplyButton onClick={onClickCreateSubReply} />
 					</div>
 				</div>
 			</div>
 			{subReplies.length > 0 && showSubReplies && <ReplyDropdown replies={subReplies} />}
-			{willReply && <ReplyInputContainer User={<User index={reply.userIndex} />} openReply={openReply} />}
+			{/* {willReply && <ReplyInputContainer User={<User index={reply.userIndex} />} openReply={onClickCreateSubReply} />} */}
 		</div>
 	);
 };
