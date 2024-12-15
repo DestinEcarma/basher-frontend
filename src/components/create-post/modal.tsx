@@ -74,6 +74,9 @@ export const CreatePostModal: React.FC<CreatePostProps> = (props) => {
 		>
 			<button className="h-4 flex-shrink-0 cursor-row-resize bg-sky-600" onMouseDown={handleMouseDown}></button>
 			<div className="flex h-full flex-col overflow-hidden bg-white p-4 shadow-lg">
+				{/*
+					TODO: Change title depending on the mode
+				*/}
 				<h1 className="mb-2">Create a new Topic</h1>
 				<Form {...props} />
 				<div className="flex flex-shrink-0 gap-4">
