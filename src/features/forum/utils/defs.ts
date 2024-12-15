@@ -9,7 +9,25 @@ export interface Topic {
 	counter: Counter;
 }
 
+export interface Tag {
+	name: string;
+}
+
 export type ForumTopic = Omit<Topic, "counter"> & { counter: Omit<Counter, "views" | "shares"> };
+
+export interface CreateTopicFields {
+	title: string;
+	tags: Tag[];
+	content: string;
+}
+
+export const CREATE_TOPIC = gql`
+	mutation CreateTopic($input: CreateTopicInput!) {
+		topic {
+			create(input: $input)
+		}
+	}
+`;
 
 export interface GetTopicsQuery {
 	topic: {

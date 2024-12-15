@@ -1,34 +1,52 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Button } from "@components/button";
 import createPost from "@components/create-post";
 import TopicRow from "@features/forum/components/topic-row";
 import TopicSkeleton from "@features/forum/components/topic-skeleton";
-import { GET_TOPICS, GetTopicsQuery } from "@features/forum/utils/defs";
+import { GET_TOPICS, GetTopicsQuery, Tag } from "@features/forum/utils/defs";
+import { CREATE_TOPIC } from "@graphql/mutations";
 import React, { useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const ForumPage: React.FC = () => {
+	const navigate = useNavigate();
 	const [offset] = React.useState<number>(0);
 	const [topics, setTopics] = React.useState<GetTopicsQuery["topic"]["get"]>([]);
+	const [createTopic, { data: mutationData }] = useMutation(CREATE_TOPIC);
 
-	const { loading, data } = useQuery<GetTopicsQuery>(GET_TOPICS, {
+	const { loading: queryLoading, data: queryData } = useQuery<GetTopicsQuery>(GET_TOPICS, {
 		variables: {
 			offset: offset,
 		},
 	});
 
 	useEffect(() => {
-		if (data === undefined) return;
+		if (queryData === undefined) return;
 
-		setTopics((prev) => [...prev, ...data.topic.get]);
-	}, [data]);
+		setTopics((prev) => [...prev, ...queryData.topic.get]);
+	}, [queryData]);
+
+	useEffect(() => {
+		if (mutationData === undefined) return;
+
+		navigate(`/topic/${mutationData.topic.create}`);
+	}, [mutationData, navigate]);
 
 	const onClickCreateTopic = () => {
 		createPost.open({
 			mode: "create",
-			onSubmit: (content) => {
-				console.log(content);
+			onSubmit: (title: string, tags: Tag[], content: string) => {
+				createTopic({
+					variables: {
+						input: {
+							title,
+							tags,
+							content,
+						},
+					},
+				});
 			},
 		});
 	};
@@ -57,8 +75,8 @@ const ForumPage: React.FC = () => {
 							<th className="px-4 font-normal text-gray-500">Activity</th>
 						</tr>
 					</thead>
-					{loading && <TopicSkeleton />}
-					{!loading && topics.map((topic) => <TopicRow key={topic.id} {...topic} />)}
+					{queryLoading && <TopicSkeleton />}
+					{!queryLoading && topics.map((topic) => <TopicRow key={topic.id} {...topic} />)}
 				</table>
 			</div>
 		</div>

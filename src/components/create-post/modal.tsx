@@ -3,13 +3,14 @@ import { Form, FormProps } from "./form";
 import { useQuery } from "@apollo/client";
 import { Button } from "@components/button";
 import User from "@features/Topic/components/User";
+import { Tag } from "@features/forum/utils/defs";
 import { AUTH, AuthQuery } from "@utils/defs";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export type CreatePostProps = FormProps & {
-	onSubmit: (content: string) => void;
+	onSubmit: (title: string, tags: Tag[], content: string) => void;
 };
 
 export const CreatePostModal: React.FC<CreatePostProps> = (props) => {

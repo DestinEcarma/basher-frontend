@@ -11,10 +11,10 @@ import { Toaster } from "sonner";
 const App: React.FC = () => {
 	return (
 		<div className="flex h-dvh flex-col">
-			<Logo />
 			<Toaster richColors duration={5000} closeButton position="top-right" />
 			<BrowserRouter>
 				<Suspense fallback={<div>Loading...</div>}>
+					<Logo />
 					<Routes>
 						<Route path="/" element={<Navigate to="/forum" />} />
 						<Route path="/login" element={<LoginPage />} />

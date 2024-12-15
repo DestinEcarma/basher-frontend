@@ -5,7 +5,6 @@ export interface SignUpFields {
 	password: string;
 	confirmPassword: string;
 }
-
 export const SIGN_UP = gql`
 	mutation SignUp($input: SignUpInput!) {
 		user {

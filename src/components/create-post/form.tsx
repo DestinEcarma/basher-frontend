@@ -2,7 +2,7 @@ import { eventEmitter } from "./event";
 import { mergeDeep } from "@apollo/client/utilities";
 import { InputBox } from "@components/input-box";
 import { Reply } from "@features/Topic/utils/defs";
-import { Topic } from "@features/forum/utils/defs";
+import { Topic, Tag } from "@features/forum/utils/defs";
 import MDEditor, { ICommand, MDEditorProps } from "@uiw/react-md-editor";
 import React, { useEffect, useState } from "react";
 import rehypeKatex from "rehype-katex";
@@ -42,11 +42,17 @@ You can make text **bold** or *italic*.
 `;
 
 export const Form: React.FC<FormProps> = () => {
+	const [title, setTitle] = useState("");
 	const [content, setContent] = useState(DEFAULT_CONTENT);
+	const [tags, setTags] = useState("");
 
 	useEffect(() => {
-		const handleSubmitRequest = (callback: (content: string) => void) => {
-			callback(content);
+		const handleSubmitRequest = (callback: (title: string, tags: Tag[], content: string) => void) => {
+			callback(
+				title,
+				tags.split(" ").map((tag) => ({ name: tag })),
+				content,
+			);
 		};
 
 		eventEmitter.on("submit", handleSubmitRequest);
@@ -77,11 +83,6 @@ export const Form: React.FC<FormProps> = () => {
 
 					return <div {...rest} />;
 				},
-				code: ({ children = [], className, ...props }) => {
-					console.log(children, className);
-
-					return <code {...props}>{children}</code>;
-				},
 			},
 		},
 	};
@@ -89,8 +90,8 @@ export const Form: React.FC<FormProps> = () => {
 	return (
 		<>
 			<div className="mb-4 grid grid-cols-2 gap-4">
-				<InputBox placeholder={`Title`} />
-				<InputBox placeholder="#tags (e.g. #usc #dcism)" />
+				<InputBox placeholder="Title" error="test" value={title} onChange={(e) => setTitle(e.target.value)} />
+				<InputBox placeholder="Tags (e.g. usc dcism)" value={tags} onChange={(e) => setTags(e.target.value)} />
 			</div>
 			<div className="mb-4 flex-grow overflow-hidden rounded-lg border shadow transition-colors [&:has(textarea:focus)]:border-blue-500">
 				<MDEditor {...mdEditorAttributes} />
