@@ -6,7 +6,12 @@ const createPost = (props: CreatePostProps) => {
 	eventEmitter.emit("open", props);
 };
 
+const closeCreatePost = () => {
+	eventEmitter.emit("close");
+};
+
 export default {
 	Display: CreatePostDisplay,
 	open: createPost,
+	close: closeCreatePost,
 };

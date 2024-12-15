@@ -51,6 +51,8 @@ const ForumPage: React.FC = () => {
 						},
 					},
 				});
+
+				createPost.close();
 			},
 		});
 	};
@@ -80,7 +82,9 @@ const ForumPage: React.FC = () => {
 						</tr>
 					</thead>
 					{queryLoading && <TopicSkeleton />}
-					{!queryLoading && topics.map((topic) => <TopicRow key={topic.id} {...topic} />)}
+					<tbody>
+						{!queryLoading && topics.map((topic) => <TopicRow key={topic.id} {...topic} />)}
+					</tbody>
 				</table>
 			</div>
 		</div>

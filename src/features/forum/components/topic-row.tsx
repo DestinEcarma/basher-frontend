@@ -17,12 +17,14 @@ const TopicRow: React.FC<TopicRowProps> = ({ id, title, tags, activity, counter:
 						{title}
 					</Link>
 				</div>
-				{tags.map((tag, key) => (
-					// TODO: Convert to a link
-					<span key={key} className="text-sm text-blue-500">
-						#{tag}
-					</span>
-				))}
+				<div className="flex gap-2">
+					{tags.map((tag, key) => (
+						// TODO: Convert to a link
+						<span key={key} className="text-sm text-blue-500">
+							#{tag}
+						</span>
+					))}
+				</div>
 			</td>
 			{tableData.map((data, key) => (
 				<td key={key} className="text-center font-medium text-gray-500">
