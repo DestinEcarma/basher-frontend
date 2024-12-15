@@ -17,7 +17,11 @@ const JumpToButton: React.FC<JumpToButtonProps> = ({ replyId, children }) => {
 		}
 	};
 
-	return <button onClick={jumpToReply}>{children}</button>;
+	return (
+		<button className="font-medium text-gray-400" onClick={jumpToReply}>
+			{children}
+		</button>
+	);
 };
 
 export default JumpToButton;

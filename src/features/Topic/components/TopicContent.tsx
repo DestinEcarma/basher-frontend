@@ -7,9 +7,9 @@ interface ContentProps {
 
 const TopicContent: React.FC<ContentProps> = ({ content }) => {
 	return (
-		<div className="mb-8 mt-4 flex flex-col gap-5">
+		<div className="mb-8 mt-4 flex flex-col gap-1">
 			{/* <MarkdownRenderer content={content} /> */}
-			<MDEditor.Markdown source={content} style={{ whiteSpace: "pre-wrap" }} />
+			<MDEditor.Markdown source={content} />
 		</div>
 	);
 };

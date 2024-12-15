@@ -61,7 +61,7 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 
 	return (
 		<div className="mt-[2.813rem] flex flex-col items-center justify-center">
-			<div className="w-full rounded-md bg-white px-4 pb-3 pt-5 shadow-lg md:max-w-3xl lg:max-w-7xl">
+			<div className="w-full rounded-md bg-white px-6 pb-3 pt-5 shadow-lg md:max-w-3xl lg:max-w-7xl">
 				<h1 className="text-2xl font-bold leading-none">{topic.title}</h1>
 				<Tags tags={topic.tags} />
 				<User index={0} />

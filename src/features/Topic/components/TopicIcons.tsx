@@ -41,7 +41,7 @@
 import ReplyButton from "./ReplyButton";
 import TopicButton from "./TopicButton";
 import React, { useState, useEffect } from "react";
-import { BiLike, BiComment, BiLinkAlt } from "react-icons/bi";
+import { BiLike, BiLinkAlt } from "react-icons/bi";
 
 interface TopicIconsProps {
 	openReply: React.MouseEventHandler;
@@ -58,9 +58,8 @@ const TopicIcons: React.FC<TopicIconsProps> = ({ openReply, counter }) => {
 	const [likes, setLikes] = useState<number>(0);
 	const [isLiked, setLikeStatus] = useState<boolean>(false);
 
-	const [comments, setComments] = useState<number>(0);
-
 	const [shares, setShares] = useState<number>(0);
+	const [isShared, setSharedStatus] = useState<boolean>(false);
 
 	const addLike = (): void => {
 		if (!isLiked) {
@@ -72,27 +71,22 @@ const TopicIcons: React.FC<TopicIconsProps> = ({ openReply, counter }) => {
 		}
 	};
 
-	const addComment = (): void => {
-		setComments((prev) => prev + 1);
-	};
-
 	const addChain = (): void => {
-		setShares((prev) => prev + 1);
+		if (!isShared) {
+			setShares((prev) => prev + 1);
+			setSharedStatus(true);
+		}
 	};
 
 	useEffect(() => {
 		setLikes(counter.likes ?? 0);
-		setComments(counter.replies ?? 0);
 		setShares(counter.shares ?? 0);
 	}, [counter]);
 
 	return (
-		<div className="flex w-full items-end justify-between">
-			<div className="flex gap-4">
-				<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
-				<TopicButton Icon={BiComment} onClick={addComment} count={comments} />
-				<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} />
-			</div>
+		<div className="flex select-none items-end justify-end gap-4 text-[#808080] hover:cursor-pointer">
+			<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
+			<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} status={isShared} />
 			<ReplyButton onClick={openReply} />
 		</div>
 	);

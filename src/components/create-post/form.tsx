@@ -41,7 +41,7 @@ You can make text **bold** or *italic*.
 [Click here](https://www.markdownguide.org/basic-syntax/)
 `;
 
-export const Form: React.FC<FormProps> = () => {
+export const Form: React.FC<FormProps> = (props) => {
 	const [content, setContent] = useState(DEFAULT_CONTENT);
 
 	useEffect(() => {
@@ -88,10 +88,12 @@ export const Form: React.FC<FormProps> = () => {
 
 	return (
 		<>
-			<div className="mb-4 grid grid-cols-2 gap-4">
-				<InputBox placeholder={`Title`} />
-				<InputBox placeholder="#tags (e.g. #usc #dcism)" />
-			</div>
+			{props.mode == "create" && (
+				<div className="mb-4 grid grid-cols-2 gap-4">
+					<InputBox placeholder={`Title`} />
+					<InputBox placeholder="#tags (e.g. #usc #dcism)" />
+				</div>
+			)}
 			<div className="mb-4 flex-grow overflow-hidden rounded-lg border shadow transition-colors [&:has(textarea:focus)]:border-blue-500">
 				<MDEditor {...mdEditorAttributes} />
 			</div>
