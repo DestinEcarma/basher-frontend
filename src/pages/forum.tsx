@@ -25,7 +25,11 @@ const ForumPage: React.FC = () => {
 	useEffect(() => {
 		if (queryData === undefined) return;
 
-		setTopics((prev) => [...prev, ...queryData.topic.get]);
+		setTopics((prev) => {
+			const existingIds = new Set(prev.map((topic) => topic.id));
+			const newTopics = queryData.topic.get.filter((topic) => !existingIds.has(topic.id));
+			return [...prev, ...newTopics];
+		});
 	}, [queryData]);
 
 	useEffect(() => {
