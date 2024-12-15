@@ -89,14 +89,21 @@ export const Form: React.FC<FormProps> = (props) => {
 
 	return (
 		<>
-			{
-				props.mode == 'create'
-				&&
+			{props.mode == "create" && (
 				<div className="mb-4 grid grid-cols-2 gap-4">
-					<InputBox placeholder="Title" error="test" value={title} onChange={(e) => setTitle(e.target.value)} />
-					<InputBox placeholder="Tags (e.g. usc dcism)" value={tags} onChange={(e) => setTags(e.target.value)} />
+					<InputBox
+						placeholder="Title"
+						error="test"
+						value={title}
+						onChange={(e) => setTitle(e.target.value)}
+					/>
+					<InputBox
+						placeholder="Tags (e.g. usc dcism)"
+						value={tags}
+						onChange={(e) => setTags(e.target.value)}
+					/>
 				</div>
-			}
+			)}
 			<div className="mb-4 flex-grow overflow-hidden rounded-lg border shadow transition-colors [&:has(textarea:focus)]:border-blue-500">
 				<MDEditor {...mdEditorAttributes} />
 			</div>
