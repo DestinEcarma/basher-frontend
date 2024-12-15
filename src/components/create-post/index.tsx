@@ -1,5 +1,6 @@
+import { CreatePostProps } from "./defs";
 import { eventEmitter } from "./event";
-import { CreatePostDisplay, CreatePostProps } from "./modal";
+import { CreatePostDisplay } from "./modal";
 
 const createPost = (props: CreatePostProps) => {
 	eventEmitter.emit("open", props);

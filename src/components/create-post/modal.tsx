@@ -1,25 +1,29 @@
+import { CreatePostFields, CreatePostProps, DEFAULT_CONTENT } from "./defs";
 import { eventEmitter } from "./event";
-import { Form, FormProps } from "./form";
+import { Inputs } from "./inputs";
 import { useQuery } from "@apollo/client";
 import { Button } from "@components/button";
 import User from "@features/Topic/components/User";
-import { Tag } from "@features/forum/utils/defs";
 import { AUTH, AuthQuery } from "@utils/defs";
 import React, { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-export type CreatePostProps = FormProps & {
-	onSubmit: (title: string, tags: Tag[], content: string) => void;
-};
-
-export const CreatePostModal: React.FC<CreatePostProps> = (props) => {
+export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props }) => {
 	const navigate = useNavigate();
 	const [height, setHeight] = useState(500);
 	const [isResizing, setIsResizing] = useState(false);
 	const [startY, setStartY] = useState(0);
 	const [startHeight, setStartHeight] = useState(0);
 	const { loading, data } = useQuery<AuthQuery>(AUTH);
+	const form = useForm<CreatePostFields>({
+		defaultValues: {
+			content: DEFAULT_CONTENT,
+		},
+	});
+
+	const { handleSubmit } = form;
 
 	useEffect(() => {
 		if (data?.user.auth === false) {
@@ -41,6 +45,18 @@ export const CreatePostModal: React.FC<CreatePostProps> = (props) => {
 		};
 	});
 
+	const onSubmitWrapper: SubmitHandler<CreatePostFields> = ({ content, title, tags }) => {
+		onSubmit(
+			content,
+			title,
+			tags
+				.trim()
+				.split(" ")
+				.map((tag) => ({ name: tag }))
+				.filter((tag) => tag.name.length > 0),
+		);
+	};
+
 	const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
 		setIsResizing(true);
 		setStartY(e.clientY);
@@ -60,10 +76,6 @@ export const CreatePostModal: React.FC<CreatePostProps> = (props) => {
 		eventEmitter.emit("close");
 	};
 
-	const onSubmit = () => {
-		eventEmitter.emit("submit", props.onSubmit);
-	};
-
 	// TODO: Improve loading state
 	if (loading || data?.user.auth === false) return null;
 
@@ -75,7 +87,10 @@ export const CreatePostModal: React.FC<CreatePostProps> = (props) => {
 			className="fixed bottom-0 left-1/2 flex h-full max-h-full min-h-[30%] w-full max-w-[1475px] -translate-x-1/2 flex-col"
 		>
 			<button className="h-4 flex-shrink-0 cursor-row-resize bg-sky-600" onMouseDown={handleMouseDown}></button>
-			<div className="flex h-full flex-col overflow-hidden bg-white p-4 shadow-lg">
+			<form
+				onSubmit={handleSubmit(onSubmitWrapper)}
+				className="flex h-full flex-col overflow-hidden bg-white p-4 shadow-lg"
+			>
 				{/*
 					TODO: Change title depending on the mode
 				*/}
@@ -90,14 +105,14 @@ export const CreatePostModal: React.FC<CreatePostProps> = (props) => {
 					)
 				)}
 
-				<Form {...props} />
+				<Inputs props={props} form={form} />
 				<div className="flex flex-shrink-0 gap-4">
-					<Button onClick={onSubmit}>{props.mode == "create" ? "Create Topic" : "Reply"}</Button>
-					<Button variant={"ghost"} onClick={onClose}>
+					<Button type="submit">{props.mode == "create" ? "Create Topic" : "Reply"}</Button>
+					<Button type="button" variant={"ghost"} onClick={onClose}>
 						Close
 					</Button>
 				</div>
-			</div>
+			</form>
 		</div>
 	);
 };
