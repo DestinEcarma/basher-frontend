@@ -1,52 +1,25 @@
-// import React, { useState } from "react";
-// import User from "./User";
-// import Tags from "./Tags";
-// import TopicContent from "./TopicContent";
-// import TopicIcons from "./TopicIcons";
-// import { Topic as TopicProps } from "../../../utils/sample-data";
-// import ReplyInputContainer from "./ReplyInputContainer";
-// interface TopicContainerProps {
-// 	topic: TopicProps;
-// }
-// const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
-// 	const tags: string[] = ["#hate", "#usc", "#godwin"];
-// 	const [willReply, setWillReply] = useState(false);
-// 	const openReply: React.MouseEventHandler = () => {
-// 		setWillReply((prev) => !prev);
-// 	};
-// 	return (
-// 		<div className="flex flex-col justify-center items-center mt-[2.813rem]">
-// 			<div className="bg-white lg:max-w-7xl md:max-w-3xl w-full shadow-lg rounded-md pt-5 px-4 pb-3">
-// 				<h1 className="font-bold text-2xl leading-none">{topic.title}</h1>
-// 				<Tags tags={tags} />
-// 				<User author={"0"} isOP={true} />
-// 				<TopicContent content={topic.content} />
-// 				<TopicIcons openReply={openReply} />
-// 			</div>
-// 			{willReply && <ReplyInputContainer User={<User author={"0"} isOP={true} />} openReply={openReply} />}
-// 		</div>
-// 	);
-// };
-// export default TopicContainer;
-// api version
-import { TopicProps } from "../services/gettopic";
+import { CREATE_REPLY, CreateReply, Topic } from "../utils/defs";
+import { eventCreateReply } from "../utils/event";
 import Tags from "./Tags";
 import TopicContent from "./TopicContent";
 import TopicIcons from "./TopicIcons";
 import User from "./User";
+import { useMutation } from "@apollo/client";
 import createPost from "@components/create-post";
+import { useEffect } from "react";
 
 interface TopicContainerProps {
-	topic: TopicProps;
+	topic: Topic;
 }
 
 const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
-	// const tags: string[] = ["#hate", "#usc", "#godwin"];
-	// const [willReply, setWillReply] = useState(false);
+	const [createTopic, { data }] = useMutation<CreateReply>(CREATE_REPLY);
 
-	// const openReply: React.MouseEventHandler = () => {
-	// 	setWillReply((prev) => !prev);
-	// };
+	useEffect(() => {
+		if (data) {
+			eventCreateReply(data.reply.create);
+		}
+	}, [data]);
 
 	const onClickCreateReply = () => {
 		createPost.open({
@@ -54,7 +27,16 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 			postId: topic.id,
 			replyUserIndex: 0,
 			onSubmit: (content) => {
-				console.log(content);
+				createTopic({
+					variables: {
+						input: {
+							content,
+							topic: topic.id,
+						},
+					},
+				});
+
+				createPost.close();
 			},
 		});
 	};
@@ -65,11 +47,9 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 				<h1 className="text-2xl font-bold leading-none">{topic.title}</h1>
 				<Tags tags={topic.tags} />
 				<User index={0} />
-
 				<TopicContent content={topic.content} />
 				<TopicIcons openReply={onClickCreateReply} counter={topic.counter} />
 			</div>
-			{/* {willReply && <ReplyInputContainer User={<User index={0} />} openReply={onClickCreateReply} />} */}
 		</div>
 	);
 };

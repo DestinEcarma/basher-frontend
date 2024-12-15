@@ -49,7 +49,6 @@ export const GET_SUB_REPLIES = gql`
 				id
 				userIndex
 				content
-				activity
 			}
 		}
 	}
