@@ -1,6 +1,6 @@
 import JumpToButton from "./JumpToButton";
 import User from "./User";
-import MarkdownRenderer from "@components/MarkdownRenderer";
+import MDEditor from "@uiw/react-md-editor";
 import React from "react";
 
 interface SubReplyProps {
@@ -12,10 +12,10 @@ interface SubReplyProps {
 
 const SubReply: React.FC<SubReplyProps> = ({ userIndex, content }) => {
 	return (
-		<div className="subreply mt-3 flex w-full flex-col justify-center gap-3 rounded-md bg-white px-4 pb-5 pt-5 shadow-lg">
+		<div className="subreply mt-3 flex w-full flex-col justify-center gap-3 rounded-md bg-white px-6 pb-5 pt-5 shadow-lg">
 			<User index={userIndex} />
 			<div className="content flex w-full flex-col gap-5">
-				<MarkdownRenderer content={content} />
+				<MDEditor.Markdown source={content} />
 			</div>
 			<JumpToButton replyId="1">Jump to Reply</JumpToButton>
 		</div>

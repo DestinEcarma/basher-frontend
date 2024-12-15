@@ -83,6 +83,7 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 	const [isLiked, setLikeStatus] = useState<boolean>(false);
 
 	const [shares, setShares] = useState<number>(0);
+	const [isShared, setSharedStatus] = useState<boolean>(false);
 
 	const addLike = (): void => {
 		if (!isLiked) {
@@ -95,7 +96,10 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 	};
 
 	const addChain = (): void => {
-		setShares((prev) => prev + 1);
+		if (!isShared) {
+			setShares((prev) => prev + 1);
+			setSharedStatus(true);
+		}
 	};
 
 	useEffect(() => {
@@ -106,7 +110,7 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 	return (
 		<div className="mt-4 flex flex-col items-center justify-center">
 			<div
-				className="w-full rounded-md bg-white px-4 pb-3 pt-5 shadow-lg md:max-w-3xl lg:max-w-7xl"
+				className="w-full rounded-md bg-white px-6 pb-3 pt-5 shadow-lg md:max-w-3xl lg:max-w-7xl"
 				id={reply.id}
 			>
 				<div className="flex flex-row items-center justify-between">
@@ -141,7 +145,7 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ reply }) => {
 					)}
 					<div className="flex select-none items-center gap-4 text-[#808080] hover:cursor-pointer">
 						<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
-						<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} />
+						<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} status={isShared} />
 						<ReplyButton onClick={onClickCreateSubReply} />
 					</div>
 				</div>
