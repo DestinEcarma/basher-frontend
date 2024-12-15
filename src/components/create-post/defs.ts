@@ -5,28 +5,27 @@ export type CreatePostProps =
 	| {
 			mode: "create";
 			onSubmit: (content: string, title: string, tags: Tag[]) => void;
-	}
+	  }
 	| {
 			mode: "reply";
 			postId: string;
 			replyUserIndex: number;
 			onSubmit: (content: string) => void;
-	}
+	  }
 	| {
 			mode: "editTopic";
 			topic: Topic;
 			onSubmit: (content: string, title: string, tags: Tag[]) => void;
-	}
+	  }
 	| {
 			mode: "editReply";
 			reply: Reply;
 			onSubmit: (content: string) => void;
-	};
+	  };
 
 export type CreatePostFields = CreateTopicFields & { tags: string };
 
-export const DEFAULT_CONTENT = `
-# Styling text
+export const DEFAULT_CONTENT = `# Styling text
 
 You can make text **bold** or *italic*.
 
