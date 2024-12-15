@@ -1,25 +1,27 @@
 import ReplyContainer from "../features/Topic/components/ReplyContainer";
 import TopicContainer from "../features/Topic/components/TopicContainer";
-import { ReplyProps } from "../features/Topic/services/getreplies";
-import { TopicProps } from "../features/Topic/services/gettopic";
 import { useQuery } from "@apollo/client";
+import { Reply, Topic } from "@features/Topic/utils/defs";
+import { useEvent } from "@features/Topic/utils/event";
 import { GET_TOPIC, GET_REPLIES } from "@graphql/queries";
-import { GraphqlError, GraphqlErrorType } from "@services/graphql";
 import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const TopicPage: React.FC = () => {
 	const { id } = useParams<{ id: string }>();
-	const [topic, setTopic] = useState<TopicProps | null>(null);
-	const [replies, setReplies] = useState<ReplyProps[] | null>(null);
+	const [topic, setTopic] = useState<Topic | null>(null);
+	const [replies, setReplies] = useState<Reply[] | null>(null);
 	const [offset] = useState<number>(0);
 	const navigate = useNavigate();
+
 	const topicResponse = useQuery(GET_TOPIC, {
 		variables: {
 			id,
 		},
 	});
+
+	const event = useEvent();
 
 	const useScrollToHash = () => {
 		const { hash } = useLocation();
@@ -43,7 +45,7 @@ const TopicPage: React.FC = () => {
 		},
 	});
 
-	const defaultTopic: TopicProps = {
+	const defaultTopic: Topic = {
 		id: "",
 		title: "",
 		tags: [""],
@@ -58,25 +60,40 @@ const TopicPage: React.FC = () => {
 	};
 
 	useEffect(() => {
-		if (!topicResponse || !topicResponse.error) return;
+		const handleCreateReply = (reply: Reply) => {
+			if (reply.parent) {
+				setReplies((prevReplies) => {
+					return (
+						prevReplies?.map((prevReply) => {
+							if (prevReply.id === reply.parent.id) {
+								return {
+									...prevReply,
+									counter: {
+										...prevReply.counter,
+										replies: prevReply.counter.replies + 1,
+									},
+								};
+							}
 
-		topicResponse.error.graphQLErrors.forEach((err: GraphqlError) => {
-			switch (err.message) {
-				case GraphqlErrorType.BAD_REQUEST:
-					alert("Bad request");
-					return;
-				case GraphqlErrorType.INTERNAL_SERVER_ERROR:
-					alert("Internal Server Error");
-					return;
-				default:
-					alert("Unknown Error");
-					return;
+							return prevReply;
+						}) ?? []
+					);
+				});
 			}
-		});
-	}, [topicResponse]);
+
+			setReplies((prevReplies) => {
+				return prevReplies ? [...prevReplies, reply] : [reply];
+			});
+		};
+
+		event.on("createReply", handleCreateReply);
+
+		return () => {
+			event.off("createReply", handleCreateReply);
+		};
+	});
 
 	useEffect(() => {
-		console.log(topicResponse);
 		if (!topicResponse || !topicResponse.data) return;
 
 		if (!topicResponse.data.topic.getById) {
@@ -85,24 +102,6 @@ const TopicPage: React.FC = () => {
 
 		setTopic(topicResponse.data.topic.getById);
 	}, [topicResponse, navigate]);
-
-	useEffect(() => {
-		if (!repliesResponse || !repliesResponse.error) return;
-
-		repliesResponse.error.graphQLErrors.forEach((err: GraphqlError) => {
-			switch (err.message) {
-				case GraphqlErrorType.BAD_REQUEST:
-					alert("Bad request");
-					return;
-				case GraphqlErrorType.INTERNAL_SERVER_ERROR:
-					alert("Internal Server Error");
-					return;
-				default:
-					alert("Unknown Error");
-					return;
-			}
-		});
-	}, [repliesResponse]);
 
 	useEffect(() => {
 		if (!repliesResponse || !repliesResponse.data) return;
@@ -118,7 +117,7 @@ const TopicPage: React.FC = () => {
 			{topic &&
 				replies &&
 				replies.map((reply, i) => {
-					return <ReplyContainer key={i} reply={reply} />;
+					return <ReplyContainer key={i} topicId={topic.id} reply={reply} />;
 				})}
 		</div>
 	);

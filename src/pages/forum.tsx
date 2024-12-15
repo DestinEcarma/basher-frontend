@@ -12,23 +12,38 @@ import {
 	SearchTopicInput,
 } from "@features/forum/utils/defs";
 import { CREATE_TOPIC } from "@graphql/mutations";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+const INTERSECTION_OPTIONS = {
+	root: null,
+	rootMargin: "0px",
+	threshold: 0,
+};
+
 const ForumPage: React.FC = () => {
 	const navigate = useNavigate();
-	const [offset, setOffset] = React.useState<number>(0);
+
+	const lastTopicRef = useRef<HTMLTableRowElement>(null);
+
 	const [searchParams, setSearchParams] = useSearchParams();
+
+	const [offset, setOffset] = useState<number>(0);
+	const [searchInput, setSearchInput] = useState<SearchTopicInput>();
+	const [topics, setTopics] = useState<GetTopicsQuery["topic"]["get"]>([]);
+
 	const { register, setValue, handleSubmit } = useForm<{ query: string }>();
-	const [searchInput, setSearchInput] = React.useState<SearchTopicInput>();
-	const [topics, setTopics] = React.useState<GetTopicsQuery["topic"]["get"]>([]);
 
 	const [createTopic, { data: mutationData }] = useMutation(CREATE_TOPIC);
 
-	const { loading: retrieveLoading, data: retrieveData } = useQuery<GetTopicsQuery>(GET_TOPICS, {
+	const {
+		loading: retrieveLoading,
+		data: retrieveData,
+		fetchMore: retreiveFetchMore,
+	} = useQuery<GetTopicsQuery>(GET_TOPICS, {
 		variables: {
 			offset: offset,
 		},
@@ -43,8 +58,26 @@ const ForumPage: React.FC = () => {
 	});
 
 	useEffect(() => {
-		console.log(searchInput);
-	}, [searchInput]);
+		const observer = new IntersectionObserver((entries) => {
+			console.log(entries);
+			if (entries[0].isIntersecting) {
+				setOffset(topics.length);
+				retreiveFetchMore({
+					variables: {
+						offset: topics.length,
+					},
+				});
+			}
+		}, INTERSECTION_OPTIONS);
+
+		console.log(lastTopicRef.current);
+
+		if (lastTopicRef.current) {
+			observer.observe(lastTopicRef.current);
+		}
+
+		return () => observer.disconnect();
+	}, [lastTopicRef, retreiveFetchMore, setOffset, topics]);
 
 	useEffect(() => {
 		const query = searchParams.get("query");
@@ -76,7 +109,9 @@ const ForumPage: React.FC = () => {
 		setTopics((prev) => {
 			const existingIds = new Set(prev.map((topic) => topic.id));
 			const newTopics = retrieveData.topic.get.filter((topic) => !existingIds.has(topic.id));
-			return [...prev, ...newTopics];
+			return [...prev, ...newTopics].sort(
+				(a, b) => new Date(b.activity).getTime() - new Date(a.activity).getTime(),
+			);
 		});
 	}, [retrieveData]);
 
@@ -145,8 +180,13 @@ const ForumPage: React.FC = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{(!retrieveLoading || !searchLoading) &&
-								topics.map((topic) => <TopicRow key={topic.id} {...topic} />)}
+							{retrieveData?.topic.get.map((topic, index) => (
+								<TopicRow
+									ref={index === topics.length - 1 ? lastTopicRef : null}
+									key={topic.id}
+									{...topic}
+								/>
+							))}
 							{(retrieveLoading || searchLoading) && <TopicSkeleton />}
 						</tbody>
 					</table>
