@@ -6,8 +6,8 @@ const TopicSkeleton: React.FC = () => {
 	const titleWidthClassName = ["w-5/6", "w-3/4", "w-2/3", "w-1/2", "w-1/3", "w-1/4", "w-1/5"];
 
 	return (
-		<tbody>
-			{new Array(10).fill(null).map((_, key) => (
+		<>
+			{new Array(20).fill(null).map((_, key) => (
 				<tr key={key} className="border-b">
 					<td className="py-2">
 						<div className="flex flex-col gap-2">
@@ -34,7 +34,7 @@ const TopicSkeleton: React.FC = () => {
 					))}
 				</tr>
 			))}
-		</tbody>
+		</>
 	);
 };
 
