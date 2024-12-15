@@ -113,7 +113,7 @@ const TopicPage: React.FC = () => {
 	useScrollToHash();
 
 	return (
-		<div className="w-full pb-11">
+		<div className="w-full mt-4 pb-11">
 			{topic && <TopicContainer topic={topic || defaultTopic} />}
 			{topic &&
 				replies &&

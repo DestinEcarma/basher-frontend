@@ -9,6 +9,7 @@ import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 import remarkMath from "remark-math";
 import remarkRehype from "remark-rehype";
+import { toast } from "sonner";
 
 interface InputsProps {
 	props: Omit<CreatePostProps, "onSubmit">;
@@ -31,7 +32,21 @@ export const Inputs: React.FC<InputsProps> = ({
 		setValue("content", content);
 	}, [content, setValue]);
 
-	register("content", { required: "Content is required", minLength: { value: 30, message: "Content is too short" } });
+	useEffect(() => {
+		console.log(errors);
+
+		if (errors.content?.message !== undefined) {
+			toast.error(errors.content.message);
+		}
+	}, [errors]);
+
+	register("content", {
+		required: "Content is required",
+		minLength: {
+			value: 30,
+			message: "Content must be at least 30 characters",
+		}
+	});
 
 	const displayTitleAndTag = () => {
 		const titleAttributes = {

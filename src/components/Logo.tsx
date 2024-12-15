@@ -12,7 +12,7 @@ const Logo: React.FC = () => {
 	return (
 		<button
 			onClick={onClick}
-			className="flex select-none items-center justify-center py-8 font-roboto-mono text-[4rem] font-bold leading-none tracking-wide"
+			className="flex select-none items-center justify-center pt-4 font-roboto-mono text-[4rem] font-bold leading-none tracking-wide"
 		>
 			<span className="flex size-[4.5rem] items-center justify-center rounded-[0.625rem] bg-black text-[4rem] leading-none text-white">
 				<FaBold />
