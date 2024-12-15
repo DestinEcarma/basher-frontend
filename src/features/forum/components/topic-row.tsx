@@ -1,10 +1,10 @@
-import { Topic } from "../utils/defs";
+import { ForumTopic } from "../utils/defs";
 import { formatDate } from "../utils/helper";
 import { formatNumber } from "@utils/helper";
 import React from "react";
 import { Link } from "react-router-dom";
 
-interface TopicRowProps extends Topic {}
+type TopicRowProps = ForumTopic;
 
 const TopicRow: React.FC<TopicRowProps> = ({ id, title, tags, activity, counter: { likes, replies } }) => {
 	const tableData = [formatNumber(replies), formatNumber(likes), formatDate(new Date(activity))];
@@ -17,13 +17,15 @@ const TopicRow: React.FC<TopicRowProps> = ({ id, title, tags, activity, counter:
 						{title}
 					</Link>
 				</div>
-				{tags.map((tag) => (
+				{tags.map((tag, key) => (
 					// TODO: Convert to a link
-					<span className="text-sm text-blue-500">#{tag}</span>
+					<span key={key} className="text-sm text-blue-500">
+						#{tag}
+					</span>
 				))}
 			</td>
-			{tableData.map((data) => (
-				<td className="text-center font-medium text-gray-500">{data}</td>
+			{tableData.map((data, key) => (
+				<td key={key} className="text-center font-medium text-gray-500">{data}</td>
 			))}
 		</tr>
 	);

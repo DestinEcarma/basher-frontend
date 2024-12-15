@@ -1,4 +1,5 @@
 import { GRAPHQL_PATH, API } from "../../../services/api";
+import { Topic } from "@utils/sample-data";
 
 export interface TopicProps {
 	id: string;
@@ -15,7 +16,7 @@ export interface TopicProps {
 	activity: string;
 }
 
-export async function getTopic(id: string): Promise<TopicProps | null> {
+export async function getTopic(id: string): Promise<Topic | null> {
 	const TOPIC_QUERY = `
 			query GetTopic($id: String!) {
 				topic {
@@ -43,11 +44,5 @@ export async function getTopic(id: string): Promise<TopicProps | null> {
 		},
 	});
 
-	const result = response.data.data.topic.getById;
-
-	if (result === null) {
-		return null;
-	} else {
-		return result;
-	}
+	return response.data.data.topic.getById;
 }

@@ -1,4 +1,6 @@
 import { GRAPHQL_PATH, API } from "../../../services/api";
+import { Reply } from "../utils/defs";
+import { GET_REPLIES } from "@graphql/queries";
 
 export interface ReplyProps {
 	id: string;
@@ -16,38 +18,16 @@ export interface ReplyProps {
 	};
 }
 
-export async function getReplies(topic_id: string, offset: number): Promise<ReplyProps[] | null> {
-	const REPLY_QUERY = `
-		query GetReply($input: IdOffsetInput!) {
-			reply {
-				getFromTopic(input: $input) {
-					id
-					userIndex
-					counter {
-						likes
-						shares
-						views
-						replies
-					}
-					content
-					activity
-					parent
-				}
-			}
-		}
-	`;
-
+export async function getReplies(topicId: string, offset: number): Promise<Reply[] | null> {
 	const response = await API.post(GRAPHQL_PATH, {
-		query: REPLY_QUERY,
+		query: GET_REPLIES,
 		variables: {
 			input: {
-				id: topic_id,
+				id: topicId,
 				offset,
 			},
 		},
 	});
 
-	const result = response.data.data.reply.getFromTopic;
-
-	return result;
+	return response.data.data.reply.getFromTopic;
 }

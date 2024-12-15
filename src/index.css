@@ -10,32 +10,60 @@
 	}
 
 	button,
-	input {
-		@apply outline-none;
+	input,
+	a:focus,
+	button:focus,
+	input:focus,
+	:focus {
+		outline: outline-none;
+	}
+
+	a::-moz-focus-inner,
+	button::-moz-focus-inner,
+	input::-moz-focus-inner,
+	::-moz-focus-inner {
+		border: border-0;
+	}
+
+	:focus {
+		outline: none;
+	}
+
+	::-moz-focus-inner {
+		border: 0;
 	}
 
 	.markdown {
+		@apply break-words [&>*]:mb-4;
+
 		h1 {
 			@apply mb-4 text-3xl font-bold;
 		}
+
 		h2 {
 			@apply mb-3 text-2xl font-semibold;
 		}
+
 		h3 {
 			@apply mb-2 text-xl font-medium;
 		}
+
 		h4 {
 			@apply mb-1.5 text-lg font-medium;
 		}
+
 		h5 {
 			@apply mb-1 text-base font-medium;
 		}
+
 		p {
 			@apply mb-4;
 		}
+
 		br {
 			@apply my-2;
 		}
+
 		a {
 			@apply text-blue-500 underline;
 		}
@@ -84,4 +112,17 @@
 			@apply border-b border-gray-200;
 		}
 	}
+
+	ul,
+	ol {
+		list-style: unset;
+	}
+
+	ol {
+		@apply list-decimal;
+	}
+}
+
+.w-md-editor {
+	@apply p-0;
 }

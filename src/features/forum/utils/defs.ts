@@ -1,19 +1,19 @@
 import { gql } from "@apollo/client";
+import { Counter } from "@utils/defs";
 
 export interface Topic {
 	id: string;
 	title: string;
 	tags: string[];
 	activity: string;
-	counter: {
-		likes: number;
-		replies: number;
-	};
+	counter: Counter;
 }
+
+export type ForumTopic = Omit<Topic, "counter"> & { counter: Omit<Counter, "views" | "shares"> };
 
 export interface GetTopicsQuery {
 	topic: {
-		get: Topic[];
+		get: ForumTopic[];
 	};
 }
 

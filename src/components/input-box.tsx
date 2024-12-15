@@ -12,20 +12,18 @@ export interface InputBoxProps extends Omit<ReactInputAttributes, "type"> {
 export type InputBoxPropsNoRef = Omit<InputBoxProps, "ref">;
 
 export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(({ error, name, label, ...props }, ref) => {
-	let customeLabel: React.ReactNode = undefined;
+	const [customLabel, setCustomLabel] = React.useState<React.ReactNode>(null);
 
 	React.Children.forEach(props.children, (child) => {
-		if (!React.isValidElement(child)) return;
-
-		if (child.type === InputLabel) {
-			customeLabel = child;
+		if (React.isValidElement(child) && child.type === InputLabel) {
+			setCustomLabel(child);
 		}
 	});
 
 	return (
 		<div className="flex flex-col gap-2">
-			{customeLabel ?? (label && <InputLabel htmlFor={name} children={label} />)}
-			<InputField id={name} placeholder={label} ref={ref} {...props} />
+			{customLabel ?? (label && <InputLabel htmlFor={name}>{label}</InputLabel>)}
+			<InputField id={name} name={name} placeholder={label} ref={ref} {...props} />
 			{error && <p className="text-xs text-red-500">{error}</p>}
 		</div>
 	);
@@ -36,8 +34,8 @@ export const InputLabel = React.forwardRef<HTMLLabelElement, ReactLabelAttribute
 		return (
 			<label
 				className={mergeClasses(["w-fit text-sm font-medium hover:cursor-pointer", className])}
-				ref={ref}
 				{...props}
+				ref={ref}
 			>
 				{children}
 			</label>
@@ -64,7 +62,7 @@ const InputField = React.forwardRef<HTMLInputElement, FieldInputProps>(({ classN
 	return (
 		<div className="flex items-center gap-2 rounded-lg border p-2 shadow transition-colors [&:has(input:focus)]:border-blue-500">
 			{leftSide}
-			<input className={mergeClasses(["w-full text-sm", className])} ref={ref} {...props} />
+			<input className={mergeClasses(["w-full text-sm", className])} {...props} ref={ref} />
 			{rightSide}
 		</div>
 	);

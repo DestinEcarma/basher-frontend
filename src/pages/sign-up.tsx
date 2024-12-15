@@ -64,7 +64,7 @@ const SignUpPage: React.FC = () => {
 				validate: (value) => {
 					if (value.match(PASSWORD_REGEX)) return true;
 
-					return "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special charact";
+					return "Password must contain at least one uppercase letter, one lowercase letter, and one number";
 				},
 			}),
 		},

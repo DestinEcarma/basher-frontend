@@ -7,8 +7,8 @@ const TopicSkeleton: React.FC = () => {
 
 	return (
 		<tbody>
-			{new Array(10).fill(null).map(() => (
-				<tr className="border-b">
+			{new Array(10).fill(null).map((_, key) => (
+				<tr key={key} className="border-b">
 					<td className="py-2">
 						<div className="flex flex-col gap-2">
 							<div
@@ -18,14 +18,17 @@ const TopicSkeleton: React.FC = () => {
 								])}
 							></div>
 							<div className="flex gap-1">
-								{new Array(getRandomInt(5)).fill(null).map(() => (
-									<div className="h-4 w-12 rounded-full odd:bg-gray-200 even:bg-gray-300"></div>
+								{new Array(getRandomInt(5)).fill(null).map((_, key) => (
+									<div
+										key={key}
+										className="h-4 w-12 rounded-full odd:bg-gray-200 even:bg-gray-300"
+									></div>
 								))}
 							</div>
 						</div>
 					</td>
-					{new Array(3).fill(null).map(() => (
-						<td className="group px-2">
+					{new Array(3).fill(null).map((_, key) => (
+						<td key={key} className="group px-2">
 							<div className="mx-auto h-6 w-full rounded-full group-odd:bg-gray-300 group-even:bg-gray-200"></div>
 						</td>
 					))}
