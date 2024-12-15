@@ -25,7 +25,9 @@ const TopicRow: React.FC<TopicRowProps> = ({ id, title, tags, activity, counter:
 				))}
 			</td>
 			{tableData.map((data, key) => (
-				<td key={key} className="text-center font-medium text-gray-500">{data}</td>
+				<td key={key} className="text-center font-medium text-gray-500">
+					{data}
+				</td>
 			))}
 		</tr>
 	);

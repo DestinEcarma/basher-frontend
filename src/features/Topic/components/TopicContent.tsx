@@ -1,4 +1,4 @@
-import MarkdownRenderer from "../../../components/MarkdownRenderer";
+import MDEditor from "@uiw/react-md-editor";
 import React from "react";
 
 interface ContentProps {
@@ -8,7 +8,8 @@ interface ContentProps {
 const TopicContent: React.FC<ContentProps> = ({ content }) => {
 	return (
 		<div className="mb-8 mt-4 flex flex-col gap-5">
-			<MarkdownRenderer content={content} />
+			{/* <MarkdownRenderer content={content} /> */}
+			<MDEditor.Markdown source={content} style={{ whiteSpace: "pre-wrap" }} />
 		</div>
 	);
 };
