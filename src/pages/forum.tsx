@@ -180,7 +180,7 @@ const ForumPage: React.FC = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{retrieveData?.topic.get.map((topic, index) => (
+							{topics.map((topic, index) => (
 								<TopicRow
 									ref={index === topics.length - 1 ? lastTopicRef : null}
 									key={topic.id}
