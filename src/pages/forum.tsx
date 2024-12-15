@@ -37,7 +37,7 @@ const ForumPage: React.FC = () => {
 	const onClickCreateTopic = () => {
 		createPost.open({
 			mode: "create",
-			onSubmit: (title: string, tags: Tag[], content: string) => {
+			onSubmit: (content: string, title: string, tags: Tag[]) => {
 				createTopic({
 					variables: {
 						input: {

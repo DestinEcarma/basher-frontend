@@ -11,7 +11,7 @@ const Tags: React.FC<TagsProps> = ({ tags }) => {
 			{tags.map((tag, i) => {
 				return (
 					<Link to={`/topic/${tag.substring(1)}`} key={i}>
-						{i !== tags.length - 1 ? `#${tag},` : `#tag`}
+						{`#${tag}`}
 					</Link>
 				);
 			})}
