@@ -62,6 +62,7 @@ export const CreatePostModal: React.FC<CreatePostProps> = (props) => {
 
 	const onSubmit = () => {
 		eventEmitter.emit("submit", props.onSubmit);
+		eventEmitter.emit("close");
 	};
 
 	// TODO: Improve loading state
