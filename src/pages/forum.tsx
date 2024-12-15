@@ -3,7 +3,14 @@ import { Button } from "@components/button";
 import createPost from "@components/create-post";
 import TopicRow from "@features/forum/components/topic-row";
 import TopicSkeleton from "@features/forum/components/topic-skeleton";
-import { GET_TOPICS, GetTopicsQuery, Tag } from "@features/forum/utils/defs";
+import {
+	GET_TOPICS,
+	GetTopicsQuery,
+	Tag,
+	SEARCH_TOPICS,
+	SearchTopicsQuery,
+	SearchTopicInput,
+} from "@features/forum/utils/defs";
 import { CREATE_TOPIC } from "@graphql/mutations";
 import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -13,35 +20,75 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ForumPage: React.FC = () => {
 	const navigate = useNavigate();
-	const [offset] = React.useState<number>(0);
-	const [topics, setTopics] = React.useState<GetTopicsQuery["topic"]["get"]>([]);
-	const [createTopic, { data: mutationData }] = useMutation(CREATE_TOPIC);
-	const { register, handleSubmit } = useForm<{ query: string }>();
+	const [offset, setOffset] = React.useState<number>(0);
 	const [searchParams, setSearchParams] = useSearchParams();
+	const { register, setValue, handleSubmit } = useForm<{ query: string }>();
+	const [searchInput, setSearchInput] = React.useState<SearchTopicInput>();
+	const [topics, setTopics] = React.useState<GetTopicsQuery["topic"]["get"]>([]);
 
-	const { loading: queryLoading, data: queryData } = useQuery<GetTopicsQuery>(GET_TOPICS, {
+	const [createTopic, { data: mutationData }] = useMutation(CREATE_TOPIC);
+
+	const { loading: retrieveLoading, data: retrieveData } = useQuery<GetTopicsQuery>(GET_TOPICS, {
 		variables: {
 			offset: offset,
 		},
+		skip: (searchParams.get("query")?.length ?? 0) > 2,
 	});
+
+	const { loading: searchLoading, data: searchData } = useQuery<SearchTopicsQuery>(SEARCH_TOPICS, {
+		variables: {
+			input: searchInput,
+		},
+		skip: (searchParams.get("query")?.length ?? 0) < 3,
+	});
+
+	useEffect(() => {
+		console.log(searchInput);
+	}, [searchInput]);
 
 	useEffect(() => {
 		const query = searchParams.get("query");
 
-		console.log(query);
-		if (query !== undefined) {
+		setValue("query", query ?? "");
+
+		if (query && query.length > 2) {
+			setOffset(0);
+			setTopics([]);
+			setSearchInput({
+				offset: 0,
+				query: query
+					.trim()
+					.split(" ")
+					.filter((tag) => tag[0] !== "#")
+					.join(" "),
+				tags: query
+					.trim()
+					.split(" ")
+					.filter((tag) => tag[0] === "#")
+					.map((tag) => ({ name: tag.slice(1) })),
+			});
 		}
-	}, [searchParams]);
+	}, [offset, setValue, searchParams]);
 
 	useEffect(() => {
-		if (queryData === undefined) return;
+		if (retrieveData === undefined) return;
 
 		setTopics((prev) => {
 			const existingIds = new Set(prev.map((topic) => topic.id));
-			const newTopics = queryData.topic.get.filter((topic) => !existingIds.has(topic.id));
+			const newTopics = retrieveData.topic.get.filter((topic) => !existingIds.has(topic.id));
 			return [...prev, ...newTopics];
 		});
-	}, [queryData]);
+	}, [retrieveData]);
+
+	useEffect(() => {
+		if (searchData === undefined) return;
+
+		setTopics((prev) => {
+			const existingIds = new Set(prev.map((topic) => topic.id));
+			const newTopics = searchData.topic.search.filter((topic) => !existingIds.has(topic.id));
+			return [...prev, ...newTopics];
+		});
+	}, [searchData]);
 
 	useEffect(() => {
 		if (mutationData === undefined) return;
@@ -50,8 +97,6 @@ const ForumPage: React.FC = () => {
 	}, [mutationData, navigate]);
 
 	const onSearch: SubmitHandler<{ query: string }> = ({ query }) => {
-		if (query.length < 3) return;
-
 		setSearchParams({ query });
 	};
 
@@ -76,7 +121,7 @@ const ForumPage: React.FC = () => {
 
 	return (
 		<div className="mx-auto flex h-full w-full flex-col gap-8 pb-8 md:max-w-3xl lg:max-w-7xl">
-			<div className="flex w-full justify-between gap-8 mt-4 rounded-lg bg-white px-8 py-4 shadow-lg">
+			<div className="mt-4 flex w-full justify-between gap-8 rounded-lg bg-white px-8 py-4 shadow-lg">
 				<form onSubmit={handleSubmit(onSearch)} className="flex flex-grow items-center gap-2">
 					<Button type="submit" variant="ghost" size="sm" className="group">
 						<FaMagnifyingGlass className="text-gray-400 transition-colors group-hover:text-black" />
@@ -100,8 +145,9 @@ const ForumPage: React.FC = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{!queryLoading && topics.map((topic) => <TopicRow key={topic.id} {...topic} />)}
-							{queryLoading && <TopicSkeleton />}
+							{(!retrieveLoading || !searchLoading) &&
+								topics.map((topic) => <TopicRow key={topic.id} {...topic} />)}
+							{(retrieveLoading || searchLoading) && <TopicSkeleton />}
 						</tbody>
 					</table>
 				</div>

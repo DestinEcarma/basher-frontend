@@ -51,3 +51,32 @@ export const GET_TOPICS = gql`
 		}
 	}
 `;
+
+export interface SearchTopicInput {
+	query: string;
+	tags: Tag[];
+	offset: number;
+}
+
+export interface SearchTopicsQuery {
+	topic: {
+		search: ForumTopic[];
+	};
+}
+
+export const SEARCH_TOPICS = gql`
+	query SearchTopics($input: SearchTopicInput!) {
+		topic {
+			search(input: $input) {
+				id
+				title
+				tags
+				activity
+				counter {
+					likes
+					replies
+				}
+			}
+		}
+	}
+`;
