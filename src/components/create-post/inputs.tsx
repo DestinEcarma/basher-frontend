@@ -45,7 +45,7 @@ export const Inputs: React.FC<InputsProps> = ({
 		minLength: {
 			value: 30,
 			message: "Content must be at least 30 characters",
-		}
+		},
 	});
 
 	const displayTitleAndTag = () => {
