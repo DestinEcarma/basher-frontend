@@ -12,17 +12,12 @@ import {
 	SearchTopicInput,
 } from "@features/forum/utils/defs";
 import { CREATE_TOPIC } from "@graphql/mutations";
+import { INTERSECTION_OPTIONS } from "@utils/defs";
 import React, { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
-const INTERSECTION_OPTIONS = {
-	root: null,
-	rootMargin: "0px",
-	threshold: 0,
-};
 
 const ForumPage: React.FC = () => {
 	const navigate = useNavigate();
@@ -59,7 +54,6 @@ const ForumPage: React.FC = () => {
 
 	useEffect(() => {
 		const observer = new IntersectionObserver((entries) => {
-			console.log(entries);
 			if (entries[0].isIntersecting) {
 				setOffset(topics.length);
 				retreiveFetchMore({
@@ -69,8 +63,6 @@ const ForumPage: React.FC = () => {
 				});
 			}
 		}, INTERSECTION_OPTIONS);
-
-		console.log(lastTopicRef.current);
 
 		if (lastTopicRef.current) {
 			observer.observe(lastTopicRef.current);

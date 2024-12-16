@@ -19,6 +19,12 @@ export const EMAIL_REGEX =
 	// eslint-disable-next-line no-useless-escape
 	/(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@[*[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+]*/;
 
+export const INTERSECTION_OPTIONS = {
+	root: null,
+	rootMargin: "0px",
+	threshold: 0,
+};
+
 export interface AuthQuery {
 	user: {
 		auth: boolean;
