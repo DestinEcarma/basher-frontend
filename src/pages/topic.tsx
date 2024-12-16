@@ -1,9 +1,8 @@
 import ReplyContainer from "../features/Topic/components/ReplyContainer";
 import TopicContainer from "../features/Topic/components/TopicContainer";
 import { useQuery } from "@apollo/client";
-import { GET_TOPIC, GetReplies, GetTopic, Reply, Topic } from "@features/Topic/utils/defs";
+import { GET_TOPIC, GET_REPLIES, GetReplies, GetTopic, Reply, Topic } from "@features/Topic/utils/defs";
 import { useEvent } from "@features/Topic/utils/event";
-import { GET_REPLIES } from "@graphql/queries";
 import { INTERSECTION_OPTIONS } from "@utils/defs";
 import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";

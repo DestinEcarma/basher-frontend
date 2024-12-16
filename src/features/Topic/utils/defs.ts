@@ -135,13 +135,19 @@ export const GET_REPLY = gql`
 
 export interface SubreplyProps {
 	id: string;
-	author: string;
-	counter: {
-		likes: number;
-		shares: number;
-		replies: number;
-	};
+	userIndex: number;
 	content: string;
 	activity: string;
-	parent: string;
 }
+
+export const GET_SUB_REPLIES = gql`
+	query GetSubReplies($input: IdOffsetInput!) {
+		reply {
+			getFromReply(input: $input) {
+				id
+				userIndex
+				content
+			}
+		}
+	}
+`;

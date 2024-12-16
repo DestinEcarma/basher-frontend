@@ -1,4 +1,4 @@
-import { CREATE_REPLY, CreateReply, Reply } from "../utils/defs";
+import { CREATE_REPLY, GET_SUB_REPLIES, CreateReply, Reply } from "../utils/defs";
 import { eventCreateReply } from "../utils/event";
 import DropDownButton from "./DropDownButton";
 import ReplyButton from "./ReplyButton";
@@ -8,7 +8,6 @@ import TopicButton from "./TopicButton";
 import User from "./User";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import createPost from "@components/create-post";
-import { GET_SUB_REPLIES } from "@graphql/queries";
 import React, { useEffect, useState } from "react";
 import { BiLike, BiLinkAlt } from "react-icons/bi";
 import { FaChevronDown } from "react-icons/fa";
