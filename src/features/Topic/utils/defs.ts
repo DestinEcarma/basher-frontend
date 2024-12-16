@@ -29,6 +29,38 @@ export interface Reply {
 	activity: string;
 }
 
+export interface GetTopic {
+	topic: {
+		getById: Topic;
+	};
+}
+
+export const GET_TOPIC = gql`
+	query GetTopic($id: ID!) {
+		topic {
+			getById(id: $id) {
+				id
+				tags
+				title
+				content
+				activity
+				counter {
+					likes
+					views
+					shares
+					replies
+				}
+			}
+		}
+	}
+`;
+
+export interface GetReplies {
+	reply: {
+		getFromTopic: Reply[];
+	};
+}
+
 export const GET_REPLIES = gql`
 	query GetReply($input: IdOffsetInput!) {
 		reply {
