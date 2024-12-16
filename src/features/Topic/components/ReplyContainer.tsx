@@ -27,7 +27,7 @@ function getCurrentTime() {
 	return `${hours}:${minutes}`;
 }
 
-const ReplyContainer: React.FC<ReplyContainerProps> = ({ topicId, reply }) => {
+const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ topicId, reply }, ref) => {
 	// const [willReply, setWillReply] = useState(false);
 	const [showSubReplies, setShowSubReplies] = useState(false);
 	const [subReplies, setSubReplies] = useState<Reply[]>([]);
@@ -116,7 +116,7 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ topicId, reply }) => {
 	}, [reply]);
 
 	return (
-		<div className="mt-4 flex flex-col items-center justify-center">
+		<div ref={ref} className="mt-4 flex flex-col items-center justify-center">
 			<div
 				className="w-full rounded-md bg-white px-6 pb-3 pt-5 shadow-lg md:max-w-3xl lg:max-w-7xl"
 				id={reply.id}
@@ -161,6 +161,6 @@ const ReplyContainer: React.FC<ReplyContainerProps> = ({ topicId, reply }) => {
 			{subReplies.length > 0 && showSubReplies && <ReplyDropdown replies={subReplies} />}
 		</div>
 	);
-};
+});
 
 export default ReplyContainer;
