@@ -92,24 +92,16 @@ export interface CreateReply {
 export const CREATE_REPLY = gql`
 	mutation CreateReply($input: CreateReplyInput!) {
 		reply {
-			create(input: $input) {
-				id
-				userIndex
-				content
-				counter {
-					likes
-					shares
-					replies
-				}
-				parent {
-					id
-					userIndex
-				}
-				activity
-			}
+			create(input: $input)
 		}
 	}
 `;
+
+export interface GetReply {
+	reply: {
+		getReply: Reply;
+	};
+}
 
 export const GET_REPLY = gql`
 	query GetReply($input: GetReplyInput!) {
@@ -151,3 +143,13 @@ export const GET_SUB_REPLIES = gql`
 		}
 	}
 `;
+
+export function incrementCounterReplies<T extends Topic | Reply>(post: T) {
+	return {
+		...post,
+		counter: {
+			...post.counter,
+			replies: post.counter.replies + 1,
+		},
+	};
+}

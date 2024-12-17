@@ -1,5 +1,4 @@
 import { CREATE_REPLY, GET_SUB_REPLIES, CreateReply, Reply } from "../utils/defs";
-import { eventCreateReply } from "../utils/event";
 import DropDownButton from "./DropDownButton";
 import ReplyButton from "./ReplyButton";
 import ReplyContent from "./ReplyContent";
@@ -33,13 +32,7 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 
 	const [getSubReplies] = useLazyQuery(GET_SUB_REPLIES);
 
-	const [createReply, { data }] = useMutation<CreateReply>(CREATE_REPLY);
-
-	useEffect(() => {
-		if (data) {
-			eventCreateReply(data.reply.create);
-		}
-	}, [data]);
+	const [createReply] = useMutation<CreateReply>(CREATE_REPLY);
 
 	useEffect(() => {
 		async function fetchSubReplies() {

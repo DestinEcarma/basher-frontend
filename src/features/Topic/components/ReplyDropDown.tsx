@@ -12,7 +12,7 @@ const ReplyDropdown: React.FC<ReplyDropdownProps> = ({ replies }) => {
 			<div className="ml-10 mt-3 w-auto border-l-4 border-gray-700 p-3"></div>
 			<div className="w-full">
 				{replies.map((subreply) => (
-					<SubReply key={subreply.userIndex} {...subreply} />
+					<SubReply key={subreply.id} {...subreply} />
 				))}
 			</div>
 		</div>

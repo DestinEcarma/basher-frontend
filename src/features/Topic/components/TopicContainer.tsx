@@ -1,25 +1,17 @@
 import { CREATE_REPLY, CreateReply, Topic } from "../utils/defs";
-import { eventCreateReply } from "../utils/event";
 import Tags from "./Tags";
 import TopicContent from "./TopicContent";
 import TopicIcons from "./TopicIcons";
 import User from "./User";
 import { useMutation } from "@apollo/client";
 import createPost from "@components/create-post";
-import { useEffect } from "react";
 
 interface TopicContainerProps {
 	topic: Topic;
 }
 
 const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
-	const [createTopic, { data }] = useMutation<CreateReply>(CREATE_REPLY);
-
-	useEffect(() => {
-		if (data) {
-			eventCreateReply(data.reply.create);
-		}
-	}, [data]);
+	const [createTopic] = useMutation<CreateReply>(CREATE_REPLY);
 
 	const onClickCreateReply = () => {
 		createPost.open({

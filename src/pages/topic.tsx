@@ -1,30 +1,39 @@
 import ReplyContainer from "../features/Topic/components/ReplyContainer";
 import TopicContainer from "../features/Topic/components/TopicContainer";
-import { useQuery } from "@apollo/client";
-import { GET_TOPIC, GET_REPLIES, GetReplies, GetTopic, Reply, Topic } from "@features/Topic/utils/defs";
-import { useEvent } from "@features/Topic/utils/event";
+import { useLazyQuery, useQuery } from "@apollo/client";
+import {
+	GET_TOPIC,
+	GET_REPLIES,
+	GetReplies,
+	GetTopic,
+	Reply,
+	Topic,
+	GetReply,
+	GET_REPLY,
+	incrementCounterReplies,
+} from "@features/Topic/utils/defs";
 import { INTERSECTION_OPTIONS } from "@utils/defs";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const TopicPage: React.FC = () => {
-	const event = useEvent();
-
 	const navigate = useNavigate();
+
+	const { hash } = useLocation();
 
 	const { id } = useParams<{ id: string }>();
 
-	const lastReplyRef = React.useRef<HTMLDivElement>(null);
+	const lastReplyRef = useRef<HTMLDivElement>(null);
 
 	const [offset, setOffset] = useState<number>(0);
 	const [topic, setTopic] = useState<Topic>();
 	const [replies, setReplies] = useState<Reply[]>([]);
 
+	const [getUpdateReply] = useLazyQuery<GetReply>(GET_REPLY);
+
 	const { data: topicData } = useQuery<GetTopic>(GET_TOPIC, {
-		variables: {
-			id,
-		},
+		variables: { id },
 	});
 
 	const { data: repliesData, fetchMore: repliesFetchMore } = useQuery<GetReplies>(GET_REPLIES, {
@@ -38,7 +47,6 @@ const TopicPage: React.FC = () => {
 
 	useEffect(() => {
 		const observer = new IntersectionObserver((entries) => {
-			console.log(entries);
 			if (entries[0].isIntersecting) {
 				setOffset(replies.length);
 				repliesFetchMore({
@@ -58,33 +66,62 @@ const TopicPage: React.FC = () => {
 	}, [id, lastReplyRef, replies.length, repliesFetchMore]);
 
 	useEffect(() => {
-		const handleCreateReply = (reply: Reply) => {
-			if (reply.parent) {
+		if (!topic) return;
+
+		const eventSource = new EventSource(`/sse/topic/${topic.id}`);
+
+		eventSource.onmessage = async (event) => {
+			const replyData = JSON.parse(event.data) as { id: string; kind: "Created" | "Updated" };
+
+			const { data } = await getUpdateReply({
+				variables: {
+					input: {
+						topic: topic.id,
+						reply: replyData.id,
+					},
+				},
+			});
+
+			if (data?.reply.getReply) {
 				setReplies((prevReplies) => {
-					return (
-						prevReplies?.map((prevReply) => {
-							if (prevReply.id === reply.parent.id) {
-								return {
-									...prevReply,
-									counter: { ...prevReply.counter, replies: prevReply.counter.replies + 1 },
-								};
+					const index = prevReplies.findIndex((reply) => reply.id === replyData.id);
+
+					if (index === -1 && replyData.kind === "Created") {
+						if (prevReplies.length === topic.counter.replies) {
+							setTopic((prevTopic) => {
+								if (!prevTopic) return undefined;
+
+								return incrementCounterReplies<Topic>(prevTopic);
+							});
+
+							return [
+								...prevReplies.map((reply) => {
+									if (reply.id === data.reply.getReply.parent.id) {
+										return incrementCounterReplies<Reply>(reply);
+									}
+
+									return reply;
+								}),
+								data.reply.getReply,
+							];
+						}
+
+						return prevReplies;
+					} else {
+						return prevReplies.map((reply) => {
+							if (reply.id === replyData.id) {
+								return data.reply.getReply;
 							}
-							return prevReply;
-						}) ?? []
-					);
+
+							return reply;
+						});
+					}
 				});
 			}
-			setReplies((prevReplies) => {
-				return prevReplies ? [...prevReplies, reply] : [reply];
-			});
 		};
 
-		event.on("createReply", handleCreateReply);
-
-		return () => {
-			event.off("createReply", handleCreateReply);
-		};
-	});
+		return () => eventSource.close();
+	}, [topic, getUpdateReply, setTopic, setReplies]);
 
 	useEffect(() => {
 		if (!topicData) return;
@@ -108,20 +145,40 @@ const TopicPage: React.FC = () => {
 		});
 	}, [repliesData]);
 
-	const useScrollToHash = () => {
-		const { hash } = useLocation();
+	useEffect(() => {
+		if (!topic || !hash) return;
 
-		useEffect(() => {
-			if (hash) {
-				const element = document.getElementById(hash.substring(1));
-				if (element) {
-					element.scrollIntoView({ behavior: "smooth" });
+		(async () => {
+			const replyId = hash.substring(1);
+
+			const replyIndex = replies.findIndex((reply) => reply.id === replyId);
+
+			if (replyIndex === -1) {
+				console.log("fetching reply");
+
+				const { data } = await getUpdateReply({
+					variables: {
+						input: {
+							topic: topic.id,
+							reply: replyId,
+						},
+					},
+				});
+
+				console.log(data);
+
+				if (data?.reply.getReply) {
+					setReplies((prevReplies) => [...prevReplies, data.reply.getReply]);
 				}
 			}
-		}, [hash]);
-	};
 
-	useScrollToHash();
+			const element = document.getElementById(replyId);
+
+			if (element) {
+				element.scrollIntoView({ behavior: "smooth" });
+			}
+		})();
+	}, [hash, replies, topic, getUpdateReply]);
 
 	return (
 		<div className="mt-4 w-full pb-11">
@@ -129,12 +186,14 @@ const TopicPage: React.FC = () => {
 			{topic &&
 				replies &&
 				replies.map((reply, index) => {
-					return <ReplyContainer
-						ref={index === replies.length - 1 ? lastReplyRef : null}
-						key={index}
-						reply={reply}
-						topicId={topic.id}
-					/>;
+					return (
+						<ReplyContainer
+							ref={index === replies.length - 1 ? lastReplyRef : null}
+							key={index}
+							reply={reply}
+							topicId={topic.id}
+						/>
+					);
 				})}
 		</div>
 	);
