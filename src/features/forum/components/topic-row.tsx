@@ -20,10 +20,9 @@ const TopicRow = React.forwardRef<HTMLTableRowElement, TopicRowProps>(
 					</div>
 					<div className="flex gap-2">
 						{tags.map((tag, key) => (
-							// TODO: Convert to a link
-							<span key={key} className="text-sm text-blue-500">
+							<Link to={`/forum?query=%23${tag}`} key={key} className="text-sm text-blue-500">
 								#{tag}
-							</span>
+							</Link>
 						))}
 					</div>
 				</td>
