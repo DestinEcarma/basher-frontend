@@ -154,8 +154,6 @@ const TopicPage: React.FC = () => {
 			const replyIndex = replies.findIndex((reply) => reply.id === replyId);
 
 			if (replyIndex === -1) {
-				console.log("fetching reply");
-
 				const { data } = await getUpdateReply({
 					variables: {
 						input: {
@@ -164,8 +162,6 @@ const TopicPage: React.FC = () => {
 						},
 					},
 				});
-
-				console.log(data);
 
 				if (data?.reply.getReply) {
 					setReplies((prevReplies) => [...prevReplies, data.reply.getReply]);

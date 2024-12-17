@@ -33,8 +33,6 @@ export const Inputs: React.FC<InputsProps> = ({
 	}, [content, setValue]);
 
 	useEffect(() => {
-		console.log(errors);
-
 		if (errors.content?.message !== undefined) {
 			toast.error(errors.content.message);
 		}
