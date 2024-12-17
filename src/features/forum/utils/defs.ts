@@ -52,6 +52,29 @@ export const GET_TOPICS = gql`
 	}
 `;
 
+export interface GetTopicQuery {
+	topic: {
+		getById: ForumTopic;
+	};
+}
+
+export const GET_TOPIC = gql`
+	query GetTopic($id: ID!) {
+		topic {
+			getById(id: $id) {
+				id
+				title
+				tags
+				activity
+				counter {
+					likes
+					replies
+				}
+			}
+		}
+	}
+`;
+
 export interface SearchTopicInput {
 	query: string;
 	tags: Tag[];

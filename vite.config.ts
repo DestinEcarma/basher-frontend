@@ -22,6 +22,11 @@ export default defineConfig({
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/graphql/, "/graphql"),
 			},
+			"/sse": {
+				target: "http://10.147.18.25:3000",
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/sse/, "/sse"),
+			},
 		},
 	},
 });

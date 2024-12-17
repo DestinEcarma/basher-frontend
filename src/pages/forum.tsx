@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { Button } from "@components/button";
 import createPost from "@components/create-post";
 import TopicRow from "@features/forum/components/topic-row";
@@ -10,8 +10,10 @@ import {
 	SEARCH_TOPICS,
 	SearchTopicsQuery,
 	SearchTopicInput,
+	CREATE_TOPIC,
+	GetTopicQuery,
+	GET_TOPIC,
 } from "@features/forum/utils/defs";
-import { CREATE_TOPIC } from "@graphql/mutations";
 import { INTERSECTION_OPTIONS } from "@utils/defs";
 import React, { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -27,17 +29,22 @@ const ForumPage: React.FC = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const [offset, setOffset] = useState<number>(0);
-	const [searchInput, setSearchInput] = useState<SearchTopicInput>();
+	const [searchInput, setSearchInput] = useState<SearchTopicInput>({
+		offset: 0,
+		query: "",
+		tags: [],
+	});
 	const [topics, setTopics] = useState<GetTopicsQuery["topic"]["get"]>([]);
 
 	const { register, setValue, handleSubmit } = useForm<{ query: string }>();
 
 	const [createTopic, { data: mutationData }] = useMutation(CREATE_TOPIC);
 
+	const [getLatestTopic, { called: calledGetLatestTopic, loading: loadingGetLastestTopic }] = useLazyQuery<GetTopicQuery>(GET_TOPIC);
+
 	const {
 		loading: retrieveLoading,
 		data: retrieveData,
-		fetchMore: retreiveFetchMore,
 	} = useQuery<GetTopicsQuery>(GET_TOPICS, {
 		variables: {
 			offset: offset,
@@ -45,7 +52,11 @@ const ForumPage: React.FC = () => {
 		skip: (searchParams.get("query")?.length ?? 0) > 2,
 	});
 
-	const { loading: searchLoading, data: searchData } = useQuery<SearchTopicsQuery>(SEARCH_TOPICS, {
+	const {
+		loading: searchLoading,
+		data: searchData,
+		fetchMore: searchFetchMore,
+	} = useQuery<SearchTopicsQuery>(SEARCH_TOPICS, {
 		variables: {
 			input: searchInput,
 		},
@@ -55,12 +66,11 @@ const ForumPage: React.FC = () => {
 	useEffect(() => {
 		const observer = new IntersectionObserver((entries) => {
 			if (entries[0].isIntersecting) {
-				setOffset(topics.length);
-				retreiveFetchMore({
-					variables: {
-						offset: topics.length,
-					},
-				});
+				if ((searchParams.get("query") ?? "").length < 3) {
+					setOffset(topics.length);
+				} else {
+					setSearchInput((prev) => ({ ...prev, offset: topics.length }));
+				}
 			}
 		}, INTERSECTION_OPTIONS);
 
@@ -69,7 +79,7 @@ const ForumPage: React.FC = () => {
 		}
 
 		return () => observer.disconnect();
-	}, [lastTopicRef, retreiveFetchMore, setOffset, topics]);
+	}, [lastTopicRef, searchFetchMore, searchParams, setOffset, topics]);
 
 	useEffect(() => {
 		const query = searchParams.get("query");
@@ -93,7 +103,36 @@ const ForumPage: React.FC = () => {
 					.map((tag) => ({ name: tag.slice(1) })),
 			});
 		}
-	}, [offset, setValue, searchParams]);
+	}, [offset, setValue, searchParams, searchFetchMore]);
+
+	useEffect(() => {
+		const eventSource = new EventSource("/sse/topic");
+
+		eventSource.onmessage = async (event) => {
+			if ((searchParams.get("query")?.length ?? 0) > 2) return;
+
+			const topicId = (JSON.parse(event.data) as { id: string }).id;
+
+			const { data } = await getLatestTopic({
+				variables: {
+					id: topicId
+				}
+			})
+
+			if (data?.topic.getById) {
+				setTopics((prev) => {
+					const existingIds = new Set(prev.map((topic) => topic.id));
+					if (!existingIds.has(data.topic.getById.id)) {
+						return [data.topic.getById, ...prev];
+					} else {
+						return prev;
+					}
+				})
+			}
+		};
+
+		return () => eventSource.close();
+	}, [searchParams, setTopics, getLatestTopic]);
 
 	useEffect(() => {
 		if (retrieveData === undefined) return;
@@ -172,6 +211,7 @@ const ForumPage: React.FC = () => {
 							</tr>
 						</thead>
 						<tbody>
+							{(calledGetLatestTopic && loadingGetLastestTopic) && <TopicSkeleton />}
 							{topics.map((topic, index) => (
 								<TopicRow
 									ref={index === topics.length - 1 ? lastTopicRef : null}
@@ -179,7 +219,10 @@ const ForumPage: React.FC = () => {
 									{...topic}
 								/>
 							))}
-							{(retrieveLoading || searchLoading) && <TopicSkeleton />}
+							{(retrieveLoading || searchLoading) &&
+								new Array(20).fill(null).map((_, key) => (
+									<TopicSkeleton key={key} />
+								))}
 						</tbody>
 					</table>
 				</div>
