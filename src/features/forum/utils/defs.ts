@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { Counter } from "@utils/defs";
+import { Counter, UserStatus } from "@utils/defs";
 
 export interface Topic {
 	id: string;
@@ -7,17 +7,14 @@ export interface Topic {
 	tags: string[];
 	activity: string;
 	counter: Counter;
-}
-
-export interface Tag {
-	name: string;
+	userStatus: UserStatus;
 }
 
 export type ForumTopic = Omit<Topic, "counter"> & { counter: Omit<Counter, "views" | "shares"> };
 
 export interface CreateTopicFields {
 	title: string;
-	tags: Tag[];
+	tags: string;
 	content: string;
 }
 
@@ -46,6 +43,9 @@ export const GET_TOPICS = gql`
 				counter {
 					likes
 					replies
+				}
+				userStatus {
+					isOwner
 				}
 			}
 		}
@@ -77,7 +77,7 @@ export const GET_TOPIC = gql`
 
 export interface SearchTopicInput {
 	query: string;
-	tags: Tag[];
+	tags: string;
 	offset: number;
 }
 

@@ -6,7 +6,6 @@ import TopicSkeleton from "@features/forum/components/topic-skeleton";
 import {
 	GET_TOPICS,
 	GetTopicsQuery,
-	Tag,
 	SEARCH_TOPICS,
 	SearchTopicsQuery,
 	SearchTopicInput,
@@ -32,7 +31,7 @@ const ForumPage: React.FC = () => {
 	const [searchInput, setSearchInput] = useState<SearchTopicInput>({
 		offset: 0,
 		query: "",
-		tags: [],
+		tags: "",
 	});
 	const [topics, setTopics] = useState<GetTopicsQuery["topic"]["get"]>([]);
 
@@ -40,12 +39,10 @@ const ForumPage: React.FC = () => {
 
 	const [createTopic, { data: mutationData }] = useMutation(CREATE_TOPIC);
 
-	const [getLatestTopic, { called: calledGetLatestTopic, loading: loadingGetLastestTopic }] = useLazyQuery<GetTopicQuery>(GET_TOPIC);
+	const [getLatestTopic, { called: calledGetLatestTopic, loading: loadingGetLastestTopic }] =
+		useLazyQuery<GetTopicQuery>(GET_TOPIC);
 
-	const {
-		loading: retrieveLoading,
-		data: retrieveData,
-	} = useQuery<GetTopicsQuery>(GET_TOPICS, {
+	const { loading: retrieveLoading, data: retrieveData } = useQuery<GetTopicsQuery>(GET_TOPICS, {
 		variables: {
 			offset: offset,
 		},
@@ -100,7 +97,7 @@ const ForumPage: React.FC = () => {
 					.trim()
 					.split(" ")
 					.filter((tag) => tag[0] === "#")
-					.map((tag) => ({ name: tag.slice(1) })),
+					.join(" "),
 			});
 		}
 	}, [offset, setValue, searchParams, searchFetchMore]);
@@ -115,9 +112,9 @@ const ForumPage: React.FC = () => {
 
 			const { data } = await getLatestTopic({
 				variables: {
-					id: topicId
-				}
-			})
+					id: topicId,
+				},
+			});
 
 			if (data?.topic.getById) {
 				setTopics((prev) => {
@@ -127,7 +124,7 @@ const ForumPage: React.FC = () => {
 					} else {
 						return prev;
 					}
-				})
+				});
 			}
 		};
 
@@ -169,7 +166,7 @@ const ForumPage: React.FC = () => {
 	const onClickCreateTopic = () => {
 		createPost.open({
 			mode: "create",
-			onSubmit: (content: string, title: string, tags: Tag[]) => {
+			onSubmit: (content, title, tags) => {
 				createTopic({
 					variables: {
 						input: {
@@ -211,7 +208,7 @@ const ForumPage: React.FC = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{(calledGetLatestTopic && loadingGetLastestTopic) && <TopicSkeleton />}
+							{calledGetLatestTopic && loadingGetLastestTopic && <TopicSkeleton />}
 							{topics.map((topic, index) => (
 								<TopicRow
 									ref={index === topics.length - 1 ? lastTopicRef : null}
@@ -220,9 +217,7 @@ const ForumPage: React.FC = () => {
 								/>
 							))}
 							{(retrieveLoading || searchLoading) &&
-								new Array(20).fill(null).map((_, key) => (
-									<TopicSkeleton key={key} />
-								))}
+								new Array(20).fill(null).map((_, key) => <TopicSkeleton key={key} />)}
 						</tbody>
 					</table>
 				</div>

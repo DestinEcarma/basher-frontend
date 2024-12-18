@@ -6,10 +6,10 @@ import { NavLink } from "react-router-dom";
 
 type SubReplyProps = Reply;
 
-const SubReply: React.FC<SubReplyProps> = ({ id, userIndex, content }) => {
+const SubReply: React.FC<SubReplyProps> = ({ id, content, userStatus: { identity, isOwner } }) => {
 	return (
 		<div className="subreply mt-3 flex w-full flex-col gap-3 rounded-md bg-white px-6 pb-5 pt-5 shadow-lg">
-			<User index={userIndex} />
+			<User {...{ identity, isOwner }} />
 			<div className="content flex w-full flex-col gap-5">
 				<MDEditor.Markdown source={content} />
 			</div>

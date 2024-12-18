@@ -7,6 +7,12 @@ export interface Counter {
 	views: number;
 }
 
+export interface UserStatus {
+	identity: number;
+	isOwner: boolean;
+	isLiked: boolean;
+}
+
 export interface Children {
 	children?: React.ReactNode;
 }

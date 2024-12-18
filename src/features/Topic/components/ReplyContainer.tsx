@@ -7,10 +7,11 @@ import TopicButton from "./TopicButton";
 import User from "./User";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import createPost from "@components/create-post";
+import { formatDate } from "@utils/helper";
 import React, { useEffect, useState } from "react";
 import { BiLike, BiLinkAlt } from "react-icons/bi";
 import { FaChevronDown } from "react-icons/fa";
-import { LuReply } from "react-icons/lu";
+import { FaReply } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
 
 interface ReplyContainerProps {
@@ -18,15 +19,7 @@ interface ReplyContainerProps {
 	reply: Reply;
 }
 
-function getCurrentTime() {
-	const date = new Date();
-	const hours = date.getHours();
-	const minutes = date.getMinutes();
-	return `${hours}:${minutes}`;
-}
-
 const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ topicId, reply }, ref) => {
-	// const [willReply, setWillReply] = useState(false);
 	const [showSubReplies, setShowSubReplies] = useState(false);
 	const [subReplies, setSubReplies] = useState<Reply[]>([]);
 
@@ -40,7 +33,8 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 				const { data } = await getSubReplies({
 					variables: {
 						input: {
-							id: reply.id,
+							topic: topicId,
+							reply: reply.id,
 							offset: 0,
 						},
 					},
@@ -52,13 +46,16 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 		}
 
 		fetchSubReplies();
-	}, [showSubReplies, reply, getSubReplies]);
+	}, [showSubReplies, reply, topicId, getSubReplies]);
 
 	const onClickCreateSubReply = () => {
 		createPost.open({
 			mode: "reply",
 			postId: reply.id,
-			replyUserIndex: reply.userIndex,
+			replyUserIdentity: {
+				identity: reply.userStatus.identity,
+				isOwner: reply.userStatus.isOwner,
+			},
 			onSubmit: (content) => {
 				createReply({
 					variables: {
@@ -115,15 +112,17 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 			>
 				<div className="flex flex-row items-center justify-between">
 					<div className="flex gap-3">
-						<User index={reply.userIndex} />
-						<p className="text-sm text-gray-400">
-							{getCurrentTime()} {/* Temporary Time */}
-						</p>
+						<User identity={reply.userStatus.identity} isOwner={reply.userStatus.isOwner} />
+						<p className="text-sm text-gray-400">{formatDate(new Date(reply.activity))}</p>
 					</div>
 					{reply.parent != null && (
-						<NavLink to={`#${reply.parent.id}`} className="flex">
-							<LuReply className="-scale-x-100" color="#808080" />
-							<User index={reply.parent.userIndex} variant="parent" />
+						<NavLink to={`#${reply.parent.id}`} className="flex items-center gap-2">
+							<FaReply className="scale-x-[-1]" color="#808080" />
+							<User
+								identity={reply.userStatus.identity}
+								isOwner={reply.userStatus.isOwner}
+								variant={"parent"}
+							/>
 						</NavLink>
 					)}
 				</div>

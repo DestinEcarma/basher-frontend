@@ -1,32 +1,33 @@
 import { gql } from "@apollo/client";
-import { Counter } from "@utils/defs";
+import { Counter, UserStatus } from "@utils/defs";
 
 interface Parent {
 	id: string;
-	userIndex: number;
+	userIdentity: number;
 }
 
 export interface Topic {
 	id: string;
 	title: string;
 	tags: string[];
+	content: string;
+	activity: string;
 	counter: {
 		likes: number;
 		shares: number;
 		views: number;
 		replies: number;
 	};
-	content: string;
-	activity: string;
+	userStatus: UserStatus;
 }
 
 export interface Reply {
 	id: string;
-	userIndex: number;
 	content: string;
 	counter: Omit<Counter, "views">;
 	parent: Parent;
 	activity: string;
+	userStatus: UserStatus;
 }
 
 export interface GetTopic {
@@ -50,6 +51,11 @@ export const GET_TOPIC = gql`
 					shares
 					replies
 				}
+				userStatus {
+					identity
+					isOwner
+					isLiked
+				}
 			}
 		}
 	}
@@ -62,12 +68,12 @@ export interface GetReplies {
 }
 
 export const GET_REPLIES = gql`
-	query GetReply($input: IdOffsetInput!) {
+	query GetReply($input: GetRepliesInput!) {
 		reply {
 			getFromTopic(input: $input) {
 				id
-				userIndex
 				content
+				activity
 				counter {
 					likes
 					shares
@@ -75,9 +81,13 @@ export const GET_REPLIES = gql`
 				}
 				parent {
 					id
-					userIndex
+					userIdentity
 				}
-				activity
+				userStatus {
+					isOwner
+					isLiked
+					identity
+				}
 			}
 		}
 	}
@@ -108,8 +118,8 @@ export const GET_REPLY = gql`
 		reply {
 			getReply(input: $input) {
 				id
-				userIndex
 				content
+				activity
 				counter {
 					likes
 					shares
@@ -117,9 +127,13 @@ export const GET_REPLY = gql`
 				}
 				parent {
 					id
-					userIndex
+					userIdentity
 				}
-				activity
+				userStatus {
+					isOwner
+					isLiked
+					identity
+				}
 			}
 		}
 	}
@@ -127,19 +141,36 @@ export const GET_REPLY = gql`
 
 export interface SubreplyProps {
 	id: string;
-	userIndex: number;
 	content: string;
 	activity: string;
+	userStatus: UserStatus;
 }
 
 export const GET_SUB_REPLIES = gql`
-	query GetSubReplies($input: IdOffsetInput!) {
+	query GetSubReplies($input: GetRepliesFromReplyInput!) {
 		reply {
 			getFromReply(input: $input) {
 				id
-				userIndex
 				content
+				userStatus {
+					identity
+					isOwner
+				}
 			}
+		}
+	}
+`;
+
+export interface UpdateTopic {
+	topic: {
+		update: string;
+	};
+}
+
+export const UPDATE_TOPIC = gql`
+	mutation UpdateTopic($input: UpdateTopicInput!) {
+		topic {
+			update(input: $input)
 		}
 	}
 `;

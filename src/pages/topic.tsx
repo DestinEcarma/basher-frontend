@@ -32,8 +32,11 @@ const TopicPage: React.FC = () => {
 
 	const [getUpdateReply] = useLazyQuery<GetReply>(GET_REPLY);
 
-	const { data: topicData } = useQuery<GetTopic>(GET_TOPIC, {
-		variables: { id },
+	const [getTopic] = useLazyQuery<GetTopic>(GET_TOPIC, {
+		variables: {
+			id,
+		},
+		fetchPolicy: "no-cache",
 	});
 
 	const { data: repliesData, fetchMore: repliesFetchMore } = useQuery<GetReplies>(GET_REPLIES, {
@@ -44,6 +47,24 @@ const TopicPage: React.FC = () => {
 			},
 		},
 	});
+
+	useEffect(() => {
+		if (!id) return;
+
+		(async () => {
+			const { data } = await getTopic({
+				variables: {
+					id,
+				},
+			});
+
+			if (data?.topic.getById) {
+				setTopic(data.topic.getById);
+			} else {
+				navigate("/forum");
+			}
+		})();
+	}, [id, getTopic, navigate]);
 
 	useEffect(() => {
 		const observer = new IntersectionObserver((entries) => {
@@ -71,67 +92,69 @@ const TopicPage: React.FC = () => {
 		const eventSource = new EventSource(`/sse/topic/${topic.id}`);
 
 		eventSource.onmessage = async (event) => {
-			const replyData = JSON.parse(event.data) as { id: string; kind: "Created" | "Updated" };
+			const replyData = JSON.parse(event.data) as {
+				id: string;
+				kind: "Created" | "Updated";
+				class: "Topic" | "Reply";
+			};
 
-			const { data } = await getUpdateReply({
-				variables: {
-					input: {
-						topic: topic.id,
-						reply: replyData.id,
+			if (replyData.class === "Topic" && replyData.kind === "Updated") {
+				const { data } = await getTopic();
+
+				if (data?.topic.getById) {
+					setTopic(data.topic.getById);
+				}
+			} else if (replyData.class === "Reply") {
+				const { data } = await getUpdateReply({
+					variables: {
+						input: {
+							topic: topic.id,
+							reply: replyData.id,
+						},
 					},
-				},
-			});
+				});
 
-			if (data?.reply.getReply) {
-				setReplies((prevReplies) => {
-					const index = prevReplies.findIndex((reply) => reply.id === replyData.id);
+				if (data?.reply.getReply) {
+					setReplies((prevReplies) => {
+						const index = prevReplies.findIndex((reply) => reply.id === replyData.id);
 
-					if (index === -1 && replyData.kind === "Created") {
-						if (prevReplies.length === topic.counter.replies) {
-							setTopic((prevTopic) => {
-								if (!prevTopic) return undefined;
+						if (index === -1 && replyData.kind === "Created") {
+							if (prevReplies.length === topic.counter.replies) {
+								setTopic((prevTopic) => {
+									if (!prevTopic) return undefined;
 
-								return incrementCounterReplies<Topic>(prevTopic);
-							});
+									return incrementCounterReplies<Topic>(prevTopic);
+								});
 
-							return [
-								...prevReplies.map((reply) => {
-									if (reply.id === data.reply.getReply.parent.id) {
-										return incrementCounterReplies<Reply>(reply);
-									}
+								return [
+									...prevReplies.map((reply) => {
+										if (reply.id === data.reply.getReply.parent.id) {
+											return incrementCounterReplies<Reply>(reply);
+										}
 
-									return reply;
-								}),
-								data.reply.getReply,
-							];
-						}
-
-						return prevReplies;
-					} else {
-						return prevReplies.map((reply) => {
-							if (reply.id === replyData.id) {
-								return data.reply.getReply;
+										return reply;
+									}),
+									data.reply.getReply,
+								];
 							}
 
-							return reply;
-						});
-					}
-				});
+							return prevReplies;
+						} else {
+							return prevReplies.map((reply) => {
+								if (reply.id === replyData.id) {
+									return data.reply.getReply;
+								}
+
+								return reply;
+							});
+						}
+					});
+				}
 			}
 		};
 
 		return () => eventSource.close();
-	}, [topic, getUpdateReply, setTopic, setReplies]);
-
-	useEffect(() => {
-		if (!topicData) return;
-
-		if (!topicData.topic.getById) {
-			navigate("/");
-		}
-
-		setTopic(topicData.topic.getById);
-	}, [topicData, navigate]);
+	}, [topic, getUpdateReply, setTopic, setReplies, getTopic]);
 
 	useEffect(() => {
 		if (!repliesData) return;

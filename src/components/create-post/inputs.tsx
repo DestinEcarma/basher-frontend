@@ -1,6 +1,7 @@
 import { CreatePostProps, CreatePostFields, DEFAULT_CONTENT } from "./defs";
 import { mergeDeep } from "@apollo/client/utilities";
 import { InputBox } from "@components/input-box";
+import { Reply, Topic } from "@features/Topic/utils/defs";
 import MDEditor, { ICommand, MDEditorProps } from "@uiw/react-md-editor";
 import React, { useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -19,7 +20,7 @@ interface InputsProps {
 const CUSTOM_SCHEMA = mergeDeep(defaultSchema, { attributes: { div: ["center"] } });
 
 export const Inputs: React.FC<InputsProps> = ({
-	props: { mode },
+	props: { mode, ...props },
 	form: {
 		register,
 		setValue,
@@ -27,6 +28,22 @@ export const Inputs: React.FC<InputsProps> = ({
 	},
 }) => {
 	const [content, setContent] = React.useState(DEFAULT_CONTENT);
+
+	useEffect(() => {
+		if (mode === "editTopic") {
+			const { title, tags, content } = (props as { topic: Topic }).topic;
+
+			setValue("title", title);
+			setValue("tags", tags.join(" "));
+			setValue("content", content);
+			setContent(content);
+		} else if (mode === "editReply") {
+			const { content } = (props as { reply: Reply }).reply;
+			setValue("content", content);
+			setContent(content);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [mode]);
 
 	useEffect(() => {
 		setValue("content", content);

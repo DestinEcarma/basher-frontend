@@ -1,22 +1,25 @@
 import { Reply } from "@features/Topic/utils/defs";
-import { CreateTopicFields, Tag, Topic } from "@features/forum/utils/defs";
+import { CreateTopicFields, Topic } from "@features/forum/utils/defs";
 
 type CreateMode = {
 	mode: "create";
-	onSubmit: (content: string, title: string, tags: Tag[]) => void;
+	onSubmit: (content: string, title: string, tags: string) => void;
 };
 
 type ReplyMode = {
 	mode: "reply";
 	postId: string;
-	replyUserIndex: number;
+	replyUserIdentity: {
+		identity: number;
+		isOwner: boolean;
+	};
 	onSubmit: (content: string) => void;
 };
 
 type EditTopicMode = {
 	mode: "editTopic";
 	topic: Topic;
-	onSubmit: (content: string, title: string, tags: Tag[]) => void;
+	onSubmit: (content: string, title: string, tags: string) => void;
 };
 
 type EditReplyMode = {

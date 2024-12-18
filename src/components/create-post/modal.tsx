@@ -47,15 +47,7 @@ export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props 
 
 	const onSubmitWrapper: SubmitHandler<CreatePostFields> = ({ content, title, tags }) => {
 		if (props.mode === "create" || props.mode === "editTopic") {
-			onSubmit(
-				content,
-				title,
-				tags
-					.trim()
-					.split(" ")
-					.map((tag) => ({ name: tag }))
-					.filter((tag) => tag.name.length > 0),
-			);
+			onSubmit(content, title, tags);
 		} else {
 			(onSubmit as (content: string) => void)(content);
 		}
@@ -82,6 +74,18 @@ export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props 
 		eventEmitter.emit("close");
 	};
 
+	const submitText = () => {
+		switch (props.mode) {
+			case "create":
+				return "Create Topic";
+			case "reply":
+				return "Create Reply";
+			case "editTopic":
+			case "editReply":
+				return "Save Changes";
+		}
+	};
+
 	// TODO: Improve loading state
 	if (loading || data?.user.auth === false) return null;
 
@@ -90,7 +94,7 @@ export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props 
 			style={{
 				height: `${height}px`,
 			}}
-			className="fixed bottom-0 left-1/2 flex h-full max-h-full min-h-[30%] w-full max-w-[1475px] -translate-x-1/2 flex-col"
+			className="fixed bottom-0 left-1/2 z-[9999] flex h-full max-h-full min-h-[30%] w-full max-w-[1475px] -translate-x-1/2 flex-col"
 		>
 			<button className="h-4 flex-shrink-0 cursor-row-resize bg-sky-600" onMouseDown={handleMouseDown}></button>
 			<form
@@ -106,14 +110,17 @@ export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props 
 					props.mode == "reply" && (
 						<div className="mb-2 flex items-center gap-1">
 							<h1>Replying to</h1>
-							<User index={props.replyUserIndex} />
+							<User
+								identity={props.replyUserIdentity.identity}
+								isOwner={props.replyUserIdentity.isOwner}
+							/>
 						</div>
 					)
 				)}
 
 				<Inputs props={props} form={form} />
 				<div className="flex flex-shrink-0 gap-4">
-					<Button type="submit">{props.mode == "create" ? "Create Topic" : "Reply"}</Button>
+					<Button type="submit">{submitText()}</Button>
 					<Button type="button" variant={"ghost"} onClick={onClose}>
 						Close
 					</Button>

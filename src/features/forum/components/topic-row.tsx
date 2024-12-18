@@ -1,6 +1,5 @@
 import { ForumTopic } from "../utils/defs";
-import { formatDate } from "../utils/helper";
-import { formatNumber } from "@utils/helper";
+import { formatNumber, formatDate } from "@utils/helper";
 import React from "react";
 import { Link } from "react-router-dom";
 

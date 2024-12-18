@@ -1,4 +1,4 @@
-import { CREATE_REPLY, CreateReply, Topic } from "../utils/defs";
+import { CREATE_REPLY, CreateReply, Topic, UPDATE_TOPIC, UpdateTopic } from "../utils/defs";
 import Tags from "./Tags";
 import TopicContent from "./TopicContent";
 import TopicIcons from "./TopicIcons";
@@ -12,12 +12,16 @@ interface TopicContainerProps {
 
 const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 	const [createTopic] = useMutation<CreateReply>(CREATE_REPLY);
+	const [updateTopic] = useMutation<UpdateTopic>(UPDATE_TOPIC);
 
 	const onClickCreateReply = () => {
 		createPost.open({
 			mode: "reply",
 			postId: topic.id,
-			replyUserIndex: 0,
+			replyUserIdentity: {
+				identity: topic.userStatus.identity,
+				isOwner: topic.userStatus.isOwner,
+			},
 			onSubmit: (content) => {
 				createTopic({
 					variables: {
@@ -33,14 +37,40 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 		});
 	};
 
+	const onClickEditTopic = () => {
+		createPost.open({
+			mode: "editTopic",
+			topic,
+			onSubmit: (content, title, tags) => {
+				updateTopic({
+					variables: {
+						input: {
+							id: topic.id,
+							title,
+							tags,
+							content,
+						},
+					},
+				});
+
+				createPost.close();
+			},
+		});
+	};
+
 	return (
 		<div className="flex flex-col items-center justify-center">
 			<div className="w-full rounded-md bg-white px-6 pb-3 pt-5 shadow-lg md:max-w-3xl lg:max-w-7xl">
 				<h1 className="text-2xl font-bold leading-none">{topic.title}</h1>
 				<Tags tags={topic.tags} />
-				<User index={0} />
+				<User identity={topic.userStatus.identity} isOwner={topic.userStatus.isOwner} />
 				<TopicContent content={topic.content} />
-				<TopicIcons openReply={onClickCreateReply} counter={topic.counter} />
+				<TopicIcons
+					openCreateReply={onClickCreateReply}
+					openEditTopic={onClickEditTopic}
+					isOwner={topic.userStatus.isOwner}
+					counter={topic.counter}
+				/>
 			</div>
 		</div>
 	);
