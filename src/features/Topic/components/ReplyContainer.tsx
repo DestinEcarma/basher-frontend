@@ -191,13 +191,13 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 					<div className="flex select-none items-center gap-4 text-[#808080] hover:cursor-pointer">
 						<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
 						<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} status={isShared} />
-						<ReplyButton onClick={onClickCreateSubReply} />
 						{reply.userStatus.isOwner && (
 							<Button variant="ghost" className="flex items-center gap-2 text-gray-500" onClick={onClickUpdateReply}>
 								<FaPen className="text-2xl" />
 								Edit
 							</Button>
 						)}
+						<ReplyButton onClick={onClickCreateSubReply} />
 					</div>
 				</div>
 			</div>
