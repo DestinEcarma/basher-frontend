@@ -157,7 +157,7 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 				id={reply.id}
 			>
 				<div className="flex flex-row items-center justify-between">
-					<div className="flex gap-3">
+					<div className="flex gap-3 items-center">
 						<User identity={reply.userStatus.identity} isOwner={reply.userStatus.isOwner} />
 						<p className="text-sm text-gray-400">{formatDate(new Date(reply.activity))}</p>
 					</div>
