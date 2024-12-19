@@ -1,7 +1,7 @@
-import { AuthContext } from "@components/auth";
 import { CreatePostFields, CreatePostProps, DEFAULT_CONTENT } from "./defs";
 import { eventEmitter } from "./event";
 import { Inputs } from "./inputs";
+import { AuthContext } from "@components/auth";
 import { Button } from "@components/button";
 import User from "@features/Topic/components/User";
 import React, { useContext, useEffect, useState } from "react";
