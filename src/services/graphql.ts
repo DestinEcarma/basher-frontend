@@ -20,6 +20,8 @@ export enum GraphqlErrorType {
 	// Sign up errors
 	EMAIL_TAKEN = "EMAIL_TAKEN",
 
+	// Authorization errors
+	UNAUTHORIZED = "UNAUTHORIZED",
 	INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
 }
 
