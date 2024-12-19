@@ -1,7 +1,7 @@
 import { mergeDeep } from "@apollo/client/utilities";
 import { Reply } from "@features/Topic/utils/defs";
 import { CreateTopicFields, Topic } from "@features/forum/utils/defs";
-import { MDEditorProps } from "@uiw/react-md-editor";
+import { MarkdownPreviewProps } from "@uiw/react-markdown-preview/nohighlight";
 import rehypeKatex from "rehype-katex";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
@@ -62,7 +62,7 @@ You can make text **bold** or *italic*.
 
 const CUSTOM_SCHEMA = mergeDeep(defaultSchema, { attributes: { div: ["center"] } });
 
-export const DEFAULT_PREVIEW_OPTIONS: MDEditorProps["previewOptions"] = {
+export const DEFAULT_PREVIEW_OPTIONS: MarkdownPreviewProps = {
 	remarkPlugins: [remarkMath, remarkRehype],
 	rehypePlugins: [[rehypeSanitize, CUSTOM_SCHEMA], rehypeKatex, rehypeStringify],
 	components: {
