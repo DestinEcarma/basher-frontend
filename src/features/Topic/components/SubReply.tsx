@@ -1,5 +1,6 @@
 import { Reply } from "../utils/defs";
 import User from "./User";
+import { DEFAULT_PREVIEW_OPTIONS } from "@components/create-post/defs";
 import MDEditor from "@uiw/react-md-editor";
 import React from "react";
 import { NavLink } from "react-router-dom";
@@ -11,7 +12,7 @@ const SubReply: React.FC<SubReplyProps> = ({ id, content, userStatus: { identity
 		<div className="subreply mt-3 flex w-full flex-col gap-3 rounded-md bg-white px-6 pb-5 pt-5 shadow-lg">
 			<User {...{ identity, isOwner }} />
 			<div className="content flex w-full flex-col gap-5">
-				<MDEditor.Markdown source={content} />
+				<MDEditor.Markdown source={content} {...DEFAULT_PREVIEW_OPTIONS} />
 			</div>
 			<NavLink
 				to={`#${id}`}
