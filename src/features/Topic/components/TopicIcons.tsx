@@ -4,9 +4,10 @@ import TopicButton from "./TopicButton";
 import { useMutation } from "@apollo/client";
 import { AuthContext } from "@components/auth";
 import { Button } from "@components/button";
+import { formatDate } from "@utils/helper";
 import React, { useState, useEffect, useContext } from "react";
 import { BiLike, BiLinkAlt } from "react-icons/bi";
-import { FaPen } from "react-icons/fa6";
+import { FaCalendar, FaEye, FaPen } from "react-icons/fa6";
 import { toast } from "sonner";
 
 interface TopicIconsProps extends Topic {
@@ -14,7 +15,14 @@ interface TopicIconsProps extends Topic {
 	openEditTopic: React.MouseEventHandler;
 }
 
-const TopicIcons: React.FC<TopicIconsProps> = ({ openCreateReply, openEditTopic, id, counter, userStatus }) => {
+const TopicIcons: React.FC<TopicIconsProps> = ({
+	openCreateReply,
+	openEditTopic,
+	id,
+	counter,
+	activity,
+	userStatus,
+}) => {
 	const auth = useContext(AuthContext);
 
 	const [likes, setLikes] = useState<number>(counter.likes);
@@ -22,6 +30,8 @@ const TopicIcons: React.FC<TopicIconsProps> = ({ openCreateReply, openEditTopic,
 
 	const [shares, setShares] = useState<number>(counter.shares);
 	const [isShared, setSharedStatus] = useState<boolean>(userStatus.isShared);
+
+	const [formattedActivity] = useState<string>(formatDate(new Date(activity)));
 
 	const [likeTopic] = useMutation(LIKE_TOPIC, { fetchPolicy: "no-cache" });
 	const [shareTopic] = useMutation(SHARE_TOPIC);
@@ -61,16 +71,28 @@ const TopicIcons: React.FC<TopicIconsProps> = ({ openCreateReply, openEditTopic,
 	}, [counter]);
 
 	return (
-		<div className="flex select-none items-center justify-end gap-4 text-[#808080] hover:cursor-pointer">
-			<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
-			<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} status={isShared} />
-			{userStatus.isOwner && (
-				<Button variant="ghost" onClick={openEditTopic} className="flex items-center gap-2 text-gray-500">
-					<FaPen className="text-2xl" />
-					Edit
-				</Button>
-			)}
-			<ReplyButton onClick={openCreateReply} />
+		<div className="flex justify-between">
+			<div className="flex gap-4 text-gray-500">
+				<span className="flex items-center gap-1">
+					<FaEye />
+					{counter.views}
+				</span>
+				<span className="flex items-center gap-1">
+					<FaCalendar />
+					{formattedActivity}
+				</span>
+			</div>
+			<div className="flex select-none items-center justify-end gap-4 hover:cursor-pointer">
+				<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
+				<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} status={isShared} />
+				{userStatus.isOwner && (
+					<Button variant="ghost" onClick={openEditTopic} className="flex items-center gap-2 text-gray-500">
+						<FaPen className="text-2xl" />
+						Edit
+					</Button>
+				)}
+				<ReplyButton onClick={openCreateReply} />
+			</div>
 		</div>
 	);
 };
