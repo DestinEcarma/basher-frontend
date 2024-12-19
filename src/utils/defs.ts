@@ -11,6 +11,7 @@ export interface UserStatus {
 	identity: number;
 	isOwner: boolean;
 	isLiked: boolean;
+	isShared: boolean;
 }
 
 export interface Children {
@@ -41,6 +42,14 @@ export const AUTH = gql`
 	query Auth {
 		user {
 			auth
+		}
+	}
+`;
+
+export const LOGOUT = gql`
+	mutation Logout {
+		user {
+			logout
 		}
 	}
 `;
