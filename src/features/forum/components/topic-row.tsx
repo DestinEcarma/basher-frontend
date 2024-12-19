@@ -1,5 +1,6 @@
 import { ForumTopic } from "../utils/defs";
-import { formatNumber, formatDate } from "@utils/helper";
+import { useFormattedActivity } from "@hooks/use-formatted-activity";
+import { formatNumber } from "@utils/helper";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -7,7 +8,9 @@ type TopicRowProps = ForumTopic;
 
 const TopicRow = React.forwardRef<HTMLTableRowElement, TopicRowProps>(
 	({ id, title, tags, activity, counter: { likes, replies } }, ref) => {
-		const tableData = [formatNumber(replies), formatNumber(likes), formatDate(new Date(activity))];
+		const formattedActivity = useFormattedActivity(activity);
+
+		const tableData = [formatNumber(replies), formatNumber(likes), formattedActivity];
 
 		return (
 			<tr ref={ref} className="border-b">

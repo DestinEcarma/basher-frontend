@@ -4,7 +4,7 @@ import TopicButton from "./TopicButton";
 import { useMutation } from "@apollo/client";
 import { AuthContext } from "@components/auth";
 import { Button } from "@components/button";
-import { formatDate } from "@utils/helper";
+import { useFormattedActivity } from "@hooks/use-formatted-activity";
 import React, { useState, useEffect, useContext } from "react";
 import { BiLike, BiLinkAlt } from "react-icons/bi";
 import { FaCalendar, FaEye, FaPen } from "react-icons/fa6";
@@ -25,13 +25,13 @@ const TopicIcons: React.FC<TopicIconsProps> = ({
 }) => {
 	const auth = useContext(AuthContext);
 
+	const formattedActivity = useFormattedActivity(activity);
+
 	const [likes, setLikes] = useState<number>(counter.likes);
 	const [isLiked, setLikeStatus] = useState<boolean>(userStatus.isLiked);
 
 	const [shares, setShares] = useState<number>(counter.shares);
 	const [isShared, setSharedStatus] = useState<boolean>(userStatus.isShared);
-
-	const [formattedActivity] = useState<string>(formatDate(new Date(activity)));
 
 	const [likeTopic] = useMutation(LIKE_TOPIC, { fetchPolicy: "no-cache" });
 	const [shareTopic] = useMutation(SHARE_TOPIC);

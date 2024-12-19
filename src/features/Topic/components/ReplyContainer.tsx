@@ -17,7 +17,7 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import { AuthContext } from "@components/auth";
 import { Button } from "@components/button";
 import createPost from "@components/create-post";
-import { formatDate } from "@utils/helper";
+import { useFormattedActivity } from "@hooks/use-formatted-activity";
 import React, { useContext, useEffect, useState } from "react";
 import { BiLike, BiLinkAlt } from "react-icons/bi";
 import { FaChevronDown } from "react-icons/fa";
@@ -32,6 +32,8 @@ interface ReplyContainerProps {
 
 const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ topicId, reply }, ref) => {
 	const auth = useContext(AuthContext);
+
+	const formattedActivity = useFormattedActivity(reply.activity);
 
 	const [likes, setLikes] = useState<number>(reply.counter.likes);
 	const [isLiked, setLikeStatus] = useState<boolean>(reply.userStatus.isLiked);
@@ -157,9 +159,9 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 				id={reply.id}
 			>
 				<div className="flex flex-row items-center justify-between">
-					<div className="flex gap-3 items-center">
+					<div className="flex items-center gap-3">
 						<User identity={reply.userStatus.identity} isOwner={reply.userStatus.isOwner} />
-						<p className="text-sm text-gray-400">{formatDate(new Date(reply.activity))}</p>
+						<p className="text-sm text-gray-400">{formattedActivity}</p>
 					</div>
 					{reply.parent != null && (
 						<NavLink to={`#${reply.parent.id}`} className="flex items-center gap-2">
@@ -192,7 +194,11 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 						<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
 						<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} status={isShared} />
 						{reply.userStatus.isOwner && (
-							<Button variant="ghost" className="flex items-center gap-2 text-gray-500" onClick={onClickUpdateReply}>
+							<Button
+								variant="ghost"
+								className="flex items-center gap-2 text-gray-500"
+								onClick={onClickUpdateReply}
+							>
 								<FaPen className="text-2xl" />
 								Edit
 							</Button>
