@@ -6,7 +6,7 @@ import User from "./User";
 import { useMutation } from "@apollo/client";
 import createPost from "@components/create-post";
 
-interface TopicContainerProps extends Topic {}
+type TopicContainerProps = Topic;
 
 const TopicContainer: React.FC<TopicContainerProps> = (topic) => {
 	const [createTopic] = useMutation<CreateReply>(CREATE_REPLY);

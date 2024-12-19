@@ -34,7 +34,6 @@ export const Inputs: React.FC<InputsProps> = ({
 			setValue("content", content);
 			setContent(content);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [mode]);
 
 	useEffect(() => {
