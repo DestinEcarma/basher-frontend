@@ -1,11 +1,12 @@
+import { Button } from "./button";
 import { ReactButtonAttributes } from "@utils/defs";
 import { mergeClasses } from "@utils/helper";
 import { cva, VariantProps } from "class-variance-authority";
-import { forwardRef } from "react";
+import React from "react";
 import { FaBold } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-export interface LogoProps extends ReactButtonAttributes, VariantProps<typeof variants> {}
+export interface LogoProps extends ReactButtonAttributes, VariantProps<typeof variants> { }
 
 const variants = cva(null, {
 	variants: {
@@ -17,7 +18,7 @@ const variants = cva(null, {
 	},
 });
 
-export const Logo = forwardRef<HTMLButtonElement, LogoProps>(({ size, className }, ref) => {
+export const Logo: React.FC<LogoProps> = ({ size, className }) => {
 	const navigate = useNavigate();
 
 	const onClick = () => {
@@ -25,11 +26,11 @@ export const Logo = forwardRef<HTMLButtonElement, LogoProps>(({ size, className 
 	};
 
 	return (
-		<button
+		<Button
 			onClick={onClick}
-			ref={ref}
+			variant="ghost"
 			className={mergeClasses(
-				"flex flex-grow-0 select-none items-center font-roboto-mono text-2xl font-bold leading-none tracking-wide",
+				"flex flex-grow-0 select-none items-center p-0 pr-2 font-roboto-mono text-2xl font-bold leading-none tracking-wide",
 				variants({ size, className }).replace(/size-\[.*?\]|data-\d+/g, ""),
 			)}
 		>
@@ -42,6 +43,6 @@ export const Logo = forwardRef<HTMLButtonElement, LogoProps>(({ size, className 
 				<FaBold />
 			</span>
 			<span>asher</span>
-		</button>
+		</Button>
 	);
-});
+};

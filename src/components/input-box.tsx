@@ -1,7 +1,7 @@
 import { LeftSide, RightSide } from "./sides";
 import { ReactInputAttributes, ReactLabelAttributes } from "@utils/defs";
 import { mergeClasses } from "@utils/helper";
-import React from "react";
+import React, { forwardRef } from "react";
 
 export interface InputBoxProps extends Omit<ReactInputAttributes, "type"> {
 	label?: string;
@@ -11,7 +11,7 @@ export interface InputBoxProps extends Omit<ReactInputAttributes, "type"> {
 
 export type InputBoxPropsNoRef = Omit<InputBoxProps, "ref">;
 
-export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(({ error, name, label, ...props }, ref) => {
+export const InputBox = forwardRef<HTMLInputElement, InputBoxProps>(({ error, name, label, ...props }, ref) => {
 	const [customLabel, setCustomLabel] = React.useState<React.ReactNode>(null);
 
 	React.Children.forEach(props.children, (child) => {
@@ -29,7 +29,7 @@ export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(({ err
 	);
 });
 
-export const InputLabel = React.forwardRef<HTMLLabelElement, ReactLabelAttributes>(
+export const InputLabel = forwardRef<HTMLLabelElement, ReactLabelAttributes>(
 	({ children, className, ...props }, ref) => {
 		return (
 			<label
@@ -45,7 +45,7 @@ export const InputLabel = React.forwardRef<HTMLLabelElement, ReactLabelAttribute
 
 type FieldInputProps = Omit<InputBoxProps, "label" | "error">;
 
-const InputField = React.forwardRef<HTMLInputElement, FieldInputProps>(({ className, children, ...props }, ref) => {
+const InputField = forwardRef<HTMLInputElement, FieldInputProps>(({ className, children, ...props }, ref) => {
 	let leftSide: React.ReactNode = undefined;
 	let rightSide: React.ReactNode = undefined;
 

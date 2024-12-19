@@ -27,7 +27,7 @@ export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props 
 
 	useEffect(() => {
 		if (data?.user.auth === false) {
-			toast.warning("You need to login to create a new topic");
+			toast.warning("You need to login to create a new post");
 			navigate("/login");
 		}
 
@@ -101,9 +101,6 @@ export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props 
 				onSubmit={handleSubmit(onSubmitWrapper)}
 				className="flex h-full flex-col overflow-hidden bg-white p-4 shadow-lg"
 			>
-				{/*
-					TODO: Change title depending on the mode
-				*/}
 				{props.mode == "create" ? (
 					<h1 className="mb-2">Create a new Topic</h1>
 				) : (

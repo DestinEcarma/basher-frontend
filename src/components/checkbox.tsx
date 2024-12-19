@@ -1,12 +1,12 @@
 import { ReactInputAttributes } from "@utils/defs";
-import React from "react";
+import { forwardRef } from "react";
 import { FaCheck } from "react-icons/fa";
 
 interface CheckBoxProps extends ReactInputAttributes {
 	label?: string;
 }
 
-const CheckBox = React.forwardRef<HTMLInputElement, CheckBoxProps>(({ label, name, ...props }, ref) => {
+const CheckBox = forwardRef<HTMLInputElement, CheckBoxProps>(({ label, name, ...props }, ref) => {
 	const boxClassName = [
 		"relative h-5 w-5 cursor-pointer",
 		"rounded-md border border-gray-500",

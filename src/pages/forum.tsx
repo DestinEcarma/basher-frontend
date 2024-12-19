@@ -1,6 +1,9 @@
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { AuthContext } from "@components/auth";
 import { Button } from "@components/button";
 import createPost from "@components/create-post";
+import { Logo } from "@components/logo";
+import { LogoutContext } from "@components/logout";
 import TopicRow from "@features/forum/components/topic-row";
 import TopicSkeleton from "@features/forum/components/topic-skeleton";
 import {
@@ -14,14 +17,17 @@ import {
 	GET_TOPIC,
 } from "@features/forum/utils/defs";
 import { INTERSECTION_OPTIONS } from "@utils/defs";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaSignOutAlt } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ForumPage: React.FC = () => {
 	const navigate = useNavigate();
+
+	const auth = useContext(AuthContext);
+	const logout = useContext(LogoutContext);
 
 	const lastTopicRef = useRef<HTMLTableRowElement>(null);
 
@@ -176,25 +182,54 @@ const ForumPage: React.FC = () => {
 						},
 					},
 				});
-
-				createPost.close();
 			},
 		});
 	};
 
 	return (
 		<div className="mx-auto flex h-full w-full flex-col gap-8 pb-8 md:max-w-3xl lg:max-w-7xl">
-			<div className="mt-4 flex w-full justify-between gap-8 rounded-lg bg-white px-8 py-4 shadow-lg">
-				<form onSubmit={handleSubmit(onSearch)} className="flex flex-grow items-center gap-2">
-					<Button type="submit" variant="ghost" size="sm" className="group">
-						<FaMagnifyingGlass className="text-gray-400 transition-colors group-hover:text-black" />
-					</Button>
-					<input placeholder="Search" {...register("query")} className="flex-grow" />
-				</form>
-				<Button size="sm" onClick={onClickCreateTopic} className="flex items-center gap-2 font-normal">
-					<FaPlus />
-					New Topic
-				</Button>
+			<div className="flex w-full justify-between gap-8 rounded-b-lg bg-white px-4 py-2 shadow-lg">
+				<div className="flex flex-grow gap-4">
+					<Logo />
+					<form onSubmit={handleSubmit(onSearch)} className="flex flex-grow items-center gap-2">
+						<Button type="submit" variant="ghost" size="sm" className="group">
+							<FaMagnifyingGlass className="text-gray-400 transition-colors group-hover:text-black" />
+						</Button>
+						<input placeholder="Search" {...register("query")} className="flex-grow" />
+					</form>
+				</div>
+				<div className="flex gap-4">
+					{auth ? (
+						<>
+							<Button size="sm" onClick={onClickCreateTopic} className="flex items-center gap-2">
+								<FaPlus />
+								New Topic
+							</Button>
+							<Button size="sm" variant="ghost" onClick={() => logout()} className="flex items-center gap-2">
+								<FaSignOutAlt />
+								Logout
+							</Button>
+						</>
+					) : (
+						<>
+							<Button
+								size="sm"
+								onClick={() => navigate("/login")}
+								className="flex items-center gap-2"
+							>
+								Login
+							</Button>
+							<Button
+								size="sm"
+								variant="ghost"
+								onClick={() => navigate("/sign-up")}
+								className="flex items-center gap-2"
+							>
+								Sign Up
+							</Button>
+						</>
+					)}
+				</div>
 			</div>
 			<div className="flex flex-grow overflow-hidden rounded-lg bg-white p-8 shadow-lg">
 				<div className="felx flex-grow overflow-scroll">
@@ -202,9 +237,9 @@ const ForumPage: React.FC = () => {
 						<thead>
 							<tr>
 								<th className="w-full text-left">Topic</th>
-								<th className="px-4 font-normal text-gray-500">Replies</th>
-								<th className="px-4 font-normal text-gray-500">Likes</th>
-								<th className="px-4 font-normal text-gray-500">Activity</th>
+								<th className="px-4 font text-gray-500">Replies</th>
+								<th className="px-4 font text-gray-500">Likes</th>
+								<th className="px-4 font text-gray-500">Activity</th>
 							</tr>
 						</thead>
 						<tbody>

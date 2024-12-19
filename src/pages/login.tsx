@@ -1,20 +1,26 @@
+import { AuthContext } from "@components/auth";
 import { Button, ButtonProps } from "@components/button";
 import CheckBox from "@components/checkbox";
 import Form from "@components/form";
 import { InputBox } from "@components/input-box";
+import { Logo } from "@components/logo";
 import { LeftSide } from "@components/sides";
 import Passowrd from "@features/login/components/password";
 import useLogin from "@features/login/hooks/use-login";
 import { LoginFields } from "@features/login/utils/defs";
 import { EMAIL_REGEX } from "@utils/defs";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
+	const auth = useContext(AuthContext);
+
+	const navigate = useNavigate();
+
 	const {
 		form: {
 			register,
@@ -24,9 +30,20 @@ const LoginPage: React.FC = () => {
 		apollo: [login, { data, loading }],
 	} = useLogin();
 
-	const onSubmit: SubmitHandler<LoginFields> = ({ email, password, rememberMe }) => {
+	useEffect(() => {
+		if (!data) return;
+
+		sessionStorage.setItem("connect.sid", data.user.login);
+	}, [data]);
+
+	const onSubmit: SubmitHandler<LoginFields> = async ({ email, password, rememberMe }) => {
 		login({ variables: { input: { email, password, rememberMe } } });
 	};
+
+	if (auth) {
+		navigate("/forum");
+		return null;
+	}
 
 	const emailAttributes = {
 		label: "Email",
@@ -68,26 +85,29 @@ const LoginPage: React.FC = () => {
 	} as ButtonProps;
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit)} size="w450px">
-			<h1 className="mb-4 text-center text-4xl font-bold">Login</h1>
-			<div className="flex flex-col gap-4">
-				<InputBox {...emailAttributes} />
-				<Passowrd {...passwordAttributes} />
-				<div className="flex items-center justify-between">
-					<CheckBox {...rememberMeAttributes} />
-					<Link to="/login" className="text-sm text-blue-500">
-						Forgot password?
-					</Link>
+		<>
+			<Logo size="xl" className="mx-auto mt-4" />
+			<Form onSubmit={handleSubmit(onSubmit)} size="w450px">
+				<h1 className="mb-4 text-center text-4xl font-bold">Login</h1>
+				<div className="flex flex-col gap-4">
+					<InputBox {...emailAttributes} />
+					<Passowrd {...passwordAttributes} />
+					<div className="flex items-center justify-between">
+						<CheckBox {...rememberMeAttributes} />
+						<Link to="/login" className="text-sm text-blue-500">
+							Forgot password?
+						</Link>
+					</div>
+					<Button {...submitAttributes} />
+					<p className="text-center text-sm">
+						Don't have an account?
+						<Link to="/sign-up" className="ml-2 text-blue-500">
+							Sign Up
+						</Link>
+					</p>
 				</div>
-				<Button {...submitAttributes} />
-				<p className="text-center text-sm">
-					Don't have an account?
-					<Link to="/sign-up" className="ml-2 text-blue-500">
-						Sign Up
-					</Link>
-				</p>
-			</div>
-		</Form>
+			</Form>
+		</>
 	);
 };
 

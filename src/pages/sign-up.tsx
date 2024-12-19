@@ -1,19 +1,25 @@
+import { AuthContext } from "@components/auth";
 import { Button, ButtonProps } from "@components/button";
 import Form from "@components/form";
 import { InputBox } from "@components/input-box";
+import { Logo } from "@components/logo";
 import { LeftSide } from "@components/sides";
 import Passowrds from "@features/sign-up/components/passwords";
 import useSignUp from "@features/sign-up/hooks/use-sign-up";
 import { PASSWORD_REGEX, SignUpFields } from "@features/sign-up/utils/defs";
 import { EMAIL_REGEX } from "@utils/defs";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUpPage: React.FC = () => {
+	const auth = useContext(AuthContext);
+
+	const navigate = useNavigate();
+
 	const {
 		form: {
 			register,
@@ -23,6 +29,17 @@ const SignUpPage: React.FC = () => {
 		},
 		apollo: [signUp, { data, loading }],
 	} = useSignUp();
+
+	useEffect(() => {
+		if (!data) return;
+
+		sessionStorage.setItem("connect.sid", data.user.signUp);
+	}, [data]);
+
+	if (auth) {
+		navigate("/forum");
+		return null;
+	}
 
 	const onSubmit: SubmitHandler<SignUpFields> = ({ email, password, confirmPassword }) => {
 		if (password !== confirmPassword) {
@@ -94,20 +111,23 @@ const SignUpPage: React.FC = () => {
 	} as ButtonProps;
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit)} size="w450px">
-			<h1 className="mb-4 text-center text-4xl font-bold">Sign Up</h1>
-			<div className="flex flex-col gap-4">
-				<InputBox {...emailAttributes} />
-				<Passowrds {...passwordsAttributes} />
-				<Button {...submitAttributes} />
-				<p className="text-center text-sm">
-					Already have an account?
-					<Link to="/login" className="ml-2 text-blue-500">
-						Login
-					</Link>
-				</p>
-			</div>
-		</Form>
+		<>
+			<Logo size="xl" className="mx-auto mt-4" />
+			<Form onSubmit={handleSubmit(onSubmit)} size="w450px">
+				<h1 className="mb-4 text-center text-4xl font-bold">Sign Up</h1>
+				<div className="flex flex-col gap-4">
+					<InputBox {...emailAttributes} />
+					<Passowrds {...passwordsAttributes} />
+					<Button {...submitAttributes} />
+					<p className="text-center text-sm">
+						Already have an account?
+						<Link to="/login" className="ml-2 text-blue-500">
+							Login
+						</Link>
+					</p>
+				</div>
+			</Form>
+		</>
 	);
 };
 

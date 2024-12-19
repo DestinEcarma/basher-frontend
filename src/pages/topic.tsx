@@ -1,6 +1,10 @@
 import ReplyContainer from "../features/Topic/components/ReplyContainer";
 import TopicContainer from "../features/Topic/components/TopicContainer";
 import { useLazyQuery, useQuery } from "@apollo/client";
+import { AuthContext } from "@components/auth";
+import { Button } from "@components/button";
+import { Logo } from "@components/logo";
+import { LogoutContext } from "@components/logout";
 import {
 	GET_TOPIC,
 	GET_REPLIES,
@@ -13,12 +17,16 @@ import {
 	incrementCounterReplies,
 } from "@features/Topic/utils/defs";
 import { INTERSECTION_OPTIONS } from "@utils/defs";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { FaSignOutAlt } from "react-icons/fa";
 import { useLocation, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const TopicPage: React.FC = () => {
 	const navigate = useNavigate();
+
+	const auth = useContext(AuthContext);
+	const logout = useContext(LogoutContext);
 
 	const { hash } = useLocation();
 
@@ -200,8 +208,37 @@ const TopicPage: React.FC = () => {
 	}, [hash, replies, topic, getUpdateReply]);
 
 	return (
-		<div className="mt-4 w-full pb-11">
-			{topic && <TopicContainer topic={topic} />}
+		<div className="mx-auto flex w-full flex-col gap-8 pb-8 md:max-w-3xl lg:max-w-7xl">
+			<div className="sticky rounded-b-lg bg-white px-4 py-2 shadow-lg">
+				<div className="flex justify-between">
+					<Logo />
+					{auth ? (
+						<Button size="sm" variant="ghost" onClick={() => logout()} className="flex items-center gap-2">
+							<FaSignOutAlt />
+							Logout
+						</Button>
+					) : (
+						<div className="flex gap-4">
+							<Button
+								size="sm"
+								onClick={() => navigate("/login")}
+								className="flex items-center gap-2"
+							>
+								Login
+							</Button>
+							<Button
+								size="sm"
+								variant="ghost"
+								onClick={() => navigate("/sign-up")}
+								className="flex items-center gap-2"
+							>
+								Sign Up
+							</Button>
+						</div>
+					)}
+				</div>
+			</div>
+			{topic && <TopicContainer {...topic} />}
 			{topic &&
 				replies &&
 				replies.map((reply, index) => {
