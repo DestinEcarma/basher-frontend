@@ -55,13 +55,7 @@ export const Inputs: React.FC<InputsProps> = ({
 		}
 	}, [errors]);
 
-	register("content", {
-		required: "Content is required",
-		minLength: {
-			value: 30,
-			message: "Content must be at least 30 characters",
-		},
-	});
+	register("content", { required: "Content is required" });
 
 	const displayTitleAndTag = () => {
 		const titleAttributes = {

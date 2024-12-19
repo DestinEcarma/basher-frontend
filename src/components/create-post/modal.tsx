@@ -46,6 +46,11 @@ export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props 
 	});
 
 	const onSubmitWrapper: SubmitHandler<CreatePostFields> = ({ content, title, tags }) => {
+		if (content.trim().length < 30) {
+			toast.error("Content must be at least 30 characters");
+			return;
+		}
+
 		if (props.mode === "create" || props.mode === "editTopic") {
 			onSubmit(content, title, tags);
 		} else {
