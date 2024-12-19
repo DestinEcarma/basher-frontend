@@ -1,22 +1,24 @@
+import { AuthContext } from "@components/auth";
 import { CreatePostFields, CreatePostProps, DEFAULT_CONTENT } from "./defs";
 import { eventEmitter } from "./event";
 import { Inputs } from "./inputs";
-import { useQuery } from "@apollo/client";
 import { Button } from "@components/button";
 import User from "@features/Topic/components/User";
-import { AUTH, AuthQuery } from "@utils/defs";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props }) => {
 	const navigate = useNavigate();
+
+	const auth = useContext(AuthContext);
+
 	const [height, setHeight] = useState(500);
 	const [isResizing, setIsResizing] = useState(false);
 	const [startY, setStartY] = useState(0);
 	const [startHeight, setStartHeight] = useState(0);
-	const { loading, data } = useQuery<AuthQuery>(AUTH);
+
 	const form = useForm<CreatePostFields>({
 		defaultValues: {
 			content: DEFAULT_CONTENT,
@@ -26,7 +28,7 @@ export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props 
 	const { handleSubmit } = form;
 
 	useEffect(() => {
-		if (data?.user.auth === false) {
+		if (!auth) {
 			toast.warning("You need to login to create a new post");
 			navigate("/login");
 		}
@@ -90,9 +92,6 @@ export const CreatePostModal: React.FC<CreatePostProps> = ({ onSubmit, ...props 
 				return "Save Changes";
 		}
 	};
-
-	// TODO: Improve loading state
-	if (loading || data?.user.auth === false) return null;
 
 	return (
 		<div
