@@ -6,11 +6,9 @@ import User from "./User";
 import { useMutation } from "@apollo/client";
 import createPost from "@components/create-post";
 
-interface TopicContainerProps {
-	topic: Topic;
-}
+interface TopicContainerProps extends Topic { }
 
-const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
+const TopicContainer: React.FC<TopicContainerProps> = (topic) => {
 	const [createTopic] = useMutation<CreateReply>(CREATE_REPLY);
 	const [updateTopic] = useMutation<UpdateTopic>(UPDATE_TOPIC);
 
@@ -31,8 +29,6 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 						},
 					},
 				});
-
-				createPost.close();
 			},
 		});
 	};
@@ -52,8 +48,6 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 						},
 					},
 				});
-
-				createPost.close();
 			},
 		});
 	};
@@ -65,12 +59,7 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ topic }) => {
 				<Tags tags={topic.tags} />
 				<User identity={topic.userStatus.identity} isOwner={topic.userStatus.isOwner} />
 				<TopicContent content={topic.content} />
-				<TopicIcons
-					openCreateReply={onClickCreateReply}
-					openEditTopic={onClickEditTopic}
-					isOwner={topic.userStatus.isOwner}
-					counter={topic.counter}
-				/>
+				<TopicIcons openCreateReply={onClickCreateReply} openEditTopic={onClickEditTopic} {...topic} />
 			</div>
 		</div>
 	);

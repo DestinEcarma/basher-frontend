@@ -1,4 +1,12 @@
-import { CREATE_REPLY, GET_SUB_REPLIES, CreateReply, Reply } from "../utils/defs";
+import {
+	CREATE_REPLY,
+	GET_SUB_REPLIES,
+	CreateReply,
+	Reply,
+	LIKE_REPLY,
+	SHARE_REPLY,
+	UPDATE_REPLY,
+} from "../utils/defs";
 import DropDownButton from "./DropDownButton";
 import ReplyButton from "./ReplyButton";
 import ReplyContent from "./ReplyContent";
@@ -6,13 +14,16 @@ import ReplyDropdown from "./ReplyDropDown";
 import TopicButton from "./TopicButton";
 import User from "./User";
 import { useLazyQuery, useMutation } from "@apollo/client";
+import { AuthContext } from "@components/auth";
+import { Button } from "@components/button";
 import createPost from "@components/create-post";
 import { formatDate } from "@utils/helper";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BiLike, BiLinkAlt } from "react-icons/bi";
 import { FaChevronDown } from "react-icons/fa";
-import { FaReply } from "react-icons/fa6";
+import { FaPen, FaReply } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
+import { toast } from "sonner";
 
 interface ReplyContainerProps {
 	topicId: string;
@@ -20,12 +31,23 @@ interface ReplyContainerProps {
 }
 
 const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ topicId, reply }, ref) => {
+	const auth = useContext(AuthContext);
+
+	const [likes, setLikes] = useState<number>(reply.counter.likes);
+	const [isLiked, setLikeStatus] = useState<boolean>(reply.userStatus.isLiked);
+
+	const [shares, setShares] = useState<number>(reply.counter.shares);
+	const [isShared, setSharedStatus] = useState<boolean>(reply.userStatus.isShared);
+
 	const [showSubReplies, setShowSubReplies] = useState(false);
 	const [subReplies, setSubReplies] = useState<Reply[]>([]);
 
 	const [getSubReplies] = useLazyQuery(GET_SUB_REPLIES);
 
 	const [createReply] = useMutation<CreateReply>(CREATE_REPLY);
+	const [likeReply] = useMutation(LIKE_REPLY);
+	const [shareReply] = useMutation(SHARE_REPLY);
+	const [editReply] = useMutation(UPDATE_REPLY);
 
 	useEffect(() => {
 		async function fetchSubReplies() {
@@ -48,6 +70,11 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 		fetchSubReplies();
 	}, [showSubReplies, reply, topicId, getSubReplies]);
 
+	useEffect(() => {
+		setLikes(reply.counter.likes);
+		setShares(reply.counter.shares);
+	}, [reply]);
+
 	const onClickCreateSubReply = () => {
 		createPost.open({
 			mode: "reply",
@@ -66,8 +93,24 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 						},
 					},
 				});
+			},
+		});
+	};
 
-				createPost.close();
+	const onClickUpdateReply = () => {
+		createPost.open({
+			mode: "editReply",
+			reply,
+			onSubmit: (content) => {
+				editReply({
+					variables: {
+						input: {
+							topic: topicId,
+							reply: reply.id,
+							content,
+						},
+					},
+				});
 			},
 		});
 	};
@@ -76,13 +119,14 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 		setShowSubReplies((prev) => !prev);
 	};
 
-	const [likes, setLikes] = useState<number>(0);
-	const [isLiked, setLikeStatus] = useState<boolean>(false);
-
-	const [shares, setShares] = useState<number>(0);
-	const [isShared, setSharedStatus] = useState<boolean>(false);
-
 	const addLike = (): void => {
+		if (!auth) {
+			toast.warning("You need to be logged in to like a reply.");
+			return;
+		}
+
+		likeReply({ variables: { id: reply.id } });
+
 		if (!isLiked) {
 			setLikes((prev) => prev + 1);
 			setLikeStatus(true);
@@ -93,16 +137,18 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 	};
 
 	const addChain = (): void => {
+		navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`);
+		toast.info("Topic link copied to clipboard!");
+
 		if (!isShared) {
 			setShares((prev) => prev + 1);
 			setSharedStatus(true);
+
+			if (auth) {
+				shareReply({ variables: { id: reply.id } });
+			}
 		}
 	};
-
-	useEffect(() => {
-		setLikes(reply.counter.likes);
-		setShares(reply.counter.shares);
-	}, [reply]);
 
 	return (
 		<div ref={ref} className="mt-4 flex flex-col items-center justify-center">
@@ -146,6 +192,12 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 						<TopicButton Icon={BiLike} onClick={addLike} count={likes} status={isLiked} />
 						<TopicButton Icon={BiLinkAlt} onClick={addChain} count={shares} status={isShared} />
 						<ReplyButton onClick={onClickCreateSubReply} />
+						{reply.userStatus.isOwner && (
+							<Button variant="ghost" className="flex items-center gap-2 text-gray-500" onClick={onClickUpdateReply}>
+								<FaPen className="text-2xl" />
+								Edit
+							</Button>
+						)}
 					</div>
 				</div>
 			</div>
