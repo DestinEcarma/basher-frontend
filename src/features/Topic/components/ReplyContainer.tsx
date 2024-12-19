@@ -52,6 +52,11 @@ const ReplyContainer = React.forwardRef<HTMLDivElement, ReplyContainerProps>(({ 
 	const [editReply] = useMutation(UPDATE_REPLY);
 
 	useEffect(() => {
+		setLikeStatus(reply.userStatus.isLiked);
+		setSharedStatus(reply.userStatus.isShared);
+	}, [reply.userStatus]);
+
+	useEffect(() => {
 		async function fetchSubReplies() {
 			if (showSubReplies) {
 				const { data } = await getSubReplies({

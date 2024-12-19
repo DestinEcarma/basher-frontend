@@ -36,6 +36,11 @@ const TopicIcons: React.FC<TopicIconsProps> = ({
 	const [likeTopic] = useMutation(LIKE_TOPIC, { fetchPolicy: "no-cache" });
 	const [shareTopic] = useMutation(SHARE_TOPIC);
 
+	useEffect(() => {
+		setLikeStatus(userStatus.isLiked);
+		setSharedStatus(userStatus.isShared);
+	}, [userStatus]);
+
 	const addLike = (): void => {
 		if (!auth) {
 			toast.warning("You need to login to like a topic!");
