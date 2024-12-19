@@ -137,7 +137,7 @@ const TopicPage: React.FC = () => {
 
 								return [
 									...prevReplies.map((reply) => {
-										if (reply.id === data.reply.getReply.parent.id) {
+										if (reply.id === data.reply.getReply.parent?.id) {
 											return incrementCounterReplies<Reply>(reply);
 										}
 
@@ -215,14 +215,14 @@ const TopicPage: React.FC = () => {
 			setTopic((prevTopic) =>
 				prevTopic
 					? {
-							...prevTopic,
-							userStatus: {
-								...prevTopic.userStatus,
-								isLiked: false,
-								isOwner: false,
-								isShared: false,
-							},
-						}
+						...prevTopic,
+						userStatus: {
+							...prevTopic.userStatus,
+							isLiked: false,
+							isOwner: false,
+							isShared: false,
+						},
+					}
 					: prevTopic,
 			);
 

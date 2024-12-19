@@ -25,7 +25,7 @@ export interface Reply {
 	id: string;
 	content: string;
 	counter: Omit<Counter, "views">;
-	parent: Parent;
+	parent?: Parent;
 	activity: string;
 	userStatus: UserStatus;
 }
