@@ -55,6 +55,7 @@ export const GET_TOPIC = gql`
 					identity
 					isOwner
 					isLiked
+					isShared
 				}
 			}
 		}
@@ -87,6 +88,7 @@ export const GET_REPLIES = gql`
 					isOwner
 					isLiked
 					identity
+					isShared
 				}
 			}
 		}
@@ -133,6 +135,7 @@ export const GET_REPLY = gql`
 					isOwner
 					isLiked
 					identity
+					isShared
 				}
 			}
 		}
@@ -171,6 +174,46 @@ export const UPDATE_TOPIC = gql`
 	mutation UpdateTopic($input: UpdateTopicInput!) {
 		topic {
 			update(input: $input)
+		}
+	}
+`;
+
+export const UPDATE_REPLY = gql`
+	mutation UpdateReply($input: UpdateReplyInput!) {
+		reply {
+			update(input: $input)
+		}
+	}
+`;
+
+export const LIKE_TOPIC = gql`
+	mutation LikeTopic($id: ID!) {
+		topic {
+			like(id: $id)
+		}
+	}
+`;
+
+export const SHARE_TOPIC = gql`
+	mutation ShareTopic($id: ID!) {
+		topic {
+			share(id: $id)
+		}
+	}
+`;
+
+export const LIKE_REPLY = gql`
+	mutation LikeReply($id: ID!) {
+		reply {
+			like(id: $id)
+		}
+	}
+`;
+
+export const SHARE_REPLY = gql`
+	mutation ShareReply($id: ID!) {
+		reply {
+			share(id: $id)
 		}
 	}
 `;
