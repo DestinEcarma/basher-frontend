@@ -10,23 +10,20 @@ interface LogoutProviderProps {
 
 const LogoutContext = createContext<{
 	logout: () => void;
-	onLogout: (callback: () => void) => void;
+	onLogout: (callback: () => void) => () => void;
 }>({
-	logout: () => {},
-	onLogout: () => {},
+	logout: () => { },
+	onLogout: () => { return () => { } },
 });
 
 export const LogoutProvider: React.FC<LogoutProviderProps> = ({ children, setAuth }) => {
 	const [listeners, setListeners] = useState<(() => void)[]>([]);
 
-	const [logout] = useMutation(LOGOUT);
+	const [logoutMutation] = useMutation(LOGOUT);
 
 	const onLogout = useCallback(
 		(callback: () => void) => {
 			setListeners((prev) => [...prev, callback]);
-
-			setAuth(false);
-			sessionStorage.removeItem("connect.sid");
 
 			return () => {
 				setListeners((prev) => prev.filter((listener) => listener !== callback));
@@ -34,6 +31,15 @@ export const LogoutProvider: React.FC<LogoutProviderProps> = ({ children, setAut
 		},
 		[listeners, setAuth, setListeners],
 	);
+
+	const logout = useCallback(() => {
+		logoutMutation();
+
+		setAuth(false);
+		sessionStorage.removeItem("connect.sid");
+
+		listeners.forEach((listener) => listener());
+	}, [listeners, setAuth, logoutMutation]);
 
 	return <LogoutContext.Provider value={{ logout, onLogout }} children={children} />;
 };

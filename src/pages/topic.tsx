@@ -211,7 +211,7 @@ const TopicPage: React.FC = () => {
 	useEffect(() => {
 		if (!auth) return;
 
-		return onLogout(() => {
+		const unsubscribe = onLogout(() => {
 			setTopic(prevTopic => prevTopic ? {
 				...prevTopic,
 				userStatus: {
@@ -232,6 +232,8 @@ const TopicPage: React.FC = () => {
 				}
 			})))
 		});
+
+		return () => { unsubscribe() };
 	}, [auth, onLogout, setTopic, setReplies]);
 
 	return (
