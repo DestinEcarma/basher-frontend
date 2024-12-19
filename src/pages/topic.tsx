@@ -215,14 +215,14 @@ const TopicPage: React.FC = () => {
 			setTopic((prevTopic) =>
 				prevTopic
 					? {
-							...prevTopic,
-							userStatus: {
-								...prevTopic.userStatus,
-								isLiked: false,
-								isOwner: false,
-								isShared: false,
-							},
-						}
+						...prevTopic,
+						userStatus: {
+							...prevTopic.userStatus,
+							isLiked: false,
+							isOwner: false,
+							isShared: false,
+						},
+					}
 					: prevTopic,
 			);
 
@@ -242,7 +242,7 @@ const TopicPage: React.FC = () => {
 		return () => {
 			unsubscribe();
 		};
-	}, [auth, onLogout, setTopic, setReplies]);
+	}, [auth, setTopic, setReplies]);
 
 	return (
 		<div className="mx-auto flex w-full flex-col gap-8 pb-8 md:max-w-3xl lg:max-w-7xl">
