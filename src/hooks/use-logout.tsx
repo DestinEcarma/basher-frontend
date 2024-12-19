@@ -12,8 +12,10 @@ const LogoutContext = createContext<{
 	logout: () => void;
 	onLogout: (callback: () => void) => () => void;
 }>({
-	logout: () => { },
-	onLogout: () => { return () => { } },
+	logout: () => {},
+	onLogout: () => {
+		return () => {};
+	},
 });
 
 export const LogoutProvider: React.FC<LogoutProviderProps> = ({ children, setAuth }) => {

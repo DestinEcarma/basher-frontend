@@ -212,28 +212,36 @@ const TopicPage: React.FC = () => {
 		if (!auth) return;
 
 		const unsubscribe = onLogout(() => {
-			setTopic(prevTopic => prevTopic ? {
-				...prevTopic,
-				userStatus: {
-					...prevTopic.userStatus,
-					isLiked: false,
-					isOwner: false,
-					isShared: false,
-				}
-			} : prevTopic)
+			setTopic((prevTopic) =>
+				prevTopic
+					? {
+							...prevTopic,
+							userStatus: {
+								...prevTopic.userStatus,
+								isLiked: false,
+								isOwner: false,
+								isShared: false,
+							},
+						}
+					: prevTopic,
+			);
 
-			setReplies(prevReplies => prevReplies.map(reply => ({
-				...reply,
-				userStatus: {
-					...reply.userStatus,
-					isLiked: false,
-					isOwner: false,
-					isShared: false,
-				}
-			})))
+			setReplies((prevReplies) =>
+				prevReplies.map((reply) => ({
+					...reply,
+					userStatus: {
+						...reply.userStatus,
+						isLiked: false,
+						isOwner: false,
+						isShared: false,
+					},
+				})),
+			);
 		});
 
-		return () => { unsubscribe() };
+		return () => {
+			unsubscribe();
+		};
 	}, [auth, onLogout, setTopic, setReplies]);
 
 	return (
