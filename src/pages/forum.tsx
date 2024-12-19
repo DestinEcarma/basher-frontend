@@ -3,7 +3,6 @@ import { AuthContext } from "@components/auth";
 import { Button } from "@components/button";
 import createPost from "@components/create-post";
 import { Logo } from "@components/logo";
-import { LogoutContext } from "@components/logout";
 import TopicRow from "@features/forum/components/topic-row";
 import TopicSkeleton from "@features/forum/components/topic-skeleton";
 import {
@@ -16,6 +15,7 @@ import {
 	GetTopicQuery,
 	GET_TOPIC,
 } from "@features/forum/utils/defs";
+import { useLogout } from "@hooks/use-logout";
 import { INTERSECTION_OPTIONS } from "@utils/defs";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -27,7 +27,8 @@ const ForumPage: React.FC = () => {
 	const navigate = useNavigate();
 
 	const auth = useContext(AuthContext);
-	const logout = useContext(LogoutContext);
+
+	const { logout } = useLogout();
 
 	const lastTopicRef = useRef<HTMLTableRowElement>(null);
 

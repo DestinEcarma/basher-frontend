@@ -4,7 +4,6 @@ import { useLazyQuery, useQuery } from "@apollo/client";
 import { AuthContext } from "@components/auth";
 import { Button } from "@components/button";
 import { Logo } from "@components/logo";
-import { LogoutContext } from "@components/logout";
 import {
 	GET_TOPIC,
 	GET_REPLIES,
@@ -16,6 +15,7 @@ import {
 	GET_REPLY,
 	incrementCounterReplies,
 } from "@features/Topic/utils/defs";
+import { useLogout } from "@hooks/use-logout";
 import { INTERSECTION_OPTIONS } from "@utils/defs";
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
@@ -26,7 +26,8 @@ const TopicPage: React.FC = () => {
 	const navigate = useNavigate();
 
 	const auth = useContext(AuthContext);
-	const logout = useContext(LogoutContext);
+
+	const { logout, onLogout } = useLogout();
 
 	const { hash } = useLocation();
 
@@ -206,6 +207,32 @@ const TopicPage: React.FC = () => {
 			}
 		})();
 	}, [hash, replies, topic, getUpdateReply]);
+
+	useEffect(() => {
+		if (!auth) return;
+
+		return onLogout(() => {
+			setTopic(prevTopic => prevTopic ? {
+				...prevTopic,
+				userStatus: {
+					...prevTopic.userStatus,
+					isLiked: false,
+					isOwner: false,
+					isShared: false,
+				}
+			} : prevTopic)
+
+			setReplies(prevReplies => prevReplies.map(reply => ({
+				...reply,
+				userStatus: {
+					...reply.userStatus,
+					isLiked: false,
+					isOwner: false,
+					isShared: false,
+				}
+			})))
+		});
+	}, [auth, onLogout, setTopic, setReplies]);
 
 	return (
 		<div className="mx-auto flex w-full flex-col gap-8 pb-8 md:max-w-3xl lg:max-w-7xl">
