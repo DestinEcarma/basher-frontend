@@ -219,11 +219,7 @@ const TopicPage: React.FC = () => {
 						</Button>
 					) : (
 						<div className="flex gap-4">
-							<Button
-								size="sm"
-								onClick={() => navigate("/login")}
-								className="flex items-center gap-2"
-							>
+							<Button size="sm" onClick={() => navigate("/login")} className="flex items-center gap-2">
 								Login
 							</Button>
 							<Button

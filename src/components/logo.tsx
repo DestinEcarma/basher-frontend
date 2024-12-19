@@ -6,7 +6,7 @@ import React from "react";
 import { FaBold } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-export interface LogoProps extends ReactButtonAttributes, VariantProps<typeof variants> { }
+export interface LogoProps extends ReactButtonAttributes, VariantProps<typeof variants> {}
 
 const variants = cva(null, {
 	variants: {

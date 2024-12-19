@@ -205,18 +205,19 @@ const ForumPage: React.FC = () => {
 								<FaPlus />
 								New Topic
 							</Button>
-							<Button size="sm" variant="ghost" onClick={() => logout()} className="flex items-center gap-2">
+							<Button
+								size="sm"
+								variant="ghost"
+								onClick={() => logout()}
+								className="flex items-center gap-2"
+							>
 								<FaSignOutAlt />
 								Logout
 							</Button>
 						</>
 					) : (
 						<>
-							<Button
-								size="sm"
-								onClick={() => navigate("/login")}
-								className="flex items-center gap-2"
-							>
+							<Button size="sm" onClick={() => navigate("/login")} className="flex items-center gap-2">
 								Login
 							</Button>
 							<Button
@@ -237,9 +238,9 @@ const ForumPage: React.FC = () => {
 						<thead>
 							<tr>
 								<th className="w-full text-left">Topic</th>
-								<th className="px-4 font text-gray-500">Replies</th>
-								<th className="px-4 font text-gray-500">Likes</th>
-								<th className="px-4 font text-gray-500">Activity</th>
+								<th className="font px-4 text-gray-500">Replies</th>
+								<th className="font px-4 text-gray-500">Likes</th>
+								<th className="font px-4 text-gray-500">Activity</th>
 							</tr>
 						</thead>
 						<tbody>
