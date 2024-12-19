@@ -1,23 +1,15 @@
-import { CreatePostProps, CreatePostFields, DEFAULT_CONTENT } from "./defs";
-import { mergeDeep } from "@apollo/client/utilities";
+import { CreatePostProps, CreatePostFields, DEFAULT_CONTENT, DEFAULT_PREVIEW_OPTIONS } from "./defs";
 import { InputBox } from "@components/input-box";
 import { Reply, Topic } from "@features/Topic/utils/defs";
 import MDEditor, { ICommand, MDEditorProps } from "@uiw/react-md-editor";
 import React, { useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
-import rehypeKatex from "rehype-katex";
-import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
-import rehypeStringify from "rehype-stringify";
-import remarkMath from "remark-math";
-import remarkRehype from "remark-rehype";
 import { toast } from "sonner";
 
 interface InputsProps {
 	props: Omit<CreatePostProps, "onSubmit">;
 	form: UseFormReturn<CreatePostFields, unknown, undefined>;
 }
-
-const CUSTOM_SCHEMA = mergeDeep(defaultSchema, { attributes: { div: ["center"] } });
 
 export const Inputs: React.FC<InputsProps> = ({
 	props: { mode, ...props },
@@ -81,24 +73,11 @@ export const Inputs: React.FC<InputsProps> = ({
 		height: "100%",
 		value: content,
 		visibleDragbar: false,
+		previewOptions: DEFAULT_PREVIEW_OPTIONS,
 		onChange: (value) => setContent(value ?? content),
 		commandsFilter: (command: ICommand) => {
 			if (command.name === "fullscreen") return false;
 			return command;
-		},
-		previewOptions: {
-			remarkPlugins: [remarkMath, remarkRehype],
-			rehypePlugins: [[rehypeSanitize, CUSTOM_SCHEMA], rehypeKatex, rehypeStringify],
-			components: {
-				div: ({ node, ...rest }) => {
-					if (node !== undefined && "center" in rest) {
-						delete rest.center;
-						return <div className="text-center" {...rest} />;
-					}
-
-					return <div {...rest} />;
-				},
-			},
 		},
 	};
 

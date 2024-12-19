@@ -1,5 +1,12 @@
+import { mergeDeep } from "@apollo/client/utilities";
 import { Reply } from "@features/Topic/utils/defs";
 import { CreateTopicFields, Topic } from "@features/forum/utils/defs";
+import { MDEditorProps } from "@uiw/react-md-editor";
+import rehypeKatex from "rehype-katex";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+import rehypeStringify from "rehype-stringify";
+import remarkMath from "remark-math";
+import remarkRehype from "remark-rehype";
 
 type CreateMode = {
 	mode: "create";
@@ -52,3 +59,20 @@ You can make text **bold** or *italic*.
 
 [Click here](https://www.markdownguide.org/basic-syntax/)
 `;
+
+const CUSTOM_SCHEMA = mergeDeep(defaultSchema, { attributes: { div: ["center"] } });
+
+export const DEFAULT_PREVIEW_OPTIONS: MDEditorProps["previewOptions"] = {
+	remarkPlugins: [remarkMath, remarkRehype],
+	rehypePlugins: [[rehypeSanitize, CUSTOM_SCHEMA], rehypeKatex, rehypeStringify],
+	components: {
+		div: ({ node, ...rest }) => {
+			if (node !== undefined && "center" in rest) {
+				delete rest.center;
+				return <div className="text-center" {...rest} />;
+			}
+
+			return <div {...rest} />;
+		},
+	},
+};
