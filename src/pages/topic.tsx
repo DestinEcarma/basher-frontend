@@ -215,14 +215,14 @@ const TopicPage: React.FC = () => {
 			setTopic((prevTopic) =>
 				prevTopic
 					? {
-						...prevTopic,
-						userStatus: {
-							...prevTopic.userStatus,
-							isLiked: false,
-							isOwner: false,
-							isShared: false,
-						},
-					}
+							...prevTopic,
+							userStatus: {
+								...prevTopic.userStatus,
+								isLiked: false,
+								isOwner: false,
+								isShared: false,
+							},
+						}
 					: prevTopic,
 			);
 
